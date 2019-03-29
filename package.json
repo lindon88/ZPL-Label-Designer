@@ -1,0 +1,27 @@
+{
+  "name": "zpl-label-designer",
+  "version": "1.0.0",
+  "description": "Javascript / Web Based designer for ZPL printers.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lindon88/ZPL-Label-Designer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lindon88/ZPL-Label-Designer/issues"
+  },
+  "homepage": "https://github.com/lindon88/ZPL-Label-Designer#readme",
+  "dependencies": {
+    "gulp": "3.9.1",
+    "gulp-clean": "0.4.0",
+    "gulp-concat": "2.6.1",
+    "gulp-minify": "^3.1.0",
+    "gulp-rename": "1.4.0",
+    "run-sequence": "^2.2.1"
+  }
+}

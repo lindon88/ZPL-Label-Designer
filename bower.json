@@ -1,0 +1,17 @@
+{
+  "name": "ZPL-Label-Designer",
+  "homepage": "https://github.com/lindon88/ZPL-Label-Designer",
+  "description": "",
+  "main": [
+    "./dist/js/app.js",
+    "./dist/css/designer.css"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
