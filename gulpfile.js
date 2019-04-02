@@ -27,12 +27,18 @@ gulp.task('clean', function() {
 
 // copy task, copy assets to dist folder
 gulp.task('copy', function() {
-    gulp.src('./css/**').pipe(gulp.dest('./dist/css'));
+    // gulp.src('./css/**').pipe(gulp.dest('./dist/css'));
     gulp.src('./fonts/**').pipe(gulp.dest('./dist/fonts'));
     gulp.src('./design/**').pipe(gulp.dest('./dist/design'));
 });
 
 gulp.task('build', function(){
+
+  gulp.src(paths.css)
+    .pipe(concat('app.css'))
+    .pipe(minify())
+    .pipe(gulp.dest('./dist/css'));
+
   return gulp.src(paths.js)
     .pipe(concat('app.js'))
     .pipe(minify())

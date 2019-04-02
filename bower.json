@@ -4,9 +4,9 @@
   "description": "",
   "main": [
     "./dist/js/app.js",
-    "./dist/css/designer.css"
+    "./dist/css/app.css"
   ],
-  "license": "MIT",
+  "license": "MIT", 
   "ignore": [
     "**/.*",
     "node_modules",
