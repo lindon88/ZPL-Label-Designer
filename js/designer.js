@@ -479,13 +479,13 @@ com.logicpartners.labelDesigner = function(canvasid, labelWidth, labelHeight) {
 				   "^LS0\r\n" +
 				   "^LT0\r\n" +
 				   "^LH{{leftOffset}},{{topOffset}}\r\n" +
-				   "^CFd0,10,18\r\n" +
+				//    "^CFd0,10,18\r\n" +
 				   "^PR12\r\n" +
-				   "^LRY\r\n" +
-				   "^MD30\r\n" +
-				   "^PW" + this.labelWidth + "\r\n" +
-				   "^LL" + this.labelHeight + "\r\n" +
-				   "^PON\r\n";
+				//    "^LRY\r\n" +
+				   "^MD30\r\n";
+				//    "^PW" + this.labelWidth + "\r\n" +
+				//    "^LL" + this.labelHeight + "\r\n" +
+				//    "^PON\r\n";
 	    var bufferData = "";
 		
 		for (var i = 0; i < this.currentLayer; i++) {
@@ -514,8 +514,8 @@ com.logicpartners.labelDesigner = function(canvasid, labelWidth, labelHeight) {
 		}
 		// debugger
 
-		data += "^PQ1\r\n" +
-				"^XZ\r\n";
+		// data += "^PQ1\r\n" +
+		data += "^XZ\r\n";
 				
 		console.log(bufferData + data);
 		return { "data" : bufferData, "zpl" : data };

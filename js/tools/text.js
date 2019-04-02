@@ -38,7 +38,8 @@ com.logicpartners.designerTools.text = function() {
 		}
 
 		this.toZPL = function(labelx, labely, labelwidth, labelheight) {
-			return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^FD" + this.text + "^FS";
+			// return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^FD" + this.text + "^FS";
+			return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + "^FD" + this.text + "^FS";
 		}
 		
 		this.draw = function(context) {
