@@ -103,43 +103,43 @@ com.logicpartners.labelControl.size = function(designer) {
 				}
 			});
 		
-			this.batchNumberContainer = $("<div>Batch Number: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
-			this.batchNumberController = $("<input type=\"checkbox\" id=\"batchNumberControllerId\" name=\"vehicle1\" value=\"Bike\"> ")
-				.addClass("designerLabelControlElement")
-				.css({
-					// width : "50px"
-				})
-				.val(this.designer.batchNumber)
-				.appendTo(this.batchNumberContainer)
-				.on("blur", function() {
+			// this.batchNumberContainer = $("<div>Batch Number: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
+			// this.batchNumberController = $("<input type=\"checkbox\" id=\"batchNumberControllerId\" name=\"vehicle1\" value=\"Bike\"> ")
+			// 	.addClass("designerLabelControlElement")
+			// 	.css({
+			// 		// width : "50px"
+			// 	})
+			// 	.val(this.designer.batchNumber)
+			// 	.appendTo(this.batchNumberContainer)
+			// 	.on("blur", function() {
 					
-						self.updateDesigner();
-				})
-				.on("keypress", function(e) {
-					if (e.which == 13) {
-						e.preventDefault();
-						self.updateDesigner();
-					}
-				});
+			// 			self.updateDesigner();
+			// 	})
+			// 	.on("keypress", function(e) {
+			// 		if (e.which == 13) {
+			// 			e.preventDefault();
+			// 			self.updateDesigner();
+			// 		}
+			// 	});
 		
-				this.labelNumberContainer = $("<div>Label Number: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
-				this.labelNumberController = $("<input type=\"checkbox\" id=\"labelNumberControllerId\" name=\"vehicle1\" value=\"Bike\"> ")
-					.addClass("designerLabelControlElement")
-					.css({
-						// width : "50px"
-					})
-					.val(this.designer.labelNumber)
-					.appendTo(this.labelNumberContainer)
-					.on("blur", function() {
+			// 	this.labelNumberContainer = $("<div>Label Number: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
+			// 	this.labelNumberController = $("<input type=\"checkbox\" id=\"labelNumberControllerId\" name=\"vehicle1\" value=\"Bike\"> ")
+			// 		.addClass("designerLabelControlElement")
+			// 		.css({
+			// 			// width : "50px"
+			// 		})
+			// 		.val(this.designer.labelNumber)
+			// 		.appendTo(this.labelNumberContainer)
+			// 		.on("blur", function() {
 						
-							self.updateDesigner();
-					})
-					.on("keypress", function(e) {
-						if (e.which == 13) {
-							e.preventDefault();
-							self.updateDesigner();
-						}
-					});
+			// 				self.updateDesigner();
+			// 		})
+			// 		.on("keypress", function(e) {
+			// 			if (e.which == 13) {
+			// 				e.preventDefault();
+			// 				self.updateDesigner();
+			// 			}
+			// 		});
 		
 	this.updateDesigner = function() {
 		var dpi = this.designer.dpi;
@@ -1168,24 +1168,29 @@ com.logicpartners.labelDesigner = function(canvasid, labelWidth, labelHeight) {
 			}
 		}
 		
-		var batchNumber = document.getElementById("batchNumberControllerId").checked;
-		var labelNr = document.getElementById("labelNumberControllerId").checked;
+		// var batchNumber = document.getElementById("batchNumberControllerId").checked;
+		// var labelNr = document.getElementById("labelNumberControllerId").checked;
 
-		if (batchNumber  && labelNr) {
-			data += "\r\n";
-			data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS\r\n";
-		}
+		// if (batchNumber  && labelNr) {
+		// 	data += "\r\n";
+		// 	// data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS\r\n";
+		// 	data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS\r\n";
+		// }
 		
-		if (batchNumber && !labelNr) {
-			data += "\r\n";
-			data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS\r\n";
-		}
+		// if (batchNumber && !labelNr) {
+		// 	data += "\r\n";
+		// 	data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS\r\n";
+		// }
 		
-		if (labelNr && !batchNumber) {
-			data += "\r\n";
-			data += "^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS\r\n";
-		}
+		// if (labelNr && !batchNumber) {
+		// 	data += "\r\n";
+		// 	data += "^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS\r\n";
+		// }
 		// debugger
+
+
+		data += "\r\n";
+		data += "{{ batchNumber && labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS' : ''}}\r\n{{ batchNumber && !labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS' : ''}}\r\n{{ labelNr && !batchNumber ? '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS' : ''}}\r\n";
 
 		// data += "^PQ1\r\n" +
 		data += "^XZ\r\n";
