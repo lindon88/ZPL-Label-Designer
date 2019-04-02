@@ -14,7 +14,7 @@ com.logicpartners.toolsWindow = function(designer, canvas) {
 	this.toolsWindow = $('<div></div>')
 			.addClass("designerUtilityToolbar")
 			.css({
-				"left": this.canvas.getBoundingClientRect().left - 90,
+				"left": 0,
 				"top": this.canvas.getBoundingClientRect().top
 			})
 			//.draggable({handle: "div.designerPropertyTitle"})

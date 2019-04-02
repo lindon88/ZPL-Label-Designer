@@ -16,7 +16,7 @@ com.logicpartners.propertyInspector = function(designer, canvas) {
 	this.propertyInspector = $('<div></div>')
 			.addClass("designerUtilityWindow")
 			.css({
-				"left": this.canvas.getBoundingClientRect().right + 5,
+				"left": this.canvas.getBoundingClientRect().right + 5 - 200,
 				"top": this.canvas.getBoundingClientRect().top
 			})
 			//.draggable({handle: "div.designerPropertyTitle"})
@@ -74,7 +74,6 @@ com.logicpartners.propertyInspector = function(designer, canvas) {
 						var elementKey = $('<div>' + key + '</div>')
 								.css({
 									"width": "65px",
-									"height": "20px",
 									"border": "1px solid #AAAAAA",
 									"float": "left",
 									"font-size": "12px",
@@ -82,7 +81,8 @@ com.logicpartners.propertyInspector = function(designer, canvas) {
 									"border-right": "none",
 									"text-align": "right",
 									"padding-right": "5px",
-									"margin-left": "5px"
+									"margin-left": "5px",
+									"padding": "3px"
 								});
 
 						var elementValue = $('<input type="text" name="' + key + '" value="' + activeElement[key] + '">')

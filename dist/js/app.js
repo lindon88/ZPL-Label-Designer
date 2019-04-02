@@ -84,24 +84,62 @@ com.logicpartners.labelControl.size = function(designer) {
 			}
 		});
 		
-	this.dpiContainer = $("<div>DPI: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
-	this.dpiController = $("<input type=\"text\" />")
-		.addClass("designerLabelControlElement")
-		.css({
-			width : "50px"
-		})
-		.val(this.designer.dpi)
-		.appendTo(this.dpiContainer)
-		.on("blur", function() {
-			
-				self.updateDesigner();
-		})
-		.on("keypress", function(e) {
-			if (e.which == 13) {
-				e.preventDefault();
-				self.updateDesigner();
-			}
-		});
+		this.dpiContainer = $("<div>DPI: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
+		this.dpiController = $("<input type=\"text\" />")
+			.addClass("designerLabelControlElement")
+			.css({
+				width : "50px"
+			})
+			.val(this.designer.dpi)
+			.appendTo(this.dpiContainer)
+			.on("blur", function() {
+				
+					self.updateDesigner();
+			})
+			.on("keypress", function(e) {
+				if (e.which == 13) {
+					e.preventDefault();
+					self.updateDesigner();
+				}
+			});
+		
+			this.batchNumberContainer = $("<div>Batch Number: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
+			this.batchNumberController = $("<input type=\"checkbox\" id=\"batchNumberControllerId\" name=\"vehicle1\" value=\"Bike\"> ")
+				.addClass("designerLabelControlElement")
+				.css({
+					// width : "50px"
+				})
+				.val(this.designer.batchNumber)
+				.appendTo(this.batchNumberContainer)
+				.on("blur", function() {
+					
+						self.updateDesigner();
+				})
+				.on("keypress", function(e) {
+					if (e.which == 13) {
+						e.preventDefault();
+						self.updateDesigner();
+					}
+				});
+		
+				this.labelNumberContainer = $("<div>Label Number: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
+				this.labelNumberController = $("<input type=\"checkbox\" id=\"labelNumberControllerId\" name=\"vehicle1\" value=\"Bike\"> ")
+					.addClass("designerLabelControlElement")
+					.css({
+						// width : "50px"
+					})
+					.val(this.designer.labelNumber)
+					.appendTo(this.labelNumberContainer)
+					.on("blur", function() {
+						
+							self.updateDesigner();
+					})
+					.on("keypress", function(e) {
+						if (e.which == 13) {
+							e.preventDefault();
+							self.updateDesigner();
+						}
+					});
 		
 	this.updateDesigner = function() {
 		var dpi = this.designer.dpi;
@@ -709,6 +747,8 @@ com.logicpartners.labelDesigner = function(canvasid, labelWidth, labelHeight) {
 	this.toolbar = new com.logicpartners.toolsWindow(this, this.canvas);
 	this.labelInspector = new com.logicpartners.labelInspector(this, this.canvas);
 	this.dpi = 200;
+	this.batchNumber = false;
+	this.labelNumber = false;
 
 	this.drawingContext = this.canvas.getContext("2d");
 	this.elements = [];
@@ -1108,6 +1148,9 @@ com.logicpartners.labelDesigner = function(canvasid, labelWidth, labelHeight) {
 	
 	this.generateZPL = function() {
 		var data = "^XA\r\n" +
+				   "^LS0\r\n" +
+				   "^LT0\r\n" +
+				   "^LH{{leftOffset}},{{topOffset}}\r\n" +
 				   "^CFd0,10,18\r\n" +
 				   "^PR12\r\n" +
 				   "^LRY\r\n" +
@@ -1124,6 +1167,25 @@ com.logicpartners.labelDesigner = function(canvasid, labelWidth, labelHeight) {
 			}
 		}
 		
+		var batchNumber = document.getElementById("batchNumberControllerId").checked;
+		var labelNr = document.getElementById("labelNumberControllerId").checked;
+
+		if (batchNumber  && labelNr) {
+			data += "\r\n";
+			data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS\r\n";
+		}
+		
+		if (batchNumber && !labelNr) {
+			data += "\r\n";
+			data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS\r\n";
+		}
+		
+		if (labelNr && !batchNumber) {
+			data += "\r\n";
+			data += "^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS\r\n";
+		}
+		// debugger
+
 		data += "^PQ1\r\n" +
 				"^XZ\r\n";
 				
@@ -1172,7 +1234,8 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 	this.inspectorWindow = $('<div></div>')
 			.addClass("designerUtilityToolbar designerUtilityLabelInspector")
 			.css({
-				"left": this.labelDesigner.toolbar.boundingBox.left,
+				// "left": this.labelDesigner.toolbar.boundingBox.left,
+				"left": 0,
 				"top": this.canvas.getBoundingClientRect().top - 50,
 				"width" : this.labelDesigner.propertyInspector.boundingBox.right - this.labelDesigner.toolbar.boundingBox.left
 			})
@@ -1222,7 +1285,7 @@ com.logicpartners.propertyInspector = function(designer, canvas) {
 	this.propertyInspector = $('<div></div>')
 			.addClass("designerUtilityWindow")
 			.css({
-				"left": this.canvas.getBoundingClientRect().right + 5,
+				"left": this.canvas.getBoundingClientRect().right + 5 - 200,
 				"top": this.canvas.getBoundingClientRect().top
 			})
 			//.draggable({handle: "div.designerPropertyTitle"})
@@ -1280,7 +1343,6 @@ com.logicpartners.propertyInspector = function(designer, canvas) {
 						var elementKey = $('<div>' + key + '</div>')
 								.css({
 									"width": "65px",
-									"height": "20px",
 									"border": "1px solid #AAAAAA",
 									"float": "left",
 									"font-size": "12px",
@@ -1288,7 +1350,8 @@ com.logicpartners.propertyInspector = function(designer, canvas) {
 									"border-right": "none",
 									"text-align": "right",
 									"padding-right": "5px",
-									"margin-left": "5px"
+									"margin-left": "5px",
+									"padding": "3px"
 								});
 
 						var elementValue = $('<input type="text" name="' + key + '" value="' + activeElement[key] + '">')
@@ -1345,7 +1408,7 @@ com.logicpartners.toolsWindow = function(designer, canvas) {
 	this.toolsWindow = $('<div></div>')
 			.addClass("designerUtilityToolbar")
 			.css({
-				"left": this.canvas.getBoundingClientRect().left - 90,
+				"left": 0,
 				"top": this.canvas.getBoundingClientRect().top
 			})
 			//.draggable({handle: "div.designerPropertyTitle"})

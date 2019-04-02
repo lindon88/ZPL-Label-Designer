@@ -1,8 +1,9 @@
 .designerUtilityWindow {
 	position: absolute !important;
-	width: 220px;
+	width: 225px;
 	border: 2px solid #AA0000;
 	border-radius: 4px;
+    margin-top: -3rem;
 }
 
 .designerUtilityToolbar {
@@ -10,6 +11,7 @@
 	width: 80px;
 	border: 2px solid #AA0000;
 	border-radius: 4px;
+    margin-top: -3rem;
 }
 
 .designerUtilityLabelInspector {

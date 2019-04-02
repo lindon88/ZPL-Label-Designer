@@ -75,6 +75,8 @@ com.logicpartners.labelDesigner = function(canvasid, labelWidth, labelHeight) {
 	this.toolbar = new com.logicpartners.toolsWindow(this, this.canvas);
 	this.labelInspector = new com.logicpartners.labelInspector(this, this.canvas);
 	this.dpi = 200;
+	this.batchNumber = false;
+	this.labelNumber = false;
 
 	this.drawingContext = this.canvas.getContext("2d");
 	this.elements = [];
@@ -474,6 +476,9 @@ com.logicpartners.labelDesigner = function(canvasid, labelWidth, labelHeight) {
 	
 	this.generateZPL = function() {
 		var data = "^XA\r\n" +
+				   "^LS0\r\n" +
+				   "^LT0\r\n" +
+				   "^LH{{leftOffset}},{{topOffset}}\r\n" +
 				   "^CFd0,10,18\r\n" +
 				   "^PR12\r\n" +
 				   "^LRY\r\n" +
@@ -490,6 +495,25 @@ com.logicpartners.labelDesigner = function(canvasid, labelWidth, labelHeight) {
 			}
 		}
 		
+		var batchNumber = document.getElementById("batchNumberControllerId").checked;
+		var labelNr = document.getElementById("labelNumberControllerId").checked;
+
+		if (batchNumber  && labelNr) {
+			data += "\r\n";
+			data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS\r\n";
+		}
+		
+		if (batchNumber && !labelNr) {
+			data += "\r\n";
+			data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS\r\n";
+		}
+		
+		if (labelNr && !batchNumber) {
+			data += "\r\n";
+			data += "^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS\r\n";
+		}
+		// debugger
+
 		data += "^PQ1\r\n" +
 				"^XZ\r\n";
 				
