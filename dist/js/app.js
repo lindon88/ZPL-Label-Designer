@@ -1,38 +1,115 @@
 if (!com)
-	var com = {};
+    var com = {};
 if (!com.logicpartners)
-	com.logicpartners = {};
+    com.logicpartners = {};
 if (!com.logicpartners.labelControl)
-	com.logicpartners.labelControl = {};
-	
-com.logicpartners.labelControl.generatezpl = function(designer) {
-	var self = this;
-	this.designer = designer;
-	this.workspace = $("<div></div>").addClass("designerLabelControl").attr("title", "Label Size").css({ float : "right" });
-	
-	this.buttonContainer = $("<div></div>").appendTo(this.workspace);
-	this.button = $("<button>Generate ZPL</button>").css({ "line-height" : "30px" }).appendTo(this.buttonContainer)
-		.on("click", function() {
-			var zpl = self.designer.generateZPL();
-			var dialog = $("<div></div>").prop("title", "Generated ZPL");
-			
-			var output = $("<textarea></textarea>").css({ "white-space": "nowrap", resize: "none", width: "100%", height: "100%" }).val(zpl.data + zpl.zpl).appendTo(dialog);
-			
-			var Toolbar = toolbar;
-			dialog.dialog({
-				modal : true,
-				width : 470,
-				height : 400
-			});
-			
-			output.select();
-		});
-		
-	this.update = function() {
-		this.widthController.val(this.designer.labelWidth / this.designer.dpi);
-		this.heightController.val(this.designer.labelHeight / this.designer.dpi);
-	}
+    com.logicpartners.labelControl = {};
+
+com.logicpartners.labelControl.generatezpl = function (designer) {
+    var self = this;
+    this.designer = designer;
+    this.workspace = $("<div></div>").addClass("designerLabelControl").attr("title", "Label Size").css({float: "right"});
+
+    this.buttonContainer = $("<div></div>").appendTo(this.workspace);
+    /*
+    this.button = $("<button>View ZPL</button>").css({"line-height": "30px"}).appendTo(this.buttonContainer)
+        .on("click", function () {
+            var zpl = self.designer.generateZPL();
+            var dialog = $("<div></div>").prop("title", "Generated ZPL");
+
+            var output = $("<textarea></textarea>").css({
+                "white-space": "nowrap",
+                resize: "none",
+                width: "100%",
+                height: "100%"
+            }).val(zpl.data + zpl.zpl).appendTo(dialog);
+
+            var Toolbar = toolbar;
+            dialog.dialog({
+                modal: true,
+                width: 470,
+                height: 400
+            });
+
+            output.select();
+        });
+
+    this.button = $("<button>Export</button>").css({"line-height": "30px"}).appendTo(this.buttonContainer)
+        .on("click", function () {
+            var zpl = self.designer.exportMetaData();
+            var dialog = $("<div></div>").prop("title", "Exported JSON with metadata");
+
+            var output = $("<textarea></textarea>").css({
+                "white-space": "nowrap",
+                resize: "none",
+                width: "100%",
+                height: "100%"
+            }).val(zpl.json).appendTo(dialog);
+
+            var Toolbar = toolbar;
+            dialog.dialog({
+                modal: true,
+                width: 470,
+                height: 400
+            });
+
+            output.select();
+        });
+
+    this.button = $("<button>Import</button>").css({"line-height": "30px"}).appendTo(this.buttonContainer)
+        .on("click", function () {
+
+            var jsonInput = prompt("Your meta data input");
+            if (jsonInput != null) {
+                var bufferDataArray = JSON.parse(jsonInput);
+
+                bufferDataArray.forEach(function (element) {
+
+                    var canvasRef = document.getElementById('labelDesigner');
+
+                    if (document.createEvent) {
+
+                        var controlObject = null;
+                        if (element.type === 'Textbox') {
+
+                            var tools = com.logicpartners.designerTools;
+                            tools.text();
+
+                            controlObject = {control: tools.text, object: tools.object};
+                        }
+
+                        if (element.type === 'Rectangle') {
+
+                            var tools = com.logicpartners.designerTools;
+                            tools.rectangle();
+
+                            controlObject = {control: tools.text, object: tools.object};
+                        }
+
+                        if (element.type === 'Barcode') {
+
+                            var tools = com.logicpartners.designerTools;
+                            tools.barcode();
+
+                            controlObject = {control: tools.text, object: tools.object};
+                        }
+
+                        var event = new CustomEvent('importElement', {'detail': {element: element, control: controlObject}});
+
+                        canvasRef.dispatchEvent(event);
+                    }
+
+                    canvasRef.click();
+                })
+            }
+        });
+*/
+    this.update = function () {
+        this.widthController.val(this.designer.labelWidth / this.designer.dpi);
+        this.heightController.val(this.designer.labelHeight / this.designer.dpi);
+    }
 }
+
 if (!com)
 	var com = {};
 if (!com.logicpartners)
@@ -189,19 +266,44 @@ com.logicpartners.designerTools.barcode = function() {
 	var self = this;
 	this.counter = 1;
 	this.button = $("<div></div>").addClass("designerToolbarBarcode designerToolbarButton").attr("title", "Barcode").append($("<div></div>"));
-	this.object = function(x, y, width, height) {
+	this.object = function(x, y, width, height, fromObject) {
 		var width = 100;
 		var canvasHolder = $("<canvas></canvas>").prop("width", "100").prop("height", "1");
 		this.name = "Barcode " + self.counter++;
 		this.text = "BARCODE";
-		this.x = x;
+        this.type = 'Barcode';
+        this.x = x;
 		this.y = y;
-		//this.width = width;
+		// this.width = width; // NOT APPLIED
 		this.height = height;
+
+        if (fromObject) {
+            this.name = fromObject.name;
+            this.text = fromObject.text;
+            this.type = fromObject.type;
+            this.x = fromObject.x;
+            this.y = fromObject.y;
+            // this.width = fromObject.width;
+            this.height = fromObject.height;
+        }
+
+        this.readonly = ["type"];
 		
 		this.getZPLData = function() {
-			return "";
+            return "";
 		}
+
+        this.getZPLMetaData = function () {
+            return {
+                name: this.name,
+                text: this.text,
+                type: this.type,
+                x: this.x,
+                y: this.y,
+                // width: this.width,
+                height: this.height
+            };
+        }
 
 		this.toZPL = function(labelx, labely, labelwidth, labelheight) {
 			return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^BY1^B3N,N," + this.height + "N,N^FD" + this.text + "^FS";
@@ -258,6 +360,7 @@ com.logicpartners.designerTools.barcode = function() {
 		}
 	}
 };
+
 if (!com)
 	var com = {};
 if (!com.logicpartners)
@@ -514,711 +617,765 @@ com.logicpartners.designerTools.image = function() {
 
 
 if (!com)
-	var com = {};
+    var com = {};
 if (!com.logicpartners)
-	com.logicpartners = {};
+    com.logicpartners = {};
 if (!com.logicpartners.designerTools)
-	com.logicpartners.designerTools = {};
-	
-com.logicpartners.designerTools.rectangle = function() {
-	var self = this;
-	this.counter = 1;
-	this.button = $("<div></div>").addClass("designerToolbarRectangle designerToolbarButton").attr("title", "Rectangle").append($("<div></div>"));
-	this.object =  function(x, y, width, height) {
-		this.name = "Rectangle " + self.counter++;
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		
-		this.getZPLData = function() {
-			return "";
-		}
+    com.logicpartners.designerTools = {};
 
-		this.toZPL = function(labelx, labely, labelwidth, labelheight) {
-			if (this.width > this.height) {
-				return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^GB" + this.width + ",0," + this.height + "^FS";
-			}
-			
-			return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^GB" + "0," + this.height + "," + this.width + "^FS";
-		}
-		
-		this.draw = function(context) {
-			context.fillRect(this.x, this.y, this.width, this.height);
-		}
-		
-		this.setWidth = function(width) {
-			this.width = parseInt(width);
-		}
-		
-		this.getWidth = function() {
-			return this.width;
-		}
-		
-		this.setHeight = function(height) {
-			this.height = height;
-		}
-		
-		this.getHeight = function() {
-			return this.height;
-		}
+com.logicpartners.designerTools.rectangle = function () {
+    var self = this;
+    this.counter = 1;
+    this.button = $("<div></div>").addClass("designerToolbarRectangle designerToolbarButton").attr("title", "Rectangle").append($("<div></div>"));
+    this.object = function (x, y, width, height, fromObject) {
+        this.name = "Rectangle " + self.counter++;
+        this.type = 'Rectangle';
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
 
-		this.setHandle = function(coords) {
-			this.handle = this.resizeZone(coords);
-		}
+        if (fromObject) {
+            this.name = fromObject.name;
+            this.type = fromObject.type;
+            this.x = fromObject.x;
+            this.y = fromObject.y;
+            this.width = fromObject.width;
+            this.height = fromObject.height;
+        }
 
-		this.getHandle = function() {
-			return this.handle;
-		}
+        this.readonly = ["type"];
 
-		this.drawActive = function(context) {
-			context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height) - 1, [2, 2]);
-		}
+        this.getZPLData = function () {
+            return "";
+        }
 
-		this.hitTest = function(coords) {
-			return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(this.width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height));
-		}
-	}
+        this.getZPLMetaData = function () {
+            return {
+                name: this.name,
+                type: this.type,
+                x: this.x,
+                y: this.y,
+                width: this.width,
+                height: this.height
+            };
+        }
+
+        this.toZPL = function (labelx, labely, labelwidth, labelheight) {
+            if (this.width > this.height) {
+                return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^GB" + this.width + ",0," + this.height + "^FS";
+            }
+
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^GB" + "0," + this.height + "," + this.width + "^FS";
+        }
+
+        this.draw = function (context) {
+            context.fillRect(this.x, this.y, this.width, this.height);
+        }
+
+        this.setWidth = function (width) {
+            this.width = parseInt(width);
+        }
+
+        this.getWidth = function () {
+            return this.width;
+        }
+
+        this.setHeight = function (height) {
+            this.height = height;
+        }
+
+        this.getHeight = function () {
+            return this.height;
+        }
+
+        this.setHandle = function (coords) {
+            this.handle = this.resizeZone(coords);
+        }
+
+        this.getHandle = function () {
+            return this.handle;
+        }
+
+        this.drawActive = function (context) {
+            context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height) - 1, [2, 2]);
+        }
+
+        this.hitTest = function (coords) {
+            return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(this.width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height));
+        }
+    }
 }
+
 if (!com)
-	var com = {};
+    var com = {};
 if (!com.logicpartners)
-	com.logicpartners = {};
+    com.logicpartners = {};
 if (!com.logicpartners.designerTools)
-	com.logicpartners.designerTools = {};
-	
-com.logicpartners.designerTools.text = function() {
-	var self = this;
-	this.counter = 1;
-	this.button = $("<div></div>").addClass("designerToolbarText designerToolbarButton").attr("title", "Text").append($("<div></div>"));
-	this.object =  function(x, y, width, height) {
-		this.name = "Textbox " + self.counter++;
-		this.text = this.name;
-		this.x = x;
-		this.y = y;
-		this.fontSize = 36;
-		this.fontType = "Arial";
-		this.width = 100;
-		this.height = 0;
-		
-		this.readonly = [ "width", "height" ];
-		
-		this.getFontHeight = function() {
-			var textMeasure = $("<div></div>").css({
-				"font-size" : this.fontSize + "px",
-				"font-family" : this.fontType,
-				"opacity" : 0,
-			}).text("M").appendTo($("body"));
-			
-			var height = textMeasure.outerHeight();
-			textMeasure.remove();
-			return height;
-		}
-		
-		this.getZPLData = function() {
-			return "";
-		}
+    com.logicpartners.designerTools = {};
 
-		this.toZPL = function(labelx, labely, labelwidth, labelheight) {
-			// return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^FD" + this.text + "^FS";
-			return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + "^FD" + this.text + "^FS";
-		}
-		
-		this.draw = function(context) {
-			context.font = this.fontSize + "px " + this.fontType;
-			var oColor = context.fillStyle;
-			context.fillStyle = "white";
-			this.height = this.getFontHeight();
-			var measuredText = context.measureText(this.text);
-			this.width = measuredText.width;
-			context.globalCompositeOperation = "difference";
-			context.fillText(this.text, this.x, this.y + (this.height * 0.75));
-			context.globalCompositeOperation = "source-over";
-			context.fillStyle = oColor;
-			//context.fillRect(this.x, this.y, this.width, this.height);
-		}
-		
-		this.setWidth = function(width) {
-			//this.width = width;
-		}
-		
-		this.getWidth = function() {
-			return this.width;
-		}
-		
-		this.setHeight = function(height) {
-			//height = height;
-		}
-		
-		this.getHeight = function() {
-			return this.height * 0.75;
-		}
+com.logicpartners.designerTools.text = function () {
+    var self = this;
+    this.counter = 1;
+    this.button = $("<div></div>").addClass("designerToolbarText designerToolbarButton").attr("title", "Text").append($("<div></div>"));
+    this.object = function (x, y, width, height, fromObject) {
+        this.name = "Textbox " + self.counter++;
+        this.type = 'Textbox';
+        this.text = this.name;
+        this.x = x;
+        this.y = y;
+        this.fontSize = 36;
+        this.fontType = "Arial";
+        this.width = 100;
+        this.height = 0;
 
-		this.setHandle = function(coords) {
-			this.handle = this.resizeZone(coords);
-		}
+        if (fromObject) {
+            this.name = fromObject.name;
+            this.type = fromObject.type;
+            this.text = fromObject.text;
+            this.x = fromObject.x;
+            this.y = fromObject.y;
+            this.fontSize = fromObject.fontSize;
+            this.fontType = fromObject.fontType;
+            this.width = fromObject.width;
+            this.height = fromObject.height;
+        }
 
-		this.getHandle = function() {
-			return this.handle;
-		}
 
-		this.drawActive = function(context) {
-			context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.9) - 1, [2, 2]);
-		}
+        this.readonly = ["width", "height", "type"];
 
-		this.hitTest = function(coords) {
-			return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(this.width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height) * 0.75);
-		}
-	}
+        this.getFontHeight = function () {
+            var textMeasure = $("<div></div>").css({
+                "font-size": this.fontSize + "px",
+                "font-family": this.fontType,
+                "opacity": 0,
+            }).text("M").appendTo($("body"));
+
+            var height = textMeasure.outerHeight();
+            textMeasure.remove();
+            return height;
+        }
+
+        this.getZPLData = function () {
+            return "";
+        }
+
+        this.getZPLMetaData = function () {
+            return {
+                name: this.name,
+                text: this.text,
+                type: this.type,
+                x: this.x,
+                y: this.y,
+                fontSize: this.fontSize,
+                fontType: this.fontType,
+                width: this.width,
+                height: this.height
+            };
+        }
+
+        this.toZPL = function (labelx, labely, labelwidth, labelheight) {
+            // return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^FD" + this.text + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + "^FD" + this.text + "^FS";
+        }
+
+        this.draw = function (context) {
+            context.font = this.fontSize + "px " + this.fontType;
+            var oColor = context.fillStyle;
+            context.fillStyle = "white";
+            this.height = this.getFontHeight();
+            var measuredText = context.measureText(this.text);
+            this.width = measuredText.width;
+            context.globalCompositeOperation = "difference";
+            context.fillText(this.text, this.x, this.y + (this.height * 0.75));
+            context.globalCompositeOperation = "source-over";
+            context.fillStyle = oColor;
+            //context.fillRect(this.x, this.y, this.width, this.height);
+        }
+
+        this.setWidth = function (width) {
+            //this.width = width;
+        }
+
+        this.getWidth = function () {
+            return this.width;
+        }
+
+        this.setHeight = function (height) {
+            //height = height;
+        }
+
+        this.getHeight = function () {
+            return this.height * 0.75;
+        }
+
+        this.setHandle = function (coords) {
+            this.handle = this.resizeZone(coords);
+        }
+
+        this.getHandle = function () {
+            return this.handle;
+        }
+
+        this.drawActive = function (context) {
+            context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.9) - 1, [2, 2]);
+        }
+
+        this.hitTest = function (coords) {
+            return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(this.width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height) * 0.75);
+        }
+    }
 }
+
 if (!com)
-	var com = {};
+    var com = {};
 if (!com.logicpartners)
-	com.logicpartners = {};
-	
+    com.logicpartners = {};
+
 // http://stackoverflow.com/a/5932203/697477
-HTMLCanvasElement.prototype.RelativeMouse = function(event) {
-	var totalOffsetX = 0;
-	var totalOffsetY = 0;
-	var canvasX = 0;
-	var canvasY = 0;
-	var currentElement = this;
+HTMLCanvasElement.prototype.RelativeMouse = function (event) {
+    var totalOffsetX = 0;
+    var totalOffsetY = 0;
+    var canvasX = 0;
+    var canvasY = 0;
+    var currentElement = this;
 
-	do {
-		totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
-		totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
-	}
-	while (currentElement = currentElement.offsetParent)
+    do {
+        totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
+        totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
+    }
+    while (currentElement = currentElement.offsetParent)
 
-	canvasX = event.clientX - totalOffsetX;
-	canvasY = event.clientY - totalOffsetY;
+    canvasX = event.clientX - totalOffsetX;
+    canvasY = event.clientY - totalOffsetY;
 
-	return {x: canvasX, y: canvasY}
+    return {x: canvasX, y: canvasY}
 }
 
 // From http://stackoverflow.com/a/4577326/697477
 var CP = window.CanvasRenderingContext2D && CanvasRenderingContext2D.prototype;
 if (CP && CP.lineTo) {
-	CP.dashedLine = function(x, y, x2, y2, dashArray) {
-		if (!dashArray)
-			dashArray = [10, 5];
-		if (dashLength == 0)
-			dashLength = 0.001; // Hack for Safari
-		var dashCount = dashArray.length;
-		this.moveTo(x, y);
-		var dx = (x2 - x), dy = (y2 - y);
-		var slope = dx ? dy / dx : 1e15;
-		var distRemaining = Math.sqrt(dx * dx + dy * dy);
-		var dashIndex = 0, draw = true;
-		while (distRemaining >= 0.1) {
-			var dashLength = dashArray[dashIndex++ % dashCount];
-			if (dashLength > distRemaining)
-				dashLength = distRemaining;
-			var xStep = Math.sqrt(dashLength * dashLength / (1 + slope * slope));
-			if (dx < 0)
-				xStep = -xStep;
-			x += xStep
-			y += slope * xStep;
-			this[draw ? 'lineTo' : 'moveTo'](x, y);
-			distRemaining -= dashLength;
-			draw = !draw;
-		}
+    CP.dashedLine = function (x, y, x2, y2, dashArray) {
+        if (!dashArray)
+            dashArray = [10, 5];
+        if (dashLength == 0)
+            dashLength = 0.001; // Hack for Safari
+        var dashCount = dashArray.length;
+        this.moveTo(x, y);
+        var dx = (x2 - x), dy = (y2 - y);
+        var slope = dx ? dy / dx : 1e15;
+        var distRemaining = Math.sqrt(dx * dx + dy * dy);
+        var dashIndex = 0, draw = true;
+        while (distRemaining >= 0.1) {
+            var dashLength = dashArray[dashIndex++ % dashCount];
+            if (dashLength > distRemaining)
+                dashLength = distRemaining;
+            var xStep = Math.sqrt(dashLength * dashLength / (1 + slope * slope));
+            if (dx < 0)
+                xStep = -xStep;
+            x += xStep
+            y += slope * xStep;
+            this[draw ? 'lineTo' : 'moveTo'](x, y);
+            distRemaining -= dashLength;
+            draw = !draw;
+        }
 
-		// Ensure that the last segment is closed for proper stroking
-		this.moveTo(0, 0);
-	}
+        // Ensure that the last segment is closed for proper stroking
+        this.moveTo(0, 0);
+    }
 
-	CP.dashedStroke = function(x, y, x2, y2, dashArray) {
-		this.beginPath();
-		this.dashedLine(x, y, x2, y, dashArray);
-		this.dashedLine(x2, y, x2, y2, dashArray);
-		this.dashedLine(x2, y2, x, y2, dashArray);
-		this.dashedLine(x, y, x, y2, dashArray);
-		this.stroke();
-	}
+    CP.dashedStroke = function (x, y, x2, y2, dashArray) {
+        this.beginPath();
+        this.dashedLine(x, y, x2, y, dashArray);
+        this.dashedLine(x2, y, x2, y2, dashArray);
+        this.dashedLine(x2, y2, x, y2, dashArray);
+        this.dashedLine(x, y, x, y2, dashArray);
+        this.stroke();
+    }
 }
 
-com.logicpartners.labelDesigner = function(canvasid, labelWidth, labelHeight) {
-	this.canvas = document.getElementById(canvasid);
-	this.canvasElement = $(this.canvas);
+com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
+    this.canvas = document.getElementById(canvasid);
+    this.canvasElement = $(this.canvas);
 
-	this.labelWidth = labelWidth * this.dpi;
-	this.labelHeight = labelHeight * this.dpi;
-	this.propertyInspector = new com.logicpartners.propertyInspector(this, this.canvas);
-	this.toolbar = new com.logicpartners.toolsWindow(this, this.canvas);
-	this.labelInspector = new com.logicpartners.labelInspector(this, this.canvas);
-	this.dpi = 200;
-	this.batchNumber = false;
-	this.labelNumber = false;
+    this.labelWidth = labelWidth * this.dpi;
+    this.labelHeight = labelHeight * this.dpi;
+    this.propertyInspector = new com.logicpartners.propertyInspector(this, this.canvas);
+    this.toolbar = new com.logicpartners.toolsWindow(this, this.canvas);
+    this.labelInspector = new com.logicpartners.labelInspector(this, this.canvas);
+    this.dpi = 200;
+    this.batchNumber = false;
+    this.labelNumber = false;
 
-	this.drawingContext = this.canvas.getContext("2d");
-	this.elements = [];
-	this.currentLayer = 0;
-	this.activeElement = null;
-	this.activeTool = null;
-	
-	this.labelX = this.canvas.width / 2 - this.labelWidth / 2;
-	this.labelY = 5;
+    this.drawingContext = this.canvas.getContext("2d");
+    this.elements = [];
+    this.currentLayer = 0;
+    this.activeElement = null;
+    this.activeTool = null;
 
-	this.newObject = null;
-	this.dragStartPosition = {x: 0, y: 0};
-	this.dragStartTime = 0;
-	this.dragLastPosition = {x: 0, y: 0};
-	this.dragElementOffset = {x: 0, y: 0};
-	this.dragAction = 0;
-	this.dragging = false;
+    this.labelX = this.canvas.width / 2 - this.labelWidth / 2;
+    this.labelY = 5;
 
-	var self = this;
-	
-	this.updateLabelSize = function(width, height) {
-		var xchange = (width * this.dpi + 10) - parseInt(this.canvasElement.prop("width"));
-		this.labelWidth = width * this.dpi;
-		this.labelHeight = height * this.dpi;
-		this.canvasElement.prop("width", this.labelWidth + 10).prop("height", this.labelHeight + 10);
-		this.labelX = this.canvas.width / 2 - this.labelWidth / 2;
-		this.labelY = 5;
-		console.log(xchange);
-		this.propertyInspector.updatePosition(xchange);
-		this.labelInspector.updatePosition(xchange);
-		this.updateCanvas();
-	}
+    this.newObject = null;
+    this.dragStartPosition = {x: 0, y: 0};
+    this.dragStartTime = 0;
+    this.dragLastPosition = {x: 0, y: 0};
+    this.dragElementOffset = {x: 0, y: 0};
+    this.dragAction = 0;
+    this.dragging = false;
 
-	this.canvasElement.on("click", function() {
-		self.setActiveElement();
-	})
-			.on("mousedown", function() {
-				self.dragStartPosition = self.canvas.RelativeMouse(event);
-				self.dragLastPosition = self.dragStartPosition;
-				
-				if (self.newObject) {
-					// Create new object.
-					self.elements[self.currentLayer++] = new self.newObject(self.dragStartPosition.x, self.dragStartPosition.y, 1, 1);
-					self.dragAction = 8;
-					self.activeElement = self.elements[self.currentLayer - 1];
-					self.newObjectController.button.removeClass("designerToolbarButtonActive");
-					self.newObject = null;
-					self.newObjectController = null;
-				}
-				else {
-					self.dragAction = 0;
+    var self = this;
 
-					self.setActiveElement();
+    this.updateLabelSize = function (width, height) {
+        var xchange = (width * this.dpi + 10) - parseInt(this.canvasElement.prop("width"));
+        this.labelWidth = width * this.dpi;
+        this.labelHeight = height * this.dpi;
+        this.canvasElement.prop("width", this.labelWidth + 10).prop("height", this.labelHeight + 10);
+        this.labelX = this.canvas.width / 2 - this.labelWidth / 2;
+        this.labelY = 5;
+        console.log(xchange);
+        this.propertyInspector.updatePosition(xchange);
+        this.labelInspector.updatePosition(xchange);
+        this.updateCanvas();
+    }
 
-					if (self.activeElement) {
-						self.dragElementOffset = {
-							x: self.activeElement.x - self.dragStartPosition.x,
-							y: self.activeElement.y - self.dragStartPosition.y
-						};
+    var elem = this.canvasElement.context;
 
-						self.setActiveHandle(self.dragStartPosition);
-					}
-				}
-				self.dragging = true;
-			})
-			.on("mouseup", function() {
-				self.dragging = false;
-			})
-			.on("mouseout", function() {
-				self.dragging = false;
-			})
-			.on("mousemove", function() {
-				if (self.dragging && self.activeElement) {
-					var coords = self.canvas.RelativeMouse(event);
-					//console.log(self.dragAction);
-					switch (self.dragAction) {
-						case 0:
-							self.move(coords.x + self.dragElementOffset.x, coords.y + self.dragElementOffset.y);
-							break;
-						default:
-							self.resize(coords.x - self.dragLastPosition.x, coords.y - self.dragLastPosition.y, self.dragAction);
-							break;
-					}
-					self.updateCanvas();
-					self.dragLastPosition = coords;
-				}
-				else if (self.newObject != null) {
-					self.canvasElement.css({ cursor: "crosshair" });
-				}
-				else if (self.activeElement) {
-					var coords = self.canvas.RelativeMouse(event);
-					// If cursor is within range of edge, show resize handles
-					var location = self.getHandle(coords);
-					var style = "default";
-					switch (location) {
-						case 0:
-							style = "default";
-							break;
-						case 1:
-							style = "nw-resize";
-							break;
-						case 2:
-							style = "n-resize";
-							break;
-						case 3:
-							style = "ne-resize";
-							break;
-						case 4:
-							style = "w-resize";
-							break;
-						case 5:
-							style = "e-resize";
-							break;
-						case 6:
-							style = "sw-resize";
-							break;
-						case 7:
-							style = "s-resize";
-							break;
-						case 8:
-							style = "se-resize";
-							break;
-					}
-					self.canvasElement.css({cursor: style});
-				}
-			})
-			.on("keydown", function(event) {
-				event = event || window.event;
+    this.canvasElement
+        .on("click", function () {
+            self.setActiveElement();
+        })
+        .on("importElement", function (e) {
 
-				var handled = false;
-				switch (event.keyCode) {
-					case 37: // Left arrow
-						if (self.activeElement)
-							self.activeElement.x -= 1;
-						handled = true;
-						break;
-					case 38: // Up arrow
-						if (self.activeElement)
-							self.activeElement.y -= 1;
-						handled = true;
-						break;
-					case 39: // Right arrow
-						if (self.activeElement)
-							self.activeElement.x += 1;
-						handled = true;
-						break;
-					case 40: // Down arrow
-						if (self.activeElement)
-							self.activeElement.y += 1;
-						handled = true;
-						break;
-					case 46:
-						if (self.activeElement) {
-							self.deleteActiveElement();
-							handled = true;
-						}
-						break;
-					case 80:
-						if (event.ctrlKey) {
-							self.generateZPL();
-							handled = true;
-						}
-						break;
-				}
+            self.dragStartPosition = self.canvas.RelativeMouse(event);
+            self.dragLastPosition = self.dragStartPosition;
 
-				if (handled) {
-					self.updateCanvas();
-					event.preventDefault();
-					event.stopPropagation();
-				}
-			});
-			
-	this.addObject = function(object) {
-		this.elements[this.currentLayer++] = object;
-		this.activeElement = this.elements[this.currentLayer - 1];
-		this.updateCanvas();
-	}
-			
-	this.deleteActiveElement = function() {
-		if (this.activeElement) {
-			for (var i = 0; i < this.currentLayer; i++) {
-				if (this.elements[i] && this.elements[i] == this.activeElement) {
-					this.elements[i] = null;
-					this.activeElement = null;
-				}
-			}
-		}
-	}
+            var detailData = e.originalEvent.detail
+            var elementObject = detailData.element;
+            self.setNewObject(detailData.control);
 
-	this.setActiveElement = function() {
-		var coordinates = this.canvas.RelativeMouse(event);
-		if (!this.activeElement || this.getHandle(coordinates) == 0) {
-			this.activeElement = null;
-			for (var i = this.currentLayer - 1; i >= 0; i--) {
-				if (this.elements[i] && this.elements[i].hitTest(coordinates)) {
-					this.activeElement = this.elements[i];
-					break;
-				}
-			}
-		}
+            if (self.newObject) {
+                // Create new object.
+                self.elements[self.currentLayer++] = new self.newObject(null, null, null, null, elementObject);
+                self.dragAction = 8;
+                self.activeElement = self.elements[self.currentLayer - 1];
+                self.newObject = null;
+                self.newObjectController = null;
+            }
+        })
+        .on("mousedown", function (element) {
+            self.dragStartPosition = self.canvas.RelativeMouse(event);
+            self.dragLastPosition = self.dragStartPosition;
 
-		this.updateCanvas();
-	}
+            if (self.newObject) {
+                // Create new object.
+                self.elements[self.currentLayer++] = new self.newObject(self.dragStartPosition.x, self.dragStartPosition.y, 1, 1);
+                self.dragAction = 8;
+                self.activeElement = self.elements[self.currentLayer - 1];
+                self.newObjectController.button.removeClass("designerToolbarButtonActive");
+                self.newObject = null;
+                self.newObjectController = null;
+            } else {
+                self.dragAction = 0;
 
-	/**
-	 * Parameters: Coordinates on canvas.
-	 * 
-	 * Returns: 0 if not on resize zone.
-	 *          1 top left     2 top     3 top right
-	 *          4 left                   5 right
-	 *          6 bottom left  7 bottom  8 bottom right
-	 */
-	this.setActiveHandle = function(coords) {
-		this.dragAction = this.getHandle(coords);
-	}
+                self.setActiveElement();
 
-	this.getHandle = function(coords) {
-		var result = 0;
+                if (self.activeElement) {
+                    self.dragElementOffset = {
+                        x: self.activeElement.x - self.dragStartPosition.x,
+                        y: self.activeElement.y - self.dragStartPosition.y
+                    };
 
-		var leftEdge = coords.x > this.activeElement.x - 5 && coords.x < this.activeElement.x + 5;
-		var rightEdge = coords.x > this.activeElement.x + this.activeElement.getWidth() - 5 && coords.x < this.activeElement.x + this.activeElement.getWidth() + 5;
-		var topEdge = coords.y > this.activeElement.y - 5 && coords.y < this.activeElement.y + 5;
-		var bottomEdge = coords.y > this.activeElement.y + this.activeElement.getHeight() - 5 && coords.y < this.activeElement.y + this.activeElement.getHeight() + 5;
+                    self.setActiveHandle(self.dragStartPosition);
+                }
+            }
+            self.dragging = true;
+        })
+        .on("mouseup", function () {
+            self.dragging = false;
+        })
+        .on("mouseout", function () {
+            self.dragging = false;
+        })
+        .on("mousemove", function () {
+            if (self.dragging && self.activeElement) {
+                var coords = self.canvas.RelativeMouse(event);
+                //console.log(self.dragAction);
+                switch (self.dragAction) {
+                    case 0:
+                        self.move(coords.x + self.dragElementOffset.x, coords.y + self.dragElementOffset.y);
+                        break;
+                    default:
+                        self.resize(coords.x - self.dragLastPosition.x, coords.y - self.dragLastPosition.y, self.dragAction);
+                        break;
+                }
+                self.updateCanvas();
+                self.dragLastPosition = coords;
+            } else if (self.newObject != null) {
+                self.canvasElement.css({cursor: "crosshair"});
+            } else if (self.activeElement) {
+                var coords = self.canvas.RelativeMouse(event);
+                // If cursor is within range of edge, show resize handles
+                var location = self.getHandle(coords);
+                var style = "default";
+                switch (location) {
+                    case 0:
+                        style = "default";
+                        break;
+                    case 1:
+                        style = "nw-resize";
+                        break;
+                    case 2:
+                        style = "n-resize";
+                        break;
+                    case 3:
+                        style = "ne-resize";
+                        break;
+                    case 4:
+                        style = "w-resize";
+                        break;
+                    case 5:
+                        style = "e-resize";
+                        break;
+                    case 6:
+                        style = "sw-resize";
+                        break;
+                    case 7:
+                        style = "s-resize";
+                        break;
+                    case 8:
+                        style = "se-resize";
+                        break;
+                }
+                self.canvasElement.css({cursor: style});
+            }
+        })
+        .on("keydown", function (event) {
+            event = event || window.event;
 
-		var verticalHit = coords.y > this.activeElement.y && coords.y < this.activeElement.y + this.activeElement.getHeight();
-		var horizontalHit = coords.x > this.activeElement.x && coords.x < this.activeElement.x + this.activeElement.getWidth();
+            var handled = false;
+            switch (event.keyCode) {
+                case 37: // Left arrow
+                    if (self.activeElement)
+                        self.activeElement.x -= 1;
+                    handled = true;
+                    break;
+                case 38: // Up arrow
+                    if (self.activeElement)
+                        self.activeElement.y -= 1;
+                    handled = true;
+                    break;
+                case 39: // Right arrow
+                    if (self.activeElement)
+                        self.activeElement.x += 1;
+                    handled = true;
+                    break;
+                case 40: // Down arrow
+                    if (self.activeElement)
+                        self.activeElement.y += 1;
+                    handled = true;
+                    break;
+                case 46:
+                    if (self.activeElement) {
+                        self.deleteActiveElement();
+                        handled = true;
+                    }
+                    break;
+                case 80:
+                    if (event.ctrlKey) {
+                        self.generateZPL();
+                        handled = true;
+                    }
+                    break;
+            }
 
-		if (leftEdge && topEdge)
-			result = 1;
-		else if (rightEdge && topEdge)
-			result = 3;
-		else if (leftEdge && bottomEdge)
-			result = 6;
-		else if (rightEdge && bottomEdge)
-			result = 8;
-		else if (topEdge && horizontalHit)
-			result = 2;
-		else if (leftEdge && verticalHit)
-			result = 4;
-		else if (rightEdge && verticalHit)
-			result = 5;
-		else if (bottomEdge && horizontalHit)
-			result = 7;
+            if (handled) {
+                self.updateCanvas();
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        });
 
-		return result;
-	}
+    this.addObject = function (object) {
+        this.elements[this.currentLayer++] = object;
+        this.activeElement = this.elements[this.currentLayer - 1];
+        this.updateCanvas();
+    }
 
-	this.move = function(x, y) {
-		this.activeElement.x = x;
-		this.activeElement.y = y;
-	}
+    this.deleteActiveElement = function () {
+        if (this.activeElement) {
+            for (var i = 0; i < this.currentLayer; i++) {
+                if (this.elements[i] && this.elements[i] == this.activeElement) {
+                    this.elements[i] = null;
+                    this.activeElement = null;
+                }
+            }
+        }
+    }
 
-	this.resize = function(xchange, ychange) {
-		switch (this.dragAction) {
-			case 1: // Top Left
-				this.activeElement.x += xchange;
-				this.activeElement.y += ychange;
-				this.activeElement.setWidth(this.activeElement.getWidth() - xchange);
-				this.activeElement.setHeight(this.activeElement.getHeight() - ychange);
-				break;
-			case 2: // Top
-				this.activeElement.y += ychange;
-				this.activeElement.setHeight(this.activeElement.getHeight() - ychange);
-				break;
-			case 3: // Top Right
-				this.activeElement.setWidth(this.activeElement.getWidth() + xchange);
-				this.activeElement.y += ychange;
-				this.activeElement.setHeight(this.activeElement.getHeight() - ychange);
-				break;
-			case 4: // Left
-				this.activeElement.x += xchange;
-				this.activeElement.setWidth(this.activeElement.getWidth() - xchange);
-				break;
-			case 5: // Right
-				this.activeElement.setWidth(this.activeElement.getWidth() + xchange);
-				break;
-			case 6: // Bottom Left
-				this.activeElement.x += xchange;
-				this.activeElement.setWidth(this.activeElement.getWidth() - xchange);
-				this.activeElement.setHeight(this.activeElement.getHeight() + ychange);
-				break;
-			case 7: // Bottom
-				this.activeElement.setHeight(this.activeElement.getHeight() + ychange);
-				break;
-			case 8: // Bottom Right
-				this.activeElement.setWidth(this.activeElement.getWidth() + xchange);
-				this.activeElement.setHeight(this.activeElement.getHeight() + ychange);
-				break;
-		}
+    this.setActiveElement = function () {
+        var coordinates = this.canvas.RelativeMouse(event);
+        if (!this.activeElement || this.getHandle(coordinates) == 0) {
+            this.activeElement = null;
+            for (var i = this.currentLayer - 1; i >= 0; i--) {
+                if (this.elements[i] && this.elements[i].hitTest(coordinates)) {
+                    this.activeElement = this.elements[i];
+                    break;
+                }
+            }
+        }
 
-		if (this.activeElement.getWidth() == 0) {
-			this.activeElement.setWidth(-1);
-			this.activeElement.x += 1;
-		}
+        this.updateCanvas();
+    }
 
-		if (this.activeElement.getHeight() == 0) {
-			this.activeElement.setHeight(-1);
-			this.activeElement.y += 1;
-		}
+    /**
+     * Parameters: Coordinates on canvas.
+     *
+     * Returns: 0 if not on resize zone.
+     *          1 top left     2 top     3 top right
+     *          4 left                   5 right
+     *          6 bottom left  7 bottom  8 bottom right
+     */
+    this.setActiveHandle = function (coords) {
+        this.dragAction = this.getHandle(coords);
+    }
 
-		if (this.activeElement.width < 0) {
-			this.activeElement.x = this.activeElement.x + this.activeElement.getWidth();
-			this.activeElement.setWidth(parseInt(this.activeElement.getWidth() * -1));
-			this.swapActionHorizontal();
-		}
+    this.getHandle = function (coords) {
+        var result = 0;
 
-		if (this.activeElement.height < 0) {
-			this.activeElement.y = this.activeElement.y + this.activeElement.getHeight();
-			this.activeElement.setHeight(this.activeElement.getHeight() * -1);
-			this.swapActionVertical();
-		}
-	}
+        var leftEdge = coords.x > this.activeElement.x - 5 && coords.x < this.activeElement.x + 5;
+        var rightEdge = coords.x > this.activeElement.x + this.activeElement.getWidth() - 5 && coords.x < this.activeElement.x + this.activeElement.getWidth() + 5;
+        var topEdge = coords.y > this.activeElement.y - 5 && coords.y < this.activeElement.y + 5;
+        var bottomEdge = coords.y > this.activeElement.y + this.activeElement.getHeight() - 5 && coords.y < this.activeElement.y + this.activeElement.getHeight() + 5;
 
-	this.swapActionVertical = function() {
-		switch (this.dragAction) {
-			case 1:
-				this.dragAction = 6;
-				break;
-			case 2:
-				this.dragAction = 7;
-				break;
-			case 3:
-				this.dragAction = 8;
-				break;
-			case 6:
-				this.dragAction = 1;
-				break;
-			case 7:
-				this.dragAction = 2;
-				break;
-			case 8:
-				this.dragAction = 3;
-				break;
-		}
-	}
+        var verticalHit = coords.y > this.activeElement.y && coords.y < this.activeElement.y + this.activeElement.getHeight();
+        var horizontalHit = coords.x > this.activeElement.x && coords.x < this.activeElement.x + this.activeElement.getWidth();
 
-	this.swapActionHorizontal = function() {
-		switch (this.dragAction) {
-			case 1:
-				this.dragAction = 3;
-				break;
-			case 3:
-				this.dragAction = 1;
-				break;
-			case 4:
-				this.dragAction = 5;
-				break;
-			case 5:
-				this.dragAction = 4;
-				break;
-			case 6:
-				this.dragAction = 8;
-				break;
-			case 8:
-				this.dragAction = 6;
-				break;
-		}
-	}
+        if (leftEdge && topEdge)
+            result = 1;
+        else if (rightEdge && topEdge)
+            result = 3;
+        else if (leftEdge && bottomEdge)
+            result = 6;
+        else if (rightEdge && bottomEdge)
+            result = 8;
+        else if (topEdge && horizontalHit)
+            result = 2;
+        else if (leftEdge && verticalHit)
+            result = 4;
+        else if (rightEdge && verticalHit)
+            result = 5;
+        else if (bottomEdge && horizontalHit)
+            result = 7;
 
-	this.update = function() {
-		this.propertyInspector.update(this.activeElement);
-	}
+        return result;
+    }
 
-	this.updateCanvas = function() {
-		this.update();
-		
-		//this.drawingContext.globalCompositeOperation = "source-over";
+    this.move = function (x, y) {
+        this.activeElement.x = x;
+        this.activeElement.y = y;
+    }
 
-		this.drawingContext.fillStyle = "#FFFFFF";
-		this.drawingContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
-		
-		//this.drawingContext.fillStyle = "rgba(255, 255, 255, 0)";
-		//this.drawingContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.resize = function (xchange, ychange) {
+        switch (this.dragAction) {
+            case 1: // Top Left
+                this.activeElement.x += xchange;
+                this.activeElement.y += ychange;
+                this.activeElement.setWidth(this.activeElement.getWidth() - xchange);
+                this.activeElement.setHeight(this.activeElement.getHeight() - ychange);
+                break;
+            case 2: // Top
+                this.activeElement.y += ychange;
+                this.activeElement.setHeight(this.activeElement.getHeight() - ychange);
+                break;
+            case 3: // Top Right
+                this.activeElement.setWidth(this.activeElement.getWidth() + xchange);
+                this.activeElement.y += ychange;
+                this.activeElement.setHeight(this.activeElement.getHeight() - ychange);
+                break;
+            case 4: // Left
+                this.activeElement.x += xchange;
+                this.activeElement.setWidth(this.activeElement.getWidth() - xchange);
+                break;
+            case 5: // Right
+                this.activeElement.setWidth(this.activeElement.getWidth() + xchange);
+                break;
+            case 6: // Bottom Left
+                this.activeElement.x += xchange;
+                this.activeElement.setWidth(this.activeElement.getWidth() - xchange);
+                this.activeElement.setHeight(this.activeElement.getHeight() + ychange);
+                break;
+            case 7: // Bottom
+                this.activeElement.setHeight(this.activeElement.getHeight() + ychange);
+                break;
+            case 8: // Bottom Right
+                this.activeElement.setWidth(this.activeElement.getWidth() + xchange);
+                this.activeElement.setHeight(this.activeElement.getHeight() + ychange);
+                break;
+        }
 
-		// Draw the boundary.
-		this.drawingContext.strokeStyle = "#FF0000";
-		this.drawingContext.lineWidth = 2;
-		this.drawingContext.strokeRect(this.labelX, this.labelY, this.labelWidth, this.labelHeight);
+        if (this.activeElement.getWidth() == 0) {
+            this.activeElement.setWidth(-1);
+            this.activeElement.x += 1;
+        }
 
-		this.drawingContext.strokeStyle = "#000000";
-		this.drawingContext.fillStyle = "#000000";
-		
-		//this.drawingContext.globalCompositeOperation = "difference";
+        if (this.activeElement.getHeight() == 0) {
+            this.activeElement.setHeight(-1);
+            this.activeElement.y += 1;
+        }
 
-		for (var i = 0; i < this.currentLayer; i++) {
-			if (this.elements[i]) {
-				this.elements[i].draw(this.drawingContext, this.canvas.width, this.canvas.height);
-			}
-		}
+        if (this.activeElement.width < 0) {
+            this.activeElement.x = this.activeElement.x + this.activeElement.getWidth();
+            this.activeElement.setWidth(parseInt(this.activeElement.getWidth() * -1));
+            this.swapActionHorizontal();
+        }
 
-		this.drawingContext.strokeStyle = "#FF0000";
-		this.drawingContext.lineCap = 'butt';
-		this.drawingContext.lineWidth = 2;
-		if (this.activeElement)
-			this.activeElement.drawActive(this.drawingContext);
-	}
-	
-	this.generateZPL = function() {
-		var data = "^XA\r\n" +
-				   "^LS0\r\n" +
-				   "^LT0\r\n" +
-				   "^LH{{leftOffset}},{{topOffset}}\r\n" +
-				//    "^CFd0,10,18\r\n" +
-				   "^PR12\r\n" +
-				//    "^LRY\r\n" +
-				   "^MD30\r\n";
-				//    "^PW" + this.labelWidth + "\r\n" +
-				//    "^LL" + this.labelHeight + "\r\n" +
-				//    "^PON\r\n";
-	    var bufferData = "";
-		
-		for (var i = 0; i < this.currentLayer; i++) {
-			if (this.elements[i]) {
-				bufferData += this.elements[i].getZPLData();
-				data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth);
-			}
-		}
-		
-		// var batchNumber = document.getElementById("batchNumberControllerId").checked;
-		// var labelNr = document.getElementById("labelNumberControllerId").checked;
+        if (this.activeElement.height < 0) {
+            this.activeElement.y = this.activeElement.y + this.activeElement.getHeight();
+            this.activeElement.setHeight(this.activeElement.getHeight() * -1);
+            this.swapActionVertical();
+        }
+    }
 
-		// if (batchNumber  && labelNr) {
-		// 	data += "\r\n";
-		// 	// data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS\r\n";
-		// 	data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS\r\n";
-		// }
-		
-		// if (batchNumber && !labelNr) {
-		// 	data += "\r\n";
-		// 	data += "^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS\r\n";
-		// }
-		
-		// if (labelNr && !batchNumber) {
-		// 	data += "\r\n";
-		// 	data += "^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS\r\n";
-		// }
-		// debugger
+    this.swapActionVertical = function () {
+        switch (this.dragAction) {
+            case 1:
+                this.dragAction = 6;
+                break;
+            case 2:
+                this.dragAction = 7;
+                break;
+            case 3:
+                this.dragAction = 8;
+                break;
+            case 6:
+                this.dragAction = 1;
+                break;
+            case 7:
+                this.dragAction = 2;
+                break;
+            case 8:
+                this.dragAction = 3;
+                break;
+        }
+    }
 
+    this.swapActionHorizontal = function () {
+        switch (this.dragAction) {
+            case 1:
+                this.dragAction = 3;
+                break;
+            case 3:
+                this.dragAction = 1;
+                break;
+            case 4:
+                this.dragAction = 5;
+                break;
+            case 5:
+                this.dragAction = 4;
+                break;
+            case 6:
+                this.dragAction = 8;
+                break;
+            case 8:
+                this.dragAction = 6;
+                break;
+        }
+    }
 
-		data += "\r\n";
-		data += "{{ batchNumber && labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS' : ''}}\r\n{{ batchNumber && !labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS' : ''}}\r\n{{ labelNr && !batchNumber ? '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS' : ''}}\r\n";
+    this.update = function () {
+        this.propertyInspector.update(this.activeElement);
+    }
 
-		// data += "^PQ1\r\n" +
-		data += "^XZ\r\n";
-				
-		console.log(bufferData + data);
-		return { "data" : bufferData, "zpl" : data };
-	}
-	
-	this.setNewObject = function(controller) {
-		if (controller) {
-			this.newObject = controller.object;
-			this.newObjectController = controller;
-		}
-		else {
-			this.newObject = null;
-			this.newObjectController = null;
-		}
-	}
+    this.updateCanvas = function () {
+        this.update();
 
-	this.addRectangle = function(x, y, width, height) {
-		this.elements[this.currentLayer++] = new this.Rectangle(x, y, width, height);
-		this.updateCanvas();
-	}
-	
-	this.updateLabelSize(labelWidth, labelHeight);
-	
-	this.updateCanvas();
+        this.drawingContext.fillStyle = "#FFFFFF";
+        this.drawingContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        // Draw the boundary.
+        this.drawingContext.strokeStyle = "#FF0000";
+        this.drawingContext.lineWidth = 2;
+        this.drawingContext.strokeRect(this.labelX, this.labelY, this.labelWidth, this.labelHeight);
+
+        this.drawingContext.strokeStyle = "#000000";
+        this.drawingContext.fillStyle = "#000000";
+
+        for (var i = 0; i < this.currentLayer; i++) {
+            if (this.elements[i]) {
+                this.elements[i].draw(this.drawingContext, this.canvas.width, this.canvas.height);
+            }
+        }
+
+        this.drawingContext.strokeStyle = "#FF0000";
+        this.drawingContext.lineCap = 'butt';
+        this.drawingContext.lineWidth = 2;
+        if (this.activeElement)
+            this.activeElement.drawActive(this.drawingContext);
+    }
+
+    this.exportMetaData = function () {
+        var bufferDataArray = [];
+
+        for (var i = 0; i < this.currentLayer; i++) {
+            if (this.elements[i]) {
+                var elementMetaObj = this.elements[i].getZPLMetaData();
+                bufferDataArray.push(elementMetaObj);
+            }
+        }
+
+        var json = JSON.stringify(bufferDataArray);
+        console.log(json);
+
+        return {"json": json};
+    }
+
+    this.generateZPL = function () {
+        var data = "^XA\r\n" +
+            "^LS0\r\n" +
+            "^LT0\r\n" +
+            "^LH{{leftOffset}},{{topOffset}}\r\n" +
+            "^PR12\r\n" +
+            "^MD30\r\n";
+        var bufferData = "";
+
+        for (var i = 0; i < this.currentLayer; i++) {
+            if (this.elements[i]) {
+                bufferData += this.elements[i].getZPLData();
+                data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth) + '\n';
+            }
+        }
+        data = data.substring(0, data.length - 1);
+
+        data += "\r\n";
+        data += "{{ batchNumber && labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS' : ''}}\r\n{{ batchNumber && !labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS' : ''}}\r\n{{ labelNr && !batchNumber ? '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS' : ''}}\r\n";
+
+        data += "^XZ\r\n";
+
+        console.log(bufferData + data);
+        return {"data": bufferData, "zpl": data};
+    }
+
+    this.setNewObject = function (controller) {
+        if (controller) {
+            this.newObject = controller.object;
+            this.newObjectController = controller;
+        } else {
+            this.newObject = null;
+            this.newObjectController = null;
+        }
+    }
+
+    this.addRectangle = function (x, y, width, height) {
+        this.elements[this.currentLayer++] = new this.Rectangle(x, y, width, height);
+        this.updateCanvas();
+    }
+
+    this.updateLabelSize(labelWidth, labelHeight);
+
+    this.updateCanvas();
 }
+
 if (!com)
 	var com = {};
 if (!com.logicpartners)
@@ -1240,27 +1397,15 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 	this.inspectorWindow = $('<div></div>')
 			.addClass("designerUtilityToolbar designerUtilityLabelInspector")
 			.css({
-				// "left": this.labelDesigner.toolbar.boundingBox.left,
 				"left": 0,
 				"top": this.canvas.getBoundingClientRect().top - 50,
 				"width" : this.labelDesigner.propertyInspector.boundingBox.right - this.labelDesigner.toolbar.boundingBox.left
 			})
-			//.draggable({handle: "div.designerPropertyTitle"})
 			.insertAfter(this.canvasElement);
-
 
 	this.toolsViewContainer = $('<div></div>')
 			.addClass("designerLabelContent")
 			.appendTo(this.inspectorWindow);
-
-	/*
-	this.titleBar = $('<div>Tools</div>')
-			.addClass("designerPropertyTitle")
-			.prependTo(this.toolsWindow)
-			.on("dblclick", function() {
-				self.toolsViewContainer.toggle();
-			});
-	*/
 
 	this.buttonView = $('<div></div>')
 			.appendTo(this.toolsViewContainer);
@@ -1273,131 +1418,173 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 		this.buttonView.append(controller.workspace);
 	}
 }
+
 if (!com)
-	var com = {};
+    var com = {};
 if (!com.logicpartners)
-	com.logicpartners = {};
-	
-com.logicpartners.propertyInspector = function(designer, canvas) {
-	this.canvas = canvas;
-	this.canvasElement = $(canvas);
-	this.labelDesigner = designer;
-	this.activeElement = null;
-	this.propertyNodes = {};
-	this.boundingBox = null;
-	var self = this;
+    com.logicpartners = {};
 
-	// Create the property window.
-	this.propertyInspector = $('<div></div>')
-			.addClass("designerUtilityWindow")
-			.css({
-				"left": this.canvas.getBoundingClientRect().right + 5 - 200,
-				"top": this.canvas.getBoundingClientRect().top
-			})
-			//.draggable({handle: "div.designerPropertyTitle"})
-			.insertAfter(this.canvasElement);
-			
-	this.updatePosition = function(xchange) {
-		this.propertyInspector.css("left", parseInt(this.propertyInspector.css("left")) + xchange);
-		this.boundingBox = this.propertyInspector[0].getBoundingClientRect();
-	}
+com.logicpartners.propertyInspector = function (designer, canvas) {
+    this.canvas = canvas;
+    this.canvasElement = $(canvas);
+    this.labelDesigner = designer;
+    this.activeElement = null;
+    this.propertyNodes = {};
+    this.boundingBox = null;
+    var self = this;
+
+    // Create the property window.
+    this.propertyInspector = $('<div></div>')
+        .addClass("designerUtilityWindow")
+        .css({
+            "left": this.canvas.getBoundingClientRect().right + 5 - 200,
+            "top": this.canvas.getBoundingClientRect().top
+        })
+        //.draggable({handle: "div.designerPropertyTitle"})
+        .insertAfter(this.canvasElement);
+
+    this.updatePosition = function (xchange) {
+        this.propertyInspector.css("left", parseInt(this.propertyInspector.css("left")) + xchange);
+        this.boundingBox = this.propertyInspector[0].getBoundingClientRect();
+    }
 
 
-	this.propertyViewContainer = $('<div></div>')
-			.addClass("designerPropertyContainer")
-			.resizable({
-				resize: function(event, ui) {
-					ui.size.width = ui.originalSize.width;
-				}
-			})
-			.appendTo(this.propertyInspector);
+    this.propertyViewContainer = $('<div></div>')
+        .addClass("designerPropertyContainer")
+        .resizable({
+            resize: function (event, ui) {
+                ui.size.width = ui.originalSize.width;
+            }
+        })
+        .appendTo(this.propertyInspector);
 
-	this.titleBar = $('<div>Property Inspector</div>')
-			.addClass("designerPropertyTitle")
-			.prependTo(this.propertyInspector)
-			.on("dblclick", function() {
-				self.propertyViewContainer.toggle();
-			});
+    this.titleBar = $('<div>Property Inspector</div>')
+        .addClass("designerPropertyTitle")
+        .prependTo(this.propertyInspector)
+        .on("dblclick", function () {
+            self.propertyViewContainer.toggle();
+        });
 
-	this.propertyView = $('<div></div>')
-			.addClass("designerPropertyContent")
-			.appendTo(this.propertyViewContainer);
+    this.propertyView = $('<div></div>')
+        .addClass("designerPropertyContent")
+        .appendTo(this.propertyViewContainer);
 
-	this.update = function(activeElement) {
-		var self = this;
-		var getType = {};
-		var keys = [];
-		
-		if (this.activeElement == activeElement) {
-			for (var key in activeElement) {
-				if (!activeElement.readonly || key != "readonly" && $.inArray(key, activeElement.readonly) == -1) {
-					if (getType.toString.call(activeElement[key]) != '[object Function]') {
-						this.propertyNodes[key].val(activeElement[key]);
-					}
-				}
-			}
-		}
-		else {
-			this.activeElement = activeElement;
-			this.propertyView.html('');
+    this.update = function (activeElement) {
+        var self = this;
+        var getType = {};
+        var keys = [];
 
-			for (var key in activeElement) {
-				if (!keys[key]) {
-					keys[key] = true;
-					
-					if (key != "readonly" && getType.toString.call(activeElement[key]) != '[object Function]') {
-						var elementKey = $('<div>' + key + '</div>')
-								.css({
-									"width": "65px",
-									"border": "1px solid #AAAAAA",
-									"float": "left",
-									"font-size": "12px",
-									"line-height": "20px",
-									"border-right": "none",
-									"text-align": "right",
-									"padding-right": "5px",
-									"margin-left": "5px",
-									"padding": "3px"
-								});
+        if (this.activeElement == activeElement) {
+            for (var key in activeElement) {
+                if (!activeElement.readonly || key != "readonly" && $.inArray(key, activeElement.readonly) == -1) {
+                    if (getType.toString.call(activeElement[key]) != '[object Function]') {
+                        this.propertyNodes[key].val(activeElement[key]);
+                    }
+                }
+            }
+        } else {
+            this.activeElement = activeElement;
+            this.propertyView.html('');
 
-						var elementValue = $('<input type="text" name="' + key + '" value="' + activeElement[key] + '">')
-								.css({
-									"width": "120px",
-									"float": "left",
-									"height": "22px",
-									"line-height": "20px",
-									"padding-left": "5px"
-								});
-								
-						if (!activeElement.readonly || $.inArray(key, activeElement.readonly) == -1) {
-							elementValue.on("keyup", {"objectProperty": key}, function(event) {
-								var data = self.activeElement[event.data.objectProperty];
-								self.activeElement[event.data.objectProperty] = (data === parseInt(data, 10)) ? parseInt($(this).val()) : $(this).val();
-								self.labelDesigner.updateCanvas();
-							});
-						}
-						else {
-							// Draw readonly textbox.
-							elementValue.prop("readonly", true).css({ "background-color" : "#DDDDDD", border : "1px solid #AAAAAA" });
-						}
-					
-						this.propertyNodes[key] = elementValue;
+            for (var key in activeElement) {
+                if (!keys[key]) {
+                    keys[key] = true;
 
-						var elementContainer = $('<div></div>')
-								.css({
-									"clear": "both",
-									"padding-top": "2px"
-								})
-								.append(elementKey).append(elementValue);
-						this.propertyView.append(elementContainer);
-					}
-				}
-			}
-		}
-	}
-	
-	this.updatePosition(0);
+                    if (key != "readonly" && getType.toString.call(activeElement[key]) != '[object Function]') {
+                        var elementKey = $('<div>' + key + '</div>')
+                            .css({
+                                "width": "65px",
+                                "border": "1px solid #AAAAAA",
+                                "float": "left",
+                                "font-size": "12px",
+                                "line-height": "20px",
+                                "border-right": "none",
+                                "text-align": "right",
+                                "padding-right": "5px",
+                                "margin-left": "5px",
+                                "padding": "3px"
+                            });
+
+                        var elementValue = $('<input type="text" name="' + key + '" value="' + activeElement[key] + '">')
+                            .css({
+                                "width": "120px",
+                                "float": "left",
+                                "height": "22px",
+                                "line-height": "20px",
+                                "padding-left": "5px"
+                            });
+
+                        if (!activeElement.readonly || $.inArray(key, activeElement.readonly) == -1) {
+                            elementValue.on("keyup", {"objectProperty": key}, function (event) {
+                                var data = self.activeElement[event.data.objectProperty];
+                                self.activeElement[event.data.objectProperty] = (data === parseInt(data, 10)) ? parseInt($(this).val()) : $(this).val();
+                                self.labelDesigner.updateCanvas();
+                            });
+                        } else {
+                            // Draw readonly textbox.
+                            elementValue.prop("readonly", true).css({
+                                "background-color": "#DDDDDD",
+                                border: "1px solid #AAAAAA"
+                            });
+                        }
+
+                        this.propertyNodes[key] = elementValue;
+
+                        var elementContainer = $('<div></div>')
+                            .css({
+                                "clear": "both",
+                                "padding-top": "2px"
+                            })
+                            .append(elementKey).append(elementValue);
+                        this.propertyView.append(elementContainer);
+                    }
+                }
+            }
+
+            if (activeElement !== null) {
+
+                var indexToDelete = this.labelDesigner.elements.indexOf(activeElement);
+                var elements = this.labelDesigner.elements;
+
+                var deleteElement = $('<button>Delete element</button>')
+                    .css({
+                        'z-index': '1',
+                        'position': 'relative',
+                        'font-size': 'inherit',
+                        'color': 'white',
+                        'padding': '0.5em 1em',
+                        'outline': 'none',
+                        'border': 'none',
+                        'background-color': '#555555',
+                        'overflow': 'hidden',
+                        'transition': 'color 0.4s ease-in-out',
+                        'cursor': 'pointer',
+                        'font-family': 'sans-serif',
+                        'width': '100%'
+                    })
+                    .on('click', null, function () {
+                        elements.splice(indexToDelete, 1);
+
+                        self.labelDesigner.updateCanvas();
+                        self.propertyView.html('');
+                    });
+
+                var deleteElementContainer = $('<div></div>')
+                    .css({
+                        "clear": "both",
+                        "padding-top": "2px"
+                    })
+                    .append(deleteElement)
+
+
+                this.propertyView.append(deleteElementContainer);
+            }
+        }
+    }
+
+    this.updatePosition(0);
 }
+
 if (!com)
 	var com = {};
 if (!com.logicpartners)

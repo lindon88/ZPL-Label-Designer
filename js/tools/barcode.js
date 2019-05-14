@@ -9,19 +9,44 @@ com.logicpartners.designerTools.barcode = function() {
 	var self = this;
 	this.counter = 1;
 	this.button = $("<div></div>").addClass("designerToolbarBarcode designerToolbarButton").attr("title", "Barcode").append($("<div></div>"));
-	this.object = function(x, y, width, height) {
+	this.object = function(x, y, width, height, fromObject) {
 		var width = 100;
 		var canvasHolder = $("<canvas></canvas>").prop("width", "100").prop("height", "1");
 		this.name = "Barcode " + self.counter++;
 		this.text = "BARCODE";
-		this.x = x;
+        this.type = 'Barcode';
+        this.x = x;
 		this.y = y;
-		//this.width = width;
+		// this.width = width; // NOT APPLIED
 		this.height = height;
+
+        if (fromObject) {
+            this.name = fromObject.name;
+            this.text = fromObject.text;
+            this.type = fromObject.type;
+            this.x = fromObject.x;
+            this.y = fromObject.y;
+            // this.width = fromObject.width;
+            this.height = fromObject.height;
+        }
+
+        this.readonly = ["type"];
 		
 		this.getZPLData = function() {
-			return "";
+            return "";
 		}
+
+        this.getZPLMetaData = function () {
+            return {
+                name: this.name,
+                text: this.text,
+                type: this.type,
+                x: this.x,
+                y: this.y,
+                // width: this.width,
+                height: this.height
+            };
+        }
 
 		this.toZPL = function(labelx, labely, labelwidth, labelheight) {
 			return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^BY1^B3N,N," + this.height + "N,N^FD" + this.text + "^FS";

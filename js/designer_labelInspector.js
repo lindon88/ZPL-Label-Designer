@@ -19,27 +19,15 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 	this.inspectorWindow = $('<div></div>')
 			.addClass("designerUtilityToolbar designerUtilityLabelInspector")
 			.css({
-				// "left": this.labelDesigner.toolbar.boundingBox.left,
 				"left": 0,
 				"top": this.canvas.getBoundingClientRect().top - 50,
 				"width" : this.labelDesigner.propertyInspector.boundingBox.right - this.labelDesigner.toolbar.boundingBox.left
 			})
-			//.draggable({handle: "div.designerPropertyTitle"})
 			.insertAfter(this.canvasElement);
-
 
 	this.toolsViewContainer = $('<div></div>')
 			.addClass("designerLabelContent")
 			.appendTo(this.inspectorWindow);
-
-	/*
-	this.titleBar = $('<div>Tools</div>')
-			.addClass("designerPropertyTitle")
-			.prependTo(this.toolsWindow)
-			.on("dblclick", function() {
-				self.toolsViewContainer.toggle();
-			});
-	*/
 
 	this.buttonView = $('<div></div>')
 			.appendTo(this.toolsViewContainer);
