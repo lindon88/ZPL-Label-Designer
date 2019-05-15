@@ -11,7 +11,7 @@ com.logicpartners.labelControl.generatezpl = function (designer) {
     this.workspace = $("<div></div>").addClass("designerLabelControl").attr("title", "Label Size").css({float: "right"});
 
     this.buttonContainer = $("<div></div>").appendTo(this.workspace);
-    /*
+
     this.button = $("<button>View ZPL</button>").css({"line-height": "30px"}).appendTo(this.buttonContainer)
         .on("click", function () {
             var zpl = self.designer.generateZPL();
@@ -103,7 +103,7 @@ com.logicpartners.labelControl.generatezpl = function (designer) {
                 })
             }
         });
-*/
+
     this.update = function () {
         this.widthController.val(this.designer.labelWidth / this.designer.dpi);
         this.heightController.val(this.designer.labelHeight / this.designer.dpi);
