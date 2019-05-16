@@ -1391,7 +1391,7 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 	this.boundingBox = null;
 	
 	this.updatePosition = function(xchange) {
-		this.inspectorWindow.css("width", parseInt(this.inspectorWindow.css("width")) + xchange);
+		// this.inspectorWindow.css("width", parseInt(this.inspectorWindow.css("width")) + xchange);
 		this.boundingBox = this.inspectorWindow[0].getBoundingClientRect();
 	}
 	
