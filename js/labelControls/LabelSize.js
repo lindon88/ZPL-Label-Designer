@@ -14,7 +14,7 @@ com.logicpartners.labelControl.size = function(designer) {
 	this.widthController = $("<input type=\"text\" />")
 		.addClass("designerLabelControlElement")
 		.css({
-			width : "50px"
+			// width : "50px"
 			
 		})
 		.val(this.designer.labelWidth / this.designer.dpi)
@@ -33,7 +33,7 @@ com.logicpartners.labelControl.size = function(designer) {
 	this.heightController = $("<input type=\"text\" />")
 		.addClass("designerLabelControlElement")
 		.css({
-			width : "50px"
+			// width : "50px"
 			
 		})
 		.val(this.designer.labelHeight / this.designer.dpi)
@@ -53,7 +53,7 @@ com.logicpartners.labelControl.size = function(designer) {
 		this.dpiController = $("<input type=\"text\" />")
 			.addClass("designerLabelControlElement")
 			.css({
-				width : "50px"
+				// width : "50px"
 			})
 			.val(this.designer.dpi)
 			.appendTo(this.dpiContainer)

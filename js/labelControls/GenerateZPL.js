@@ -8,7 +8,9 @@ if (!com.logicpartners.labelControl)
 com.logicpartners.labelControl.generatezpl = function (designer) {
     var self = this;
     this.designer = designer;
-    this.workspace = $("<div></div>").addClass("designerLabelControl").attr("title", "Label Size").css({float: "right"});
+    this.workspace = $("<div></div>").addClass("designerLabelControlCustom").attr("title", "Label Size")
+        // .css({float: "right"})
+    ;
 
     this.buttonContainer = $("<div></div>").appendTo(this.workspace);
 

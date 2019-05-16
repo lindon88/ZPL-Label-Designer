@@ -8,7 +8,9 @@ if (!com.logicpartners.labelControl)
 com.logicpartners.labelControl.generatezpl = function (designer) {
     var self = this;
     this.designer = designer;
-    this.workspace = $("<div></div>").addClass("designerLabelControl").attr("title", "Label Size").css({float: "right"});
+    this.workspace = $("<div></div>").addClass("designerLabelControlCustom").attr("title", "Label Size")
+        // .css({float: "right"})
+    ;
 
     this.buttonContainer = $("<div></div>").appendTo(this.workspace);
 
@@ -126,7 +128,7 @@ com.logicpartners.labelControl.size = function(designer) {
 	this.widthController = $("<input type=\"text\" />")
 		.addClass("designerLabelControlElement")
 		.css({
-			width : "50px"
+			// width : "50px"
 			
 		})
 		.val(this.designer.labelWidth / this.designer.dpi)
@@ -145,7 +147,7 @@ com.logicpartners.labelControl.size = function(designer) {
 	this.heightController = $("<input type=\"text\" />")
 		.addClass("designerLabelControlElement")
 		.css({
-			width : "50px"
+			// width : "50px"
 			
 		})
 		.val(this.designer.labelHeight / this.designer.dpi)
@@ -165,7 +167,7 @@ com.logicpartners.labelControl.size = function(designer) {
 		this.dpiController = $("<input type=\"text\" />")
 			.addClass("designerLabelControlElement")
 			.css({
-				width : "50px"
+				// width : "50px"
 			})
 			.val(this.designer.dpi)
 			.appendTo(this.dpiContainer)
@@ -1397,9 +1399,10 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 	this.inspectorWindow = $('<div></div>')
 			.addClass("designerUtilityToolbar designerUtilityLabelInspector")
 			.css({
-				"left": 0,
-				"top": this.canvas.getBoundingClientRect().top - 50,
-				"width" : this.labelDesigner.propertyInspector.boundingBox.right - this.labelDesigner.toolbar.boundingBox.left
+				// "left": 0,
+				// // "top": this.canvas.getBoundingClientRect().top - 50,
+				// "top": this.canvas.getBoundingClientRect().top - 100,
+				// "width" : this.labelDesigner.propertyInspector.boundingBox.right - this.labelDesigner.toolbar.boundingBox.left
 			})
 			.insertAfter(this.canvasElement);
 
@@ -1437,25 +1440,25 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
     this.propertyInspector = $('<div></div>')
         .addClass("designerUtilityWindow")
         .css({
-            "left": this.canvas.getBoundingClientRect().right + 5 - 200,
-            "top": this.canvas.getBoundingClientRect().top
+            // "left": this.canvas.getBoundingClientRect().right + 5 - 200,
+            // "top": this.canvas.getBoundingClientRect().top
         })
         //.draggable({handle: "div.designerPropertyTitle"})
         .insertAfter(this.canvasElement);
 
     this.updatePosition = function (xchange) {
-        this.propertyInspector.css("left", parseInt(this.propertyInspector.css("left")) + xchange);
+        // this.propertyInspector.css("left", parseInt(this.propertyInspector.css("left")) + xchange);
         this.boundingBox = this.propertyInspector[0].getBoundingClientRect();
     }
 
 
     this.propertyViewContainer = $('<div></div>')
         .addClass("designerPropertyContainer")
-        .resizable({
-            resize: function (event, ui) {
-                ui.size.width = ui.originalSize.width;
-            }
-        })
+        // .resizable({
+        //     resize: function (event, ui) {
+        //         ui.size.width = ui.originalSize.width;
+        //     }
+        // })
         .appendTo(this.propertyInspector);
 
     this.titleBar = $('<div>Property Inspector</div>')
@@ -1586,78 +1589,77 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
 }
 
 if (!com)
-	var com = {};
+    var com = {};
 if (!com.logicpartners)
-	com.logicpartners = {};
-	
-com.logicpartners.toolsWindow = function(designer, canvas) {
-	this.canvas = canvas;
-	this.canvasElement = $(canvas);
-	this.labelDesigner = designer;
-	this.boundingBox = null;
-	var self = this;
+    com.logicpartners = {};
 
-	// Create the property window.
-	this.toolsWindow = $('<div></div>')
-			.addClass("designerUtilityToolbar")
-			.css({
-				"left": 0,
-				"top": this.canvas.getBoundingClientRect().top
-			})
-			//.draggable({handle: "div.designerPropertyTitle"})
-			.insertAfter(this.canvasElement);
+com.logicpartners.toolsWindow = function (designer, canvas) {
+    this.canvas = canvas;
+    this.canvasElement = $(canvas);
+    this.labelDesigner = designer;
+    this.boundingBox = null;
+    var self = this;
+
+    // Create the property window.
+    this.toolsWindow = $('<div></div>')
+        .addClass("designerUtilityToolbar")
+        .css({
+            // "left": 0,
+            // "top": this.canvas.getBoundingClientRect().top
+        })
+        //.draggable({handle: "div.designerPropertyTitle"})
+        .insertAfter(this.canvasElement);
 
 
-	this.toolsViewContainer = $('<div></div>')
-			.addClass("designerToolbarContent")
-			.resizable({
-				resize: function(event, ui) {
-					ui.size.width = ui.originalSize.width;
-				}
-			})
-			.appendTo(this.toolsWindow);
+    this.toolsViewContainer = $('<div></div>')
+        .addClass("designerToolbarContent")
+        // .resizable({
+        //     resize: function (event, ui) {
+        //         ui.size.width = ui.originalSize.width;
+        //     }
+        // })
+        .appendTo(this.toolsWindow);
 
-	this.titleBar = $('<div>Tools</div>')
-			.addClass("designerPropertyTitle")
-			.prependTo(this.toolsWindow)
-			.on("dblclick", function() {
-				self.toolsViewContainer.toggle();
-			});
+    this.titleBar = $('<div>Tools</div>')
+        .addClass("designerPropertyTitle")
+        .prependTo(this.toolsWindow)
+        .on("dblclick", function () {
+            self.toolsViewContainer.toggle();
+        });
 
-	this.buttonView = $('<div></div>')
-			.appendTo(this.toolsViewContainer);
-	
-	this.setTool = function(controller) {
-		if (self.labelDesigner.newObjectController == controller) {
-			self.labelDesigner.setNewObject(null);
-			controller.button.removeClass("designerToolbarButtonActive");
-		}
-		else {
-			if (self.labelDesigner.newObjectController) self.labelDesigner.newObjectController.button.removeClass("designerToolbarButtonActive");
-			self.labelDesigner.setNewObject(controller);
-			if (controller) {
-				controller.button.addClass("designerToolbarButtonActive");
-			
-				if (controller.activate) controller.activate(this);
-			}
-		}
-	};
-	
-	this.addTool = function(controller) {
-		var self = this;
-		controller.button.on("click", { tool : controller }, function(event) {
-			self.setTool(event.data.tool);
-		});
-		
-		this.buttonView.append(controller.button);
-	}
-	
-	this.updatePosition = function(xchange) {
-		this.boundingBox = this.toolsWindow[0].getBoundingClientRect();
-	}
-	
-	this.update = function(activeElement) {
-	}
-	
-	this.updatePosition(0);
+    this.buttonView = $('<div></div>')
+        .appendTo(this.toolsViewContainer);
+
+    this.setTool = function (controller) {
+        if (self.labelDesigner.newObjectController == controller) {
+            self.labelDesigner.setNewObject(null);
+            controller.button.removeClass("designerToolbarButtonActive");
+        } else {
+            if (self.labelDesigner.newObjectController) self.labelDesigner.newObjectController.button.removeClass("designerToolbarButtonActive");
+            self.labelDesigner.setNewObject(controller);
+            if (controller) {
+                controller.button.addClass("designerToolbarButtonActive");
+
+                if (controller.activate) controller.activate(this);
+            }
+        }
+    };
+
+    this.addTool = function (controller) {
+        var self = this;
+        controller.button.on("click", {tool: controller}, function (event) {
+            self.setTool(event.data.tool);
+        });
+
+        this.buttonView.append(controller.button);
+    }
+
+    this.updatePosition = function (xchange) {
+        this.boundingBox = this.toolsWindow[0].getBoundingClientRect();
+    }
+
+    this.update = function (activeElement) {
+    }
+
+    this.updatePosition(0);
 }

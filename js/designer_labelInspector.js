@@ -19,9 +19,10 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 	this.inspectorWindow = $('<div></div>')
 			.addClass("designerUtilityToolbar designerUtilityLabelInspector")
 			.css({
-				"left": 0,
-				"top": this.canvas.getBoundingClientRect().top - 50,
-				"width" : this.labelDesigner.propertyInspector.boundingBox.right - this.labelDesigner.toolbar.boundingBox.left
+				// "left": 0,
+				// // "top": this.canvas.getBoundingClientRect().top - 50,
+				// "top": this.canvas.getBoundingClientRect().top - 100,
+				// "width" : this.labelDesigner.propertyInspector.boundingBox.right - this.labelDesigner.toolbar.boundingBox.left
 			})
 			.insertAfter(this.canvasElement);
 
