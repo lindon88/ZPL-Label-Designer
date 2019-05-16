@@ -1461,7 +1461,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
         // })
         .appendTo(this.propertyInspector);
 
-    this.titleBar = $('<div>Property Inspector</div>')
+    this.titleBar = $('<div>Properties</div>')
         .addClass("designerPropertyTitle")
         .prependTo(this.propertyInspector)
         .on("dblclick", function () {
@@ -1501,7 +1501,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                                 "float": "left",
                                 "font-size": "12px",
                                 "line-height": "20px",
-                                "border-right": "none",
+                                "border-right": "'none'",
                                 "text-align": "right",
                                 "padding-right": "5px",
                                 "margin-left": "5px",
@@ -1549,22 +1549,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                 var indexToDelete = this.labelDesigner.elements.indexOf(activeElement);
                 var elements = this.labelDesigner.elements;
 
-                var deleteElement = $('<button>Delete element</button>')
-                    .css({
-                        'z-index': '1',
-                        'position': 'relative',
-                        'font-size': 'inherit',
-                        'color': 'white',
-                        'padding': '0.5em 1em',
-                        'outline': 'none',
-                        'border': 'none',
-                        'background-color': '#555555',
-                        'overflow': 'hidden',
-                        'transition': 'color 0.4s ease-in-out',
-                        'cursor': 'pointer',
-                        'font-family': 'sans-serif',
-                        'width': '100%'
-                    })
+                var deleteElement = $('<button id="btn__warning">Delete element</button>')
                     .on('click', null, function () {
                         elements.splice(indexToDelete, 1);
 
