@@ -37,7 +37,7 @@ com.logicpartners.toolsWindow = function (designer, canvas) {
             self.toolsViewContainer.toggle();
         });
 
-    this.buttonView = $('<div></div>')
+    this.buttonView = $('<div class="toolbar-wrapper"></div>')
         .appendTo(this.toolsViewContainer);
 
     this.setTool = function (controller) {

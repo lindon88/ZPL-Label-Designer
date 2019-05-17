@@ -110,22 +110,40 @@
     line-height: 20px;
 }
 
+.toolbar-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.tool-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
 .designerToolbarButton {
-    background-size: 36px 36px;
-    width: 36px;
-    height: 36px;
-    margin: 2px;
-    float: left;
+    font-size: 5rem;
+    color: #03A9F4;
+    padding: .5rem;
+    flex-basis: 33%;
 }
 
-.designerToolbarButtonActive div {
-    background: rgba(255, 255, 0, 0.15);
-    background-size: 36px 36px;
-    width: 100%;
-    height: 100%;
-    border-radius: 4px;
+.designerToolbarButtonActive {
+    background: #ececec;
+    border-radius: .5rem;
+    color: #187ff4;
 }
 
+.icon {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    stroke-width: 0;
+    stroke: currentColor;
+    fill: currentColor;
+}
+
+/*
 .designerToolbarBarcode {
     background-image: url(../images/toolbar_barcode.gif);
 }
@@ -140,6 +158,8 @@
 
 .designerToolbarTextBlock {
     background-image: url(../images/toolbar_text.gif);
+    font-size: 3rem;
+    color: #03A9F4;
 }
 
 .designerToolbarLabelNumber {
@@ -152,13 +172,15 @@
 
 .designerToolbarVariable {
     background-image: url(../images/toolbar_rectangle.gif);
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTYiIGhlaWdodD0iMjU2IiB2aWV3Qm94PSIwIDAgNjcuNzMzMzMyIDY3LjczMzMzNCI+PHBhdGggZD0iTTMzLjg2NjY2NjI0Ljc5Mzc0OTk5QTMzLjA3MjkxNjI1IDMzLjA3MjkxNjI1IDAgMCAwIC43OTM3NDk5OSAzMy44NjY2NjYyNGEzMy4wNzI5MTYyNSAzMy4wNzI5MTYyNSAwIDAgMCAzMy4wNzI5MTYyNSAzMy4wNzI5MTYyNSAzMy4wNzI5MTYyNSAzMy4wNzI5MTYyNSAwIDAgMCAzMy4wNzI5MTYyNS0zMy4wNzI5MTYyNUEzMy4wNzI5MTYyNSAzMy4wNzI5MTYyNSAwIDAgMCAzMy44NjY2NjYyNC43OTM3NDk5OXptLTExLjU0MTQxNDMgMjAuMDg0MDQ1MTJoMi41NjQ3MDE0NnYxLjI2MTQyMTY3YzEuNDE1MzQ5MS4yNDgwMjcyOSAyLjU5MzIzNTIuODc4NzE0NTcgMy41MzM2MzMxNCAxLjg5MjM5MDk5Ljk0OTg5OTEzIDEuMDAyODkyOCAxLjQ1ODQ3ODU2IDIuMzEzNDU3MzcgMS41MjQ5NzM2NSAzLjkzMTAyNjk4aC0yLjU2NDcwMTQ3Yy0uMDg1NDkyMTctLjcyMjUxNjIyLS4zNTY0MDE2OS0xLjM0MjczMTMtLjgxMjM1NTUtMS44NjAzNTIzMy0uNDU1OTUwMzYtLjUyODQwNTk4LTEuMDE2NjIwNy0uOTAwNTM1MDMtMS42ODE1NDk4Mi0xLjExNjIxMDkydjcuMjMwNTY1NzhjLjU5ODQzNjE2LjE1MDk3MzkgMS4xNDAyNTg2NC4zMjM2OTEyNSAxLjYyNDcwNjc1LjUxNzc5NzUyLjQ4NDQ0OTQzLjE4MzMyNDUuOTc4MTE2OTQuNDQ3NjM1MyAxLjQ4MTU2MzQ2Ljc5MjcxODExLjUxMjk0NTA1LjMzNDI5NTc1LjkzNTY3NTEzLjcyMjEzMjU4IDEuMjY4MTM5OTYgMS4xNjQyNjk4NC4zNDE5NjMzNy40MzEzNTAyLjYyMjI5NzM1Ljk3NjE5NjA3Ljg0MDc3NDM4IDEuNjM0MDA4NDQuMjE4NDc3MDQuNjU3ODA5NzIuMzI3NjI4MjUgMS4zOTEwODEyNS4zMjc2MjgyNSAyLjE5OTg2NDg3IDAgMS44MDA4OTQzNy0uNTE3NDg1MyAzLjI5NDY0NzE4LTEuNTUyODc2NiA0LjQ4MDg2NDIxLTEuMDM1Mzg4NjYgMS4xODYyMTcwMy0yLjM2NTYxMDQ1IDEuOTE5NDg1OTEtMy45ODk5MzYyIDIuMTk5ODY0ODd2MS42NDk1MTMwMmgtMi41NjQ3MDE0N3YtMS42MzM0OTI1Yy0xLjY4MTMyMDctLjI0ODAyODM1LTMuMDQ0MjY3MjItLjk4MTI5NzI0LTQuMDg5MTU2LTIuMTk5ODY0ODctMS4wMzUzODk3MS0xLjIyOTM1NDctMS41NTc4NDcwNy0yLjgzNjE2MTMyLTEuNTY3MzQ2MTQtNC44MjAzNzc1NGgyLjU2NDcwMTJjLjE1MTk4MzgxIDEuMDk5OTQ0MzQuNDk4ODA0NCAyLjAxMTE2NjY4IDEuMDQwMjQ2NjcgMi43MzM2ODI5LjU0MTQ0MjI3LjcyMjUxMzU4IDEuMjI1MTQyNTMgMS4yMDc2OTU5IDIuMDUxNTU0MjcgMS40NTU3MjQyNXYtOC4wMDY3NDY2NWMtMy40ODYxMjgyNi0uOTM4MTg4NjctNS4yMjkxMzgxNS0yLjk3NjI3MTQyLTUuMjI5MTM4MTUtNi4xMTQzNTQwNiAwLTEuNzM2MTkwNTIuNDk0MTg1NTctMy4xMzMxMTQzIDEuNDgyMDgwMi00LjE4OTkyNi45ODc4OTQ2Mi0xLjA1NjgxMTcgMi4yMzY3MTg5NC0xLjcwODk1OTM1IDMuNzQ3MDU3OTUtMS45NTY5ODY2NHYtMS4yNDU0MDE5NHptOS42MzE5NjkzMi44MDg3MzYyNmgyLjk5MjU4Mjk5bDYuNTI1Njk5MTIgMTguOTQxNDc5ODUgNi43NjgwNjI3NS0xOC45NDE0Nzk4NWgyLjgyMTAxNjU3bC04LjE3ODgyOSAyMy40NTQzODI0NmgtMi44MzU0ODY2M2wtOC4wOTMwNDU4LTIzLjQ1NDM4MjQ2em0tOS42MzE5NjkzMyAzLjI1MDk2NDIxYy0uNzc4OTE2OTIuMjA0ODkyMDEtMS40MTk5NTA0Ny41NzE3ODU0OC0xLjkyMzM5NjcyIDEuMTAwMTkxMi0uNDkzOTQ3NDQuNTI4NDA1NzItLjc0MTAzOTk2IDEuMjAyNTI5NjUtLjc0MTAzOTk2IDIuMDIyMDk3NjggMCAxLjc2ODU0Mzc3Ljg4ODEyNjA3IDIuOTU0NTQ5MTMgMi42NjQ0MzY2OCAzLjU1ODQzOTQxdi02LjY4MDcyODI5em0yLjU2NDcwMTQ3IDEwLjAyOTM2MTA2djcuNDI0MzUzNzZjLjg2NDQwNzc2LS4yMzcyNDM5MyAxLjU3Njg5NjU0LS42NzM3NTM1IDIuMTM3MzM2OTUtMS4zMDk5OTcwNC41NjA0NDA0LS42NDcwMjc5NS44NDA3NzQzOC0xLjQzOTk2MDM4Ljg0MDc3NDM4LTIuMzc4MTQ5MDYuMDAwMDAyNjUtMS4wNTY4MTE5Ni0uMjcwOTA5NTItMS44NzA2ODg4LS44MTIzNTI4NC0yLjQ0MjIyODQ5LS41MzE5NDIxNC0uNTgyMzI0MS0xLjI1Mzg1NTktMS4wMTM2MDAyMS0yLjE2NTc1ODUtMS4yOTM5NzkxN3oiLz48L3N2Zz4=")
+    background-image: url(../images/variable-tool.svg);
 }
 
 .designerToolbarImage {
     background-image: url(../images/toolbar_image.gif);
 
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
-}
+}*/
 
 #btn__warning {
     z-index: 1;
