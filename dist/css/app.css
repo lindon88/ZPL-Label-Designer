@@ -49,31 +49,13 @@
 .designerLabelControl {
     padding: 2px;
     position: absolute !important;
-    /*border: 2px solid #AA0000;*/
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     top: -4rem;
     display: flex;
 
-
     display: none;
-/ / TODO;
-}
-
-.designerLabelControlElement {
-    width: 60px;
-}
-
-.designerLabelControlContainer {
-    display: flex;
-    float: left;
-    padding: 0px 4px 2px 4px;
-    margin: 0px 1px 0px 4px;
-    font-size: 12px;
-    border-radius: 5px;
-    background: #EEEEEE;
-    border: 1px solid #DDDDDD;
-    height: 33px;
+    /*TODO*/
 }
 
 .designerLabelControlCustom {
@@ -90,7 +72,23 @@
 
 
     display: none;
-/ / TODO;
+    /*TODO*/
+}
+
+.designerLabelControlElement {
+    width: 60px;
+}
+
+.designerLabelControlContainer {
+    display: flex;
+    float: left;
+    padding: 0px 4px 2px 4px;
+    margin: 0px 1px 0px 4px;
+    font-size: 12px;
+    border-radius: 5px;
+    background: #EEEEEE;
+    border: 1px solid #DDDDDD;
+    height: 33px;
 }
 
 .designerLabelControlCustom div {
@@ -130,9 +128,6 @@
 
 .designerToolbarButtonActive {
     background: #ececec;
-    /*background-size: 36px 36px;*/
-    /*width: 100%;*/
-    /*height: 100%;*/
     border-radius: .5rem;
     color: #187ff4;
 }
