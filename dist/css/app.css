@@ -20,6 +20,10 @@
 .designerUtilityLabelInspector {
     height: 40px;
     line-height: 36px;
+
+
+    display: none;
+    /*TODO*/
 }
 
 .designerPropertyContainer {
@@ -33,6 +37,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     background: #FFFFFF;
+    min-height: 18rem;
 }
 
 .designerToolbarContent {
@@ -53,9 +58,6 @@
     border-radius: 4px;
     top: -4rem;
     display: flex;
-
-    display: none;
-    /*TODO*/
 }
 
 .designerLabelControlCustom {
@@ -69,10 +71,6 @@
     top: -4rem;
     left: 49rem;
     position: absolute;
-
-
-    display: none;
-    /*TODO*/
 }
 
 .designerLabelControlElement {
@@ -221,26 +219,24 @@
 }
 
 .propertiesFieldKey {
-    width: 65px;
-    border: 1px solid #AAAAAA;
-    float: left;
     font-size: 12px;
     line-height: 20px;
     border-right: none;
-    text-align: right;
-    padding-right: 5px;
-    margin-left: 5px;
-    padding: 3px;
+    padding: .5rem;
+    flex-basis: 30%;
 }
 
 .propertiesFieldTextInput {
-    width: 120px;
-    float: left;
-    height: 22px;
-    line-height: 20px;
+    /*width: 120px;*/
+    /*height: 22px;*/
+    /*line-height: 20px;*/
     padding-left: 5px;
+    flex-basis: 70%;
 }
 
+.form-group {
+    display: flex;
+}
 /*! jQuery UI - v1.12.1 - 2019-03-24
 * http://jqueryui.com
 * Copyright jQuery Foundation and other contributors; Licensed MIT */
