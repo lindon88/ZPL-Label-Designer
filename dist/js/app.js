@@ -374,7 +374,7 @@ com.logicpartners.designerTools.batchNumber = function () {
     this.counter = 1;
     this.button = $("<div></div>").addClass("designerToolbarBatchNumber designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
-        this.name = 'Batch #:';
+        this.name = 'Batch #: ';
         this.placeholderKey = '#batchNr';
         this.placeholderPreviewText = 'Generated text here';
         this.x = x;
@@ -433,7 +433,7 @@ com.logicpartners.designerTools.batchNumber = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + ' ' + this.placeholderKey + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + this.placeholderKey + "^FS";
         };
 
         this.draw = function (context) {
@@ -442,7 +442,7 @@ com.logicpartners.designerTools.batchNumber = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var displayText = this.name + ' ' + this.placeholderPreviewText;
+            var displayText = this.name  + this.placeholderPreviewText;
             var measuredText = context.measureText(displayText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
@@ -562,9 +562,9 @@ com.logicpartners.designerTools.image = function() {
 						self.data = imgData.data;
 						
 						ctx.putImageData(imgData, 0, 0);
-					}
+					};
 					insertImg[0].src = reader.result;
-				}
+				};
 				reader.readAsDataURL(file);
 			}
 		}).appendTo(dialog);
@@ -637,7 +637,7 @@ com.logicpartners.designerTools.image = function() {
 				}
 				
 				return "";
-			}
+			};
 			
 			var imgData = "";
 			var bytesPerLine = Math.ceil(this.width / 8);
@@ -702,41 +702,41 @@ com.logicpartners.designerTools.image = function() {
 			}
 			
 			context.putImageData(ctxData, 0, 0);
-		}
+		};
 		
 		this.setWidth = function(width) {
 			//this.width = width;
-		}
+		};
 		
 		this.getWidth = function() {
 			return this.width;
-		}
+		};
 		
 		this.setHeight = function(height) {
 			//height = height;
-		}
+		};
 		
 		this.getHeight = function() {
 			return this.height;
-		}
+		};
 
 		this.setHandle = function(coords) {
 			this.handle = this.resizeZone(coords);
-		}
+		};
 
 		this.getHandle = function() {
 			return this.handle;
-		}
+		};
 
 		this.drawActive = function(context) {
 			context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height) - 1, [2, 2]);
-		}
+		};
 
 		this.hitTest = function(coords) {
 			return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(this.width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height));
 		}
 	}
-}
+};
 
 
 if (!com)
@@ -751,7 +751,7 @@ com.logicpartners.designerTools.labelNumber = function () {
     this.counter = 1;
     this.button = $("<div></div>").addClass("designerToolbarLabelNumber designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
-        this.name = 'Label #:';
+        this.name = 'Label #: ';
         this.placeholderKey = '#labelNr';
         this.placeholderPreviewText = 'Generated text here';
         this.x = x;
@@ -810,7 +810,7 @@ com.logicpartners.designerTools.labelNumber = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + ' ' + this.placeholderKey + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + this.placeholderKey + "^FS";
         };
 
         this.draw = function (context) {
@@ -819,7 +819,7 @@ com.logicpartners.designerTools.labelNumber = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var displayText = this.name + ' ' + this.placeholderPreviewText;
+            var displayText = this.name + this.placeholderPreviewText;
             var measuredText = context.measureText(displayText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
@@ -961,12 +961,133 @@ if (!com.logicpartners)
 if (!com.logicpartners.designerTools)
     com.logicpartners.designerTools = {};
 
+com.logicpartners.designerTools.textBlock = function () {
+    var self = this;
+    this.counter = 1;
+    this.button = $("<div></div>").addClass("designerToolbarTextBlock designerToolbarButton").attr("title", "Text").append($("<div></div>"));
+    this.object = function (x, y, width, height, fromObject) {
+        this.name = "TextBlock " + self.counter++;
+        this.textArea = this.name;
+        this.x = x;
+        this.y = y;
+        this.fontSize = 36;
+        this.fontType = "Arial";
+        this.width = 100;
+        this.height = 0;
+        this.type = 'TextBlock';
+
+        if (fromObject) {
+            this.name = fromObject.name;
+            this.textArea = fromObject.textArea;
+            this.x = fromObject.x;
+            this.y = fromObject.y;
+            this.fontSize = fromObject.fontSize;
+            this.fontType = fromObject.fontType;
+            this.width = fromObject.width;
+            this.height = fromObject.height;
+            this.type = fromObject.type;
+        }
+
+
+        this.readonly = ["width", "height", "type"];
+
+        this.getFontHeight = function () {
+            var textMeasure = $("<div></div>").css({
+                "font-size": this.fontSize + "px",
+                "font-family": this.fontType,
+                "opacity": 0,
+            }).text("M").appendTo($("body"));
+
+            var height = textMeasure.outerHeight();
+            textMeasure.remove();
+            return height;
+        };
+
+        this.getZPLData = function () {
+            return "";
+        };
+
+        this.getZPLMetaData = function () {
+            return {
+                name: this.name,
+                textArea: this.textArea,
+                type: this.type,
+                x: this.x,
+                y: this.y,
+                fontSize: this.fontSize,
+                fontType: this.fontType,
+                width: this.width,
+                height: this.height
+            };
+        };
+
+        this.toZPL = function (labelx, labely, labelwidth, labelheight) {
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + "^FD" + this.textArea + "^FS";
+        };
+
+        this.draw = function (context) {
+            context.font = this.fontSize + "px " + this.fontType;
+            var oColor = context.fillStyle;
+            context.fillStyle = "white";
+            this.height = this.getFontHeight();
+
+
+            var measuredText = context.measureText(this.textArea);
+            this.width = measuredText.width;
+            context.globalCompositeOperation = "difference";
+            context.fillText(this.textArea, this.x, this.y + (this.height * 0.75));
+            context.globalCompositeOperation = "source-over";
+            context.fillStyle = oColor;
+            //context.fillRect(this.x, this.y, this.width, this.height);
+        };
+
+        this.setWidth = function (width) {
+            //this.width = width;
+        };
+
+        this.getWidth = function () {
+            return this.width;
+        };
+
+        this.setHeight = function (height) {
+            //height = height;
+        };
+
+        this.getHeight = function () {
+            return this.height * 0.75;
+        };
+
+        this.setHandle = function (coords) {
+            this.handle = this.resizeZone(coords);
+        };
+
+        this.getHandle = function () {
+            return this.handle;
+        };
+
+        this.drawActive = function (context) {
+            context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.9) - 1, [2, 2]);
+        };
+
+        this.hitTest = function (coords) {
+            return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(this.width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height) * 0.75);
+        }
+    }
+};
+
+if (!com)
+    var com = {};
+if (!com.logicpartners)
+    com.logicpartners = {};
+if (!com.logicpartners.designerTools)
+    com.logicpartners.designerTools = {};
+
 com.logicpartners.designerTools.text = function () {
     var self = this;
     this.counter = 1;
     this.button = $("<div></div>").addClass("designerToolbarText designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
-        this.name = "Textbox " + self.counter++;
+        this.name = "Text " + self.counter++;
         this.text = this.name;
         this.x = x;
         this.y = y;
@@ -974,7 +1095,7 @@ com.logicpartners.designerTools.text = function () {
         this.fontType = "Arial";
         this.width = 100;
         this.height = 0;
-        this.type = 'Textbox';
+        this.type = 'Text';
 
         if (fromObject) {
             this.name = fromObject.name;
@@ -1001,11 +1122,11 @@ com.logicpartners.designerTools.text = function () {
             var height = textMeasure.outerHeight();
             textMeasure.remove();
             return height;
-        }
+        };
 
         this.getZPLData = function () {
             return "";
-        }
+        };
 
         this.getZPLMetaData = function () {
             return {
@@ -1019,12 +1140,12 @@ com.logicpartners.designerTools.text = function () {
                 width: this.width,
                 height: this.height
             };
-        }
+        };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
             // return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^FD" + this.text + "^FS";
             return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + "^FD" + this.text + "^FS";
-        }
+        };
 
         this.draw = function (context) {
             context.font = this.fontSize + "px " + this.fontType;
@@ -1038,41 +1159,41 @@ com.logicpartners.designerTools.text = function () {
             context.globalCompositeOperation = "source-over";
             context.fillStyle = oColor;
             //context.fillRect(this.x, this.y, this.width, this.height);
-        }
+        };
 
         this.setWidth = function (width) {
             //this.width = width;
-        }
+        };
 
         this.getWidth = function () {
             return this.width;
-        }
+        };
 
         this.setHeight = function (height) {
             //height = height;
-        }
+        };
 
         this.getHeight = function () {
             return this.height * 0.75;
-        }
+        };
 
         this.setHandle = function (coords) {
             this.handle = this.resizeZone(coords);
-        }
+        };
 
         this.getHandle = function () {
             return this.handle;
-        }
+        };
 
         this.drawActive = function (context) {
             context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.9) - 1, [2, 2]);
-        }
+        };
 
         this.hitTest = function (coords) {
             return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(this.width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height) * 0.75);
         }
     }
-}
+};
 
 if (!com)
     var com = {};
@@ -1086,7 +1207,7 @@ com.logicpartners.designerTools.variable = function () {
     this.counter = 1;
     this.button = $("<div></div>").addClass("designerToolbarVariable designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
-        this.name = 'Stock Id:';
+        this.name = 'Stock Id: ';
         this.placeholderKey = '#variablePlaceholderplaceholderKey';
         this.placeholderPreviewText = 'Your text here';
         this.x = x;
@@ -1145,7 +1266,7 @@ com.logicpartners.designerTools.variable = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + ' ' + this.placeholderKey + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + this.placeholderKey + "^FS";
         };
 
         this.draw = function (context) {
@@ -1154,7 +1275,7 @@ com.logicpartners.designerTools.variable = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var displayText = this.name + ' ' + this.placeholderPreviewText;
+            var displayText = this.name + this.placeholderPreviewText;
             var measuredText = context.measureText(displayText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
@@ -1215,13 +1336,13 @@ HTMLCanvasElement.prototype.RelativeMouse = function (event) {
         totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
         totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
     }
-    while (currentElement = currentElement.offsetParent)
+    while (currentElement = currentElement.offsetParent);
 
     canvasX = event.clientX - totalOffsetX;
     canvasY = event.clientY - totalOffsetY;
 
     return {x: canvasX, y: canvasY}
-}
+};
 
 // From http://stackoverflow.com/a/4577326/697477
 var CP = window.CanvasRenderingContext2D && CanvasRenderingContext2D.prototype;
@@ -1244,7 +1365,7 @@ if (CP && CP.lineTo) {
             var xStep = Math.sqrt(dashLength * dashLength / (1 + slope * slope));
             if (dx < 0)
                 xStep = -xStep;
-            x += xStep
+            x += xStep;
             y += slope * xStep;
             this[draw ? 'lineTo' : 'moveTo'](x, y);
             distRemaining -= dashLength;
@@ -1253,7 +1374,7 @@ if (CP && CP.lineTo) {
 
         // Ensure that the last segment is closed for proper stroking
         this.moveTo(0, 0);
-    }
+    };
 
     CP.dashedStroke = function (x, y, x2, y2, dashArray) {
         this.beginPath();
@@ -1307,7 +1428,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         this.propertyInspector.updatePosition(xchange);
         this.labelInspector.updatePosition(xchange);
         this.updateCanvas();
-    }
+    };
 
     var elem = this.canvasElement.context;
 
@@ -1320,7 +1441,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
             self.dragStartPosition = self.canvas.RelativeMouse(event);
             self.dragLastPosition = self.dragStartPosition;
 
-            var detailData = e.originalEvent.detail
+            var detailData = e.originalEvent.detail;
             var elementObject = detailData.element;
             self.setNewObject(detailData.control);
 
@@ -1469,7 +1590,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         this.elements[this.currentLayer++] = object;
         this.activeElement = this.elements[this.currentLayer - 1];
         this.updateCanvas();
-    }
+    };
 
     this.deleteActiveElement = function () {
         if (this.activeElement) {
@@ -1480,7 +1601,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
                 }
             }
         }
-    }
+    };
 
     this.setActiveElement = function () {
         var coordinates = this.canvas.RelativeMouse(event);
@@ -1495,7 +1616,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         }
 
         this.updateCanvas();
-    }
+    };
 
     /**
      * Parameters: Coordinates on canvas.
@@ -1507,7 +1628,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
      */
     this.setActiveHandle = function (coords) {
         this.dragAction = this.getHandle(coords);
-    }
+    };
 
     this.getHandle = function (coords) {
         var result = 0;
@@ -1538,12 +1659,12 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
             result = 7;
 
         return result;
-    }
+    };
 
     this.move = function (x, y) {
         this.activeElement.x = x;
         this.activeElement.y = y;
-    }
+    };
 
     this.resize = function (xchange, ychange) {
         switch (this.dragAction) {
@@ -1604,7 +1725,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
             this.activeElement.setHeight(this.activeElement.getHeight() * -1);
             this.swapActionVertical();
         }
-    }
+    };
 
     this.swapActionVertical = function () {
         switch (this.dragAction) {
@@ -1627,7 +1748,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
                 this.dragAction = 3;
                 break;
         }
-    }
+    };
 
     this.swapActionHorizontal = function () {
         switch (this.dragAction) {
@@ -1650,11 +1771,11 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
                 this.dragAction = 6;
                 break;
         }
-    }
+    };
 
     this.update = function () {
         this.propertyInspector.update(this.activeElement);
-    }
+    };
 
     this.updateCanvas = function () {
         this.update();
@@ -1681,7 +1802,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         this.drawingContext.lineWidth = 2;
         if (this.activeElement)
             this.activeElement.drawActive(this.drawingContext);
-    }
+    };
 
     this.exportMetaData = function () {
         var bufferDataArray = [];
@@ -1696,7 +1817,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         var json = JSON.stringify(bufferDataArray);
 
         return {"json": json};
-    }
+    };
 
     this.generateZPL = function () {
         var data = "^XA\r\n" +
@@ -1710,20 +1831,20 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         for (var i = 0; i < this.currentLayer; i++) {
             if (this.elements[i]) {
                 bufferData += this.elements[i].getZPLData();
-                data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth) + '\n';
+                data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth) + '\r\n';
             }
         }
-        data = data.substring(0, data.length - 1);
+        // data = data.substring(0, data.length - 1);
 
-        data += "\r\n";
-        data += "{{ batchNumber && labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS' : ''}}\r\n" +
-            "{{ batchNumber && !labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS' : ''}}\r\n" +
-            "{{ labelNr && !batchNumber ? '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS' : ''}}\r\n";
+        // data += "\r\n";
+        // data += "{{ batchNumber && labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS' : ''}}\r\n" +
+        //     "{{ batchNumber && !labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS' : ''}}\r\n" +
+        //     "{{ labelNr && !batchNumber ? '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS' : ''}}\r\n";
 
         data += "^XZ\r\n";
 
         return {"data": bufferData, "zpl": data};
-    }
+    };
 
     this.setNewObject = function (controller) {
         if (controller) {
@@ -1733,17 +1854,17 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
             this.newObject = null;
             this.newObjectController = null;
         }
-    }
+    };
 
     this.addRectangle = function (x, y, width, height) {
         this.elements[this.currentLayer++] = new this.Rectangle(x, y, width, height);
         this.updateCanvas();
-    }
+    };
 
     this.updateLabelSize(labelWidth, labelHeight);
 
     this.updateCanvas();
-}
+};
 
 if (!com)
 	var com = {};
@@ -1760,7 +1881,7 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 	this.updatePosition = function(xchange) {
 		// this.inspectorWindow.css("width", parseInt(this.inspectorWindow.css("width")) + xchange);
 		this.boundingBox = this.inspectorWindow[0].getBoundingClientRect();
-	}
+	};
 	
 	// Create the property window.
 	this.inspectorWindow = $('<div></div>')
@@ -1781,13 +1902,13 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 			.appendTo(this.toolsViewContainer);
 	
 	this.update = function(activeElement) {
-	}
+	};
 	
 	this.addTool = function(controller) {
 		// console.log(controller.workspace.html());
 		this.buttonView.append(controller.workspace);
 	}
-}
+};
 
 if (!com)
     var com = {};
@@ -1816,7 +1937,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
     this.updatePosition = function (xchange) {
         // this.propertyInspector.css("left", parseInt(this.propertyInspector.css("left")) + xchange);
         this.boundingBox = this.propertyInspector[0].getBoundingClientRect();
-    }
+    };
 
 
     this.propertyViewContainer = $('<div></div>')
@@ -1861,28 +1982,16 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                     keys[key] = true;
 
                     if (key != "readonly" && getType.toString.call(activeElement[key]) != '[object Function]') {
-                        var elementKey = $('<div>' + key + '</div>')
-                            .css({
-                                "width": "65px",
-                                "border": "1px solid #AAAAAA",
-                                "float": "left",
-                                "font-size": "12px",
-                                "line-height": "20px",
-                                "border-right": "'none'",
-                                "text-align": "right",
-                                "padding-right": "5px",
-                                "margin-left": "5px",
-                                "padding": "3px"
-                            });
+                        var elementKey = $('<div class="propertiesFieldKey">' + key + '</div>');
 
-                        var elementValue = $('<input type="text" name="' + key + '" value="' + activeElement[key] + '">')
-                            .css({
-                                "width": "120px",
-                                "float": "left",
-                                "height": "22px",
-                                "line-height": "20px",
-                                "padding-left": "5px"
-                            });
+                        var elementValue = null;
+
+                        if (key === 'textArea') {
+                            elementValue = $('<textarea class="propertiesFieldTextInput" rows="4" cols="50" name="' + key + '" value="' + activeElement[key] + '"></textarea>');
+                        } else {
+                            elementValue = $('<input class="propertiesFieldTextInput" type="text" name="' + key + '" value="' + activeElement[key] + '">')
+                        }
+
 
                         if (!activeElement.readonly || $.inArray(key, activeElement.readonly) == -1) {
                             elementValue.on("keyup", {"objectProperty": key}, function (event) {
@@ -1929,16 +2038,16 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                         "clear": "both",
                         "padding-top": "2px"
                     })
-                    .append(deleteElement)
+                    .append(deleteElement);
 
 
                 this.propertyView.append(deleteElementContainer);
             }
         }
-    }
+    };
 
     this.updatePosition(0);
-}
+};
 
 if (!com)
     var com = {};
@@ -2004,14 +2113,14 @@ com.logicpartners.toolsWindow = function (designer, canvas) {
         });
 
         this.buttonView.append(controller.button);
-    }
+    };
 
     this.updatePosition = function (xchange) {
         this.boundingBox = this.toolsWindow[0].getBoundingClientRect();
-    }
+    };
 
     this.update = function (activeElement) {
-    }
+    };
 
     this.updatePosition(0);
-}
+};

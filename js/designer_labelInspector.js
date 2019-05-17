@@ -13,7 +13,7 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 	this.updatePosition = function(xchange) {
 		// this.inspectorWindow.css("width", parseInt(this.inspectorWindow.css("width")) + xchange);
 		this.boundingBox = this.inspectorWindow[0].getBoundingClientRect();
-	}
+	};
 	
 	// Create the property window.
 	this.inspectorWindow = $('<div></div>')
@@ -34,10 +34,10 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 			.appendTo(this.toolsViewContainer);
 	
 	this.update = function(activeElement) {
-	}
+	};
 	
 	this.addTool = function(controller) {
 		// console.log(controller.workspace.html());
 		this.buttonView.append(controller.workspace);
 	}
-}
+};

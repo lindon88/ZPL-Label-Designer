@@ -10,7 +10,7 @@ com.logicpartners.designerTools.text = function () {
     this.counter = 1;
     this.button = $("<div></div>").addClass("designerToolbarText designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
-        this.name = "Textbox " + self.counter++;
+        this.name = "Text " + self.counter++;
         this.text = this.name;
         this.x = x;
         this.y = y;
@@ -18,7 +18,7 @@ com.logicpartners.designerTools.text = function () {
         this.fontType = "Arial";
         this.width = 100;
         this.height = 0;
-        this.type = 'Textbox';
+        this.type = 'Text';
 
         if (fromObject) {
             this.name = fromObject.name;
@@ -45,11 +45,11 @@ com.logicpartners.designerTools.text = function () {
             var height = textMeasure.outerHeight();
             textMeasure.remove();
             return height;
-        }
+        };
 
         this.getZPLData = function () {
             return "";
-        }
+        };
 
         this.getZPLMetaData = function () {
             return {
@@ -63,12 +63,12 @@ com.logicpartners.designerTools.text = function () {
                 width: this.width,
                 height: this.height
             };
-        }
+        };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
             // return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^FD" + this.text + "^FS";
             return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + "^FD" + this.text + "^FS";
-        }
+        };
 
         this.draw = function (context) {
             context.font = this.fontSize + "px " + this.fontType;
@@ -82,38 +82,38 @@ com.logicpartners.designerTools.text = function () {
             context.globalCompositeOperation = "source-over";
             context.fillStyle = oColor;
             //context.fillRect(this.x, this.y, this.width, this.height);
-        }
+        };
 
         this.setWidth = function (width) {
             //this.width = width;
-        }
+        };
 
         this.getWidth = function () {
             return this.width;
-        }
+        };
 
         this.setHeight = function (height) {
             //height = height;
-        }
+        };
 
         this.getHeight = function () {
             return this.height * 0.75;
-        }
+        };
 
         this.setHandle = function (coords) {
             this.handle = this.resizeZone(coords);
-        }
+        };
 
         this.getHandle = function () {
             return this.handle;
-        }
+        };
 
         this.drawActive = function (context) {
             context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.9) - 1, [2, 2]);
-        }
+        };
 
         this.hitTest = function (coords) {
             return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(this.width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height) * 0.75);
         }
     }
-}
+};

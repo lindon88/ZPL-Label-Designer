@@ -5,26 +5,24 @@ if (!com.logicpartners)
 if (!com.logicpartners.designerTools)
     com.logicpartners.designerTools = {};
 
-com.logicpartners.designerTools.variable = function () {
+com.logicpartners.designerTools.textBlock = function () {
     var self = this;
     this.counter = 1;
-    this.button = $("<div></div>").addClass("designerToolbarVariable designerToolbarButton").attr("title", "Text").append($("<div></div>"));
+    this.button = $("<div></div>").addClass("designerToolbarTextBlock designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
-        this.name = 'Stock Id: ';
-        this.placeholderKey = '#variablePlaceholderplaceholderKey';
-        this.placeholderPreviewText = 'Your text here';
+        this.name = "TextBlock " + self.counter++;
+        this.textArea = this.name;
         this.x = x;
         this.y = y;
-        this.fontSize = 20;
+        this.fontSize = 36;
         this.fontType = "Arial";
         this.width = 100;
         this.height = 0;
-        this.type = 'Variable';
+        this.type = 'TextBlock';
 
         if (fromObject) {
             this.name = fromObject.name;
-            this.placeholderKey = fromObject.placeholderKey;
-            this.placeholderPreviewText = fromObject.placeholderPreviewText;
+            this.textArea = fromObject.textArea;
             this.x = fromObject.x;
             this.y = fromObject.y;
             this.fontSize = fromObject.fontSize;
@@ -34,8 +32,8 @@ com.logicpartners.designerTools.variable = function () {
             this.type = fromObject.type;
         }
 
-        this.readonly = ["width", "height", "type", 'fontType'];
 
+        this.readonly = ["width", "height", "type"];
 
         this.getFontHeight = function () {
             var textMeasure = $("<div></div>").css({
@@ -56,20 +54,19 @@ com.logicpartners.designerTools.variable = function () {
         this.getZPLMetaData = function () {
             return {
                 name: this.name,
-                placeholderKey: this.placeholderKey,
-                placeholderPreviewText: this.placeholderPreviewText,
+                textArea: this.textArea,
+                type: this.type,
                 x: this.x,
                 y: this.y,
                 fontSize: this.fontSize,
                 fontType: this.fontType,
                 width: this.width,
-                height: this.height,
-                type: this.type,
+                height: this.height
             };
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + this.placeholderKey + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + "^FD" + this.textArea + "^FS";
         };
 
         this.draw = function (context) {
@@ -78,11 +75,11 @@ com.logicpartners.designerTools.variable = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var displayText = this.name + this.placeholderPreviewText;
-            var measuredText = context.measureText(displayText);
+
+            var measuredText = context.measureText(this.textArea);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
-            context.fillText(displayText, this.x, this.y + (this.height * 0.75));
+            context.fillText(this.textArea, this.x, this.y + (this.height * 0.75));
             context.globalCompositeOperation = "source-over";
             context.fillStyle = oColor;
             //context.fillRect(this.x, this.y, this.width, this.height);

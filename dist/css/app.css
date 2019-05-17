@@ -1,7 +1,7 @@
 .designerUtilityWindow {
     position: absolute !important;
     width: 24rem;
-    box-shadow:0px 0px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
     left: 20rem;
     margin-left: auto;
     top: 3rem;
@@ -11,7 +11,7 @@
 .designerUtilityToolbar {
     position: absolute !important;
     width: 24rem;
-    box-shadow:0px 0px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     top: 3rem;
     left: -6rem;
@@ -50,13 +50,14 @@
     padding: 2px;
     position: absolute !important;
     /*border: 2px solid #AA0000;*/
-    box-shadow:0px 0px 5px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     top: -4rem;
     display: flex;
 
 
-    display: none; // TODO;
+    display: none;
+/ / TODO;
 }
 
 .designerLabelControlElement {
@@ -88,7 +89,8 @@
     position: absolute;
 
 
-    display: none; // TODO;
+    display: none;
+/ / TODO;
 }
 
 .designerLabelControlCustom div {
@@ -136,6 +138,10 @@
     background-image: url(../images/toolbar_text.gif);
 }
 
+.designerToolbarTextBlock {
+    background-image: url(../images/toolbar_text.gif);
+}
+
 .designerToolbarLabelNumber {
     background-image: url(../images/toolbar_rectangle.gif);
 }
@@ -151,12 +157,12 @@
 .designerToolbarImage {
     background-image: url(../images/toolbar_image.gif);
 
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
 }
 
 #btn__warning {
     z-index: 1;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -189,10 +195,32 @@
     font-family: inherit;
     text-decoration: none;
     overflow: hidden;
-    -webkit-transition: box-shadow .4s cubic-bezier(.25,.8,.25,1),background-color .4s cubic-bezier(.25,.8,.25,1);
-    transition: box-shadow .4s cubic-bezier(.25,.8,.25,1),background-color .4s cubic-bezier(.25,.8,.25,1);
+    -webkit-transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), background-color .4s cubic-bezier(.25, .8, .25, 1);
+    transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), background-color .4s cubic-bezier(.25, .8, .25, 1);
     width: 95%;
 }
+
+.propertiesFieldKey {
+    width: 65px;
+    border: 1px solid #AAAAAA;
+    float: left;
+    font-size: 12px;
+    line-height: 20px;
+    border-right: none;
+    text-align: right;
+    padding-right: 5px;
+    margin-left: 5px;
+    padding: 3px;
+}
+
+.propertiesFieldTextInput {
+    width: 120px;
+    float: left;
+    height: 22px;
+    line-height: 20px;
+    padding-left: 5px;
+}
+
 /*! jQuery UI - v1.12.1 - 2019-03-24
 * http://jqueryui.com
 * Copyright jQuery Foundation and other contributors; Licensed MIT */

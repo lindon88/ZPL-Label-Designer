@@ -62,14 +62,14 @@ com.logicpartners.toolsWindow = function (designer, canvas) {
         });
 
         this.buttonView.append(controller.button);
-    }
+    };
 
     this.updatePosition = function (xchange) {
         this.boundingBox = this.toolsWindow[0].getBoundingClientRect();
-    }
+    };
 
     this.update = function (activeElement) {
-    }
+    };
 
     this.updatePosition(0);
-}
+};

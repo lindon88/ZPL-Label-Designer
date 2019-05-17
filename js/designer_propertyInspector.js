@@ -25,7 +25,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
     this.updatePosition = function (xchange) {
         // this.propertyInspector.css("left", parseInt(this.propertyInspector.css("left")) + xchange);
         this.boundingBox = this.propertyInspector[0].getBoundingClientRect();
-    }
+    };
 
 
     this.propertyViewContainer = $('<div></div>')
@@ -70,28 +70,16 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                     keys[key] = true;
 
                     if (key != "readonly" && getType.toString.call(activeElement[key]) != '[object Function]') {
-                        var elementKey = $('<div>' + key + '</div>')
-                            .css({
-                                "width": "65px",
-                                "border": "1px solid #AAAAAA",
-                                "float": "left",
-                                "font-size": "12px",
-                                "line-height": "20px",
-                                "border-right": "'none'",
-                                "text-align": "right",
-                                "padding-right": "5px",
-                                "margin-left": "5px",
-                                "padding": "3px"
-                            });
+                        var elementKey = $('<div class="propertiesFieldKey">' + key + '</div>');
 
-                        var elementValue = $('<input type="text" name="' + key + '" value="' + activeElement[key] + '">')
-                            .css({
-                                "width": "120px",
-                                "float": "left",
-                                "height": "22px",
-                                "line-height": "20px",
-                                "padding-left": "5px"
-                            });
+                        var elementValue = null;
+
+                        if (key === 'textArea') {
+                            elementValue = $('<textarea class="propertiesFieldTextInput" rows="4" cols="50" name="' + key + '" value="' + activeElement[key] + '"></textarea>');
+                        } else {
+                            elementValue = $('<input class="propertiesFieldTextInput" type="text" name="' + key + '" value="' + activeElement[key] + '">')
+                        }
+
 
                         if (!activeElement.readonly || $.inArray(key, activeElement.readonly) == -1) {
                             elementValue.on("keyup", {"objectProperty": key}, function (event) {
@@ -138,13 +126,13 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                         "clear": "both",
                         "padding-top": "2px"
                     })
-                    .append(deleteElement)
+                    .append(deleteElement);
 
 
                 this.propertyView.append(deleteElementContainer);
             }
         }
-    }
+    };
 
     this.updatePosition(0);
-}
+};

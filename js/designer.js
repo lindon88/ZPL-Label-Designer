@@ -15,13 +15,13 @@ HTMLCanvasElement.prototype.RelativeMouse = function (event) {
         totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
         totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
     }
-    while (currentElement = currentElement.offsetParent)
+    while (currentElement = currentElement.offsetParent);
 
     canvasX = event.clientX - totalOffsetX;
     canvasY = event.clientY - totalOffsetY;
 
     return {x: canvasX, y: canvasY}
-}
+};
 
 // From http://stackoverflow.com/a/4577326/697477
 var CP = window.CanvasRenderingContext2D && CanvasRenderingContext2D.prototype;
@@ -44,7 +44,7 @@ if (CP && CP.lineTo) {
             var xStep = Math.sqrt(dashLength * dashLength / (1 + slope * slope));
             if (dx < 0)
                 xStep = -xStep;
-            x += xStep
+            x += xStep;
             y += slope * xStep;
             this[draw ? 'lineTo' : 'moveTo'](x, y);
             distRemaining -= dashLength;
@@ -53,7 +53,7 @@ if (CP && CP.lineTo) {
 
         // Ensure that the last segment is closed for proper stroking
         this.moveTo(0, 0);
-    }
+    };
 
     CP.dashedStroke = function (x, y, x2, y2, dashArray) {
         this.beginPath();
@@ -107,7 +107,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         this.propertyInspector.updatePosition(xchange);
         this.labelInspector.updatePosition(xchange);
         this.updateCanvas();
-    }
+    };
 
     var elem = this.canvasElement.context;
 
@@ -120,7 +120,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
             self.dragStartPosition = self.canvas.RelativeMouse(event);
             self.dragLastPosition = self.dragStartPosition;
 
-            var detailData = e.originalEvent.detail
+            var detailData = e.originalEvent.detail;
             var elementObject = detailData.element;
             self.setNewObject(detailData.control);
 
@@ -269,7 +269,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         this.elements[this.currentLayer++] = object;
         this.activeElement = this.elements[this.currentLayer - 1];
         this.updateCanvas();
-    }
+    };
 
     this.deleteActiveElement = function () {
         if (this.activeElement) {
@@ -280,7 +280,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
                 }
             }
         }
-    }
+    };
 
     this.setActiveElement = function () {
         var coordinates = this.canvas.RelativeMouse(event);
@@ -295,7 +295,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         }
 
         this.updateCanvas();
-    }
+    };
 
     /**
      * Parameters: Coordinates on canvas.
@@ -307,7 +307,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
      */
     this.setActiveHandle = function (coords) {
         this.dragAction = this.getHandle(coords);
-    }
+    };
 
     this.getHandle = function (coords) {
         var result = 0;
@@ -338,12 +338,12 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
             result = 7;
 
         return result;
-    }
+    };
 
     this.move = function (x, y) {
         this.activeElement.x = x;
         this.activeElement.y = y;
-    }
+    };
 
     this.resize = function (xchange, ychange) {
         switch (this.dragAction) {
@@ -404,7 +404,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
             this.activeElement.setHeight(this.activeElement.getHeight() * -1);
             this.swapActionVertical();
         }
-    }
+    };
 
     this.swapActionVertical = function () {
         switch (this.dragAction) {
@@ -427,7 +427,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
                 this.dragAction = 3;
                 break;
         }
-    }
+    };
 
     this.swapActionHorizontal = function () {
         switch (this.dragAction) {
@@ -450,11 +450,11 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
                 this.dragAction = 6;
                 break;
         }
-    }
+    };
 
     this.update = function () {
         this.propertyInspector.update(this.activeElement);
-    }
+    };
 
     this.updateCanvas = function () {
         this.update();
@@ -481,7 +481,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         this.drawingContext.lineWidth = 2;
         if (this.activeElement)
             this.activeElement.drawActive(this.drawingContext);
-    }
+    };
 
     this.exportMetaData = function () {
         var bufferDataArray = [];
@@ -496,7 +496,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         var json = JSON.stringify(bufferDataArray);
 
         return {"json": json};
-    }
+    };
 
     this.generateZPL = function () {
         var data = "^XA\r\n" +
@@ -510,20 +510,20 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         for (var i = 0; i < this.currentLayer; i++) {
             if (this.elements[i]) {
                 bufferData += this.elements[i].getZPLData();
-                data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth) + '\n';
+                data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth) + '\r\n';
             }
         }
-        data = data.substring(0, data.length - 1);
+        // data = data.substring(0, data.length - 1);
 
-        data += "\r\n";
-        data += "{{ batchNumber && labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS' : ''}}\r\n" +
-            "{{ batchNumber && !labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS' : ''}}\r\n" +
-            "{{ labelNr && !batchNumber ? '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS' : ''}}\r\n";
+        // data += "\r\n";
+        // data += "{{ batchNumber && labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS' : ''}}\r\n" +
+        //     "{{ batchNumber && !labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS' : ''}}\r\n" +
+        //     "{{ labelNr && !batchNumber ? '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS' : ''}}\r\n";
 
         data += "^XZ\r\n";
 
         return {"data": bufferData, "zpl": data};
-    }
+    };
 
     this.setNewObject = function (controller) {
         if (controller) {
@@ -533,14 +533,14 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
             this.newObject = null;
             this.newObjectController = null;
         }
-    }
+    };
 
     this.addRectangle = function (x, y, width, height) {
         this.elements[this.currentLayer++] = new this.Rectangle(x, y, width, height);
         this.updateCanvas();
-    }
+    };
 
     this.updateLabelSize(labelWidth, labelHeight);
 
     this.updateCanvas();
-}
+};

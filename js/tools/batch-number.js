@@ -10,7 +10,7 @@ com.logicpartners.designerTools.batchNumber = function () {
     this.counter = 1;
     this.button = $("<div></div>").addClass("designerToolbarBatchNumber designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
-        this.name = 'Batch #:';
+        this.name = 'Batch #: ';
         this.placeholderKey = '#batchNr';
         this.placeholderPreviewText = 'Generated text here';
         this.x = x;
@@ -69,7 +69,7 @@ com.logicpartners.designerTools.batchNumber = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + ' ' + this.placeholderKey + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + this.placeholderKey + "^FS";
         };
 
         this.draw = function (context) {
@@ -78,7 +78,7 @@ com.logicpartners.designerTools.batchNumber = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var displayText = this.name + ' ' + this.placeholderPreviewText;
+            var displayText = this.name  + this.placeholderPreviewText;
             var measuredText = context.measureText(displayText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";

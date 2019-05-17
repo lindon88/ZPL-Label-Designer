@@ -74,9 +74,9 @@ com.logicpartners.designerTools.image = function() {
 						self.data = imgData.data;
 						
 						ctx.putImageData(imgData, 0, 0);
-					}
+					};
 					insertImg[0].src = reader.result;
-				}
+				};
 				reader.readAsDataURL(file);
 			}
 		}).appendTo(dialog);
@@ -149,7 +149,7 @@ com.logicpartners.designerTools.image = function() {
 				}
 				
 				return "";
-			}
+			};
 			
 			var imgData = "";
 			var bytesPerLine = Math.ceil(this.width / 8);
@@ -214,39 +214,39 @@ com.logicpartners.designerTools.image = function() {
 			}
 			
 			context.putImageData(ctxData, 0, 0);
-		}
+		};
 		
 		this.setWidth = function(width) {
 			//this.width = width;
-		}
+		};
 		
 		this.getWidth = function() {
 			return this.width;
-		}
+		};
 		
 		this.setHeight = function(height) {
 			//height = height;
-		}
+		};
 		
 		this.getHeight = function() {
 			return this.height;
-		}
+		};
 
 		this.setHandle = function(coords) {
 			this.handle = this.resizeZone(coords);
-		}
+		};
 
 		this.getHandle = function() {
 			return this.handle;
-		}
+		};
 
 		this.drawActive = function(context) {
 			context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height) - 1, [2, 2]);
-		}
+		};
 
 		this.hitTest = function(coords) {
 			return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(this.width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height));
 		}
 	}
-}
+};
 
