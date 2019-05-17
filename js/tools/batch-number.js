@@ -5,13 +5,13 @@ if (!com.logicpartners)
 if (!com.logicpartners.designerTools)
     com.logicpartners.designerTools = {};
 
-com.logicpartners.designerTools.labelNumber = function () {
+com.logicpartners.designerTools.batchNumber = function () {
     var self = this;
     this.counter = 1;
-    this.button = $("<div></div>").addClass("designerToolbarLabelNumber designerToolbarButton").attr("title", "Text").append($("<div></div>"));
+    this.button = $("<div></div>").addClass("designerToolbarBatchNumber designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
-        this.name = 'Label';
-        this.previewText = '0001';
+        this.name = 'Batch';
+        this.previewText = '1000';
         this.x = x;
         this.y = y;
         this.fontSize = 20;
@@ -66,8 +66,8 @@ com.logicpartners.designerTools.labelNumber = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            // '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS'
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + ' #: #labelNr' + "^FS";
+            // '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS'
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + ' #: #batchNr' + "^FS";
         };
 
         this.draw = function (context) {

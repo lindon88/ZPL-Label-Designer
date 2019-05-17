@@ -11,7 +11,6 @@ com.logicpartners.designerTools.text = function () {
     this.button = $("<div></div>").addClass("designerToolbarText designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
         this.name = "Textbox " + self.counter++;
-        this.type = 'Textbox';
         this.text = this.name;
         this.x = x;
         this.y = y;
@@ -19,10 +18,10 @@ com.logicpartners.designerTools.text = function () {
         this.fontType = "Arial";
         this.width = 100;
         this.height = 0;
+        this.type = 'Textbox';
 
         if (fromObject) {
             this.name = fromObject.name;
-            this.type = fromObject.type;
             this.text = fromObject.text;
             this.x = fromObject.x;
             this.y = fromObject.y;
@@ -30,6 +29,7 @@ com.logicpartners.designerTools.text = function () {
             this.fontType = fromObject.fontType;
             this.width = fromObject.width;
             this.height = fromObject.height;
+            this.type = fromObject.type;
         }
 
 

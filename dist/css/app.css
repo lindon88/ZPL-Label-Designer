@@ -140,6 +140,10 @@
     background-image: url(../images/toolbar_rectangle.gif);
 }
 
+.designerToolbarBatchNumber {
+    background-image: url(../images/toolbar_image.gif);
+}
+
 .designerToolbarImage {
     background-image: url(../images/toolbar_image.gif);
 

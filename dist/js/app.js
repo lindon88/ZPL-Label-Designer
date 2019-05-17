@@ -258,42 +258,42 @@ var a={0:"00110",1:"10001",2:"01001",3:"11000",4:"00101",5:"10100",6:"01100",7:"
 (f=a.quite,b.textAlign="left"):"right"==a.textAlign?(f=d.width-a.quite,b.textAlign="right"):(f=d.width/2,b.textAlign="center");b.fillText(c,f,g)},b=d.getContext("2d");d.width=f.length*a.width+2*a.quite;d.height=a.height+(a.displayValue?1.3*a.fontSize:0);b.clearRect(0,0,d.width,d.height);a.backgroundColor&&(b.fillStyle=a.backgroundColor,b.fillRect(0,0,d.width,d.height));b.fillStyle=a.lineColor;for(var h=0;h<f.length;h++){var r=h*a.width+a.quite;"1"==f[h]&&b.fillRect(r,0,a.width,a.height)}a.displayValue&&
 n(m);uri=d.toDataURL("image/png");window.jQuery&&c instanceof jQuery?c.get(0)instanceof HTMLCanvasElement||c.attr("src",uri):c instanceof HTMLCanvasElement||c.setAttribute("src",uri);l&&l(!0)};JsBarcode.defaults={width:2,height:100,quite:10,format:"CODE128",displayValue:!1,font:"monospace",textAlign:"center",fontSize:12,backgroundColor:"",lineColor:"#000"};window.jQuery&&(c.fn.JsBarcode=function(c,m,a){JsBarcode(this,c,m,a);return this})})(window.jQuery);
 if (!com)
-	var com = {};
+    var com = {};
 if (!com.logicpartners)
-	com.logicpartners = {};
+    com.logicpartners = {};
 if (!com.logicpartners.designerTools)
-	com.logicpartners.designerTools = {};
-	
-com.logicpartners.designerTools.barcode = function() {
-	var self = this;
-	this.counter = 1;
-	this.button = $("<div></div>").addClass("designerToolbarBarcode designerToolbarButton").attr("title", "Barcode").append($("<div></div>"));
-	this.object = function(x, y, width, height, fromObject) {
-		var width = 100;
-		var canvasHolder = $("<canvas></canvas>").prop("width", "100").prop("height", "1");
-		this.name = "Barcode " + self.counter++;
-		this.text = "BARCODE";
-        this.type = 'Barcode';
+    com.logicpartners.designerTools = {};
+
+com.logicpartners.designerTools.barcode = function () {
+    var self = this;
+    this.counter = 1;
+    this.button = $("<div></div>").addClass("designerToolbarBarcode designerToolbarButton").attr("title", "Barcode").append($("<div></div>"));
+    this.object = function (x, y, width, height, fromObject) {
+        var width = 100;
+        var canvasHolder = $("<canvas></canvas>").prop("width", "100").prop("height", "1");
+        this.name = "Barcode " + self.counter++;
+        this.text = "BARCODE";
         this.x = x;
-		this.y = y;
-		// this.width = width; // NOT APPLIED
-		this.height = height;
+        this.y = y;
+        // this.width = width; // NOT APPLIED
+        this.height = height;
+        this.type = 'Barcode';
 
         if (fromObject) {
             this.name = fromObject.name;
             this.text = fromObject.text;
-            this.type = fromObject.type;
             this.x = fromObject.x;
             this.y = fromObject.y;
             // this.width = fromObject.width;
             this.height = fromObject.height;
+            this.type = fromObject.type;
         }
 
         this.readonly = ["type"];
-		
-		this.getZPLData = function() {
+
+        this.getZPLData = function () {
             return "";
-		}
+        };
 
         this.getZPLMetaData = function () {
             return {
@@ -305,61 +305,181 @@ com.logicpartners.designerTools.barcode = function() {
                 // width: this.width,
                 height: this.height
             };
+        };
+
+        this.toZPL = function (labelx, labely, labelwidth, labelheight) {
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^BY1^B3N,N," + this.height + "N,N^FD" + this.text + "^FS";
+        };
+
+        this.draw = function (context) {
+            canvasHolder.JsBarcode(this.text, {width: 1, height: 1});
+            var cwidth = canvasHolder[0].width;
+            var cheight = canvasHolder[0].height;
+            var ctx = canvasHolder[0].getContext('2d');
+            width = cwidth;
+
+            var cData = ctx.getImageData(0, 0, cwidth, cheight);
+
+            for (var i = 0; i < cwidth; i++) {
+                if (cData.data[i * 4 + 3] == 255) { // Black (barcode = black or white)
+                    // Draw a black rectangle at this point.
+                    context.fillRect(this.x + i, this.y, 1, this.height);
+                }
+            }
+        };
+
+        this.setWidth = function (width) {
+            //this.width = width;
+        };
+
+        this.getWidth = function () {
+            return width;
+        };
+
+        this.setHeight = function (height) {
+            this.height = height;
+        };
+
+        this.getHeight = function () {
+            return this.height;
+        };
+
+        this.setHandle = function (coords) {
+            this.handle = this.resizeZone(coords);
+        };
+
+        this.getHandle = function () {
+            return this.handle;
+        };
+
+        this.drawActive = function (context) {
+            context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(width) - 1, parseInt(this.y) + parseInt(this.height) - 1, [2, 2]);
+        };
+
+        this.hitTest = function (coords) {
+            return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height));
+        }
+    }
+};
+
+if (!com)
+    var com = {};
+if (!com.logicpartners)
+    com.logicpartners = {};
+if (!com.logicpartners.designerTools)
+    com.logicpartners.designerTools = {};
+
+com.logicpartners.designerTools.batchNumber = function () {
+    var self = this;
+    this.counter = 1;
+    this.button = $("<div></div>").addClass("designerToolbarBatchNumber designerToolbarButton").attr("title", "Text").append($("<div></div>"));
+    this.object = function (x, y, width, height, fromObject) {
+        this.name = 'Batch';
+        this.previewText = '1000';
+        this.x = x;
+        this.y = y;
+        this.fontSize = 20;
+        this.fontType = "Arial";
+        this.width = 100;
+        this.height = 0;
+        this.type = 'LabelNumber';
+
+        if (fromObject) {
+            this.name = fromObject.name;
+            this.previewText = fromObject.previewText;
+            this.x = fromObject.x;
+            this.y = fromObject.y;
+            this.fontSize = fromObject.fontSize;
+            this.fontType = fromObject.fontType;
+            this.width = fromObject.width;
+            this.height = fromObject.height;
+            this.type = fromObject.type;
         }
 
-		this.toZPL = function(labelx, labely, labelwidth, labelheight) {
-			return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^BY1^B3N,N," + this.height + "N,N^FD" + this.text + "^FS";
-		}
+        this.readonly = ["width", "height", "type", 'fontType', 'name'];
 
-		this.draw = function(context) {
-			canvasHolder.JsBarcode(this.text, { width: 1, height : 1});
-			var cwidth = canvasHolder[0].width;
-			var cheight = canvasHolder[0].height;
-			var ctx = canvasHolder[0].getContext('2d');
-			width = cwidth;
-			
-			var cData = ctx.getImageData(0, 0, cwidth, cheight);
-			
-			for (var i = 0; i < cwidth; i++) {
-				if (cData.data[i * 4 + 3] == 255) { // Black (barcode = black or white)
-					// Draw a black rectangle at this point.
-					context.fillRect(this.x + i, this.y, 1, this.height);
-				}
-			}
-		}
-		
-		this.setWidth = function(width) {
-			//this.width = width;
-		}
-		
-		this.getWidth = function() {
-			return width;
-		}
-		
-		this.setHeight = function(height) {
-			this.height = height;
-		}
-		
-		this.getHeight = function() {
-			return this.height;
-		}
 
-		this.setHandle = function(coords) {
-			this.handle = this.resizeZone(coords);
-		}
+        this.getFontHeight = function () {
+            var textMeasure = $("<div></div>").css({
+                "font-size": this.fontSize + "px",
+                "font-family": this.fontType,
+                "opacity": 0,
+            }).text("M").appendTo($("body"));
 
-		this.getHandle = function() {
-			return this.handle;
-		}
+            var height = textMeasure.outerHeight();
+            textMeasure.remove();
+            return height;
+        };
 
-		this.drawActive = function(context) {
-			context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(width) - 1, parseInt(this.y) + parseInt(this.height) - 1, [2, 2]);
-		}
+        this.getZPLData = function () {
+            return "";
+        };
 
-		this.hitTest = function(coords) {
-			return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height));
-		}
-	}
+        this.getZPLMetaData = function () {
+            return {
+                name: this.name,
+                text: this.previewText,
+                type: this.type,
+                x: this.x,
+                y: this.y,
+                fontSize: this.fontSize,
+                fontType: this.fontType,
+                width: this.width,
+                height: this.height
+            };
+        };
+
+        this.toZPL = function (labelx, labely, labelwidth, labelheight) {
+            // '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS'
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + ' #: #batchNr' + "^FS";
+        };
+
+        this.draw = function (context) {
+            context.font = this.fontSize + "px " + this.fontType;
+            var oColor = context.fillStyle;
+            context.fillStyle = "white";
+            this.height = this.getFontHeight();
+            var measuredText = context.measureText(this.previewText);
+            this.width = measuredText.width;
+            context.globalCompositeOperation = "difference";
+            context.fillText(this.previewText, this.x, this.y + (this.height * 0.75));
+            context.globalCompositeOperation = "source-over";
+            context.fillStyle = oColor;
+            //context.fillRect(this.x, this.y, this.width, this.height);
+        };
+
+        this.setWidth = function (width) {
+            //this.width = width;
+        };
+
+        this.getWidth = function () {
+            return this.width;
+        };
+
+        this.setHeight = function (height) {
+            //height = height;
+        };
+
+        this.getHeight = function () {
+            return this.height * 0.75;
+        };
+
+        this.setHandle = function (coords) {
+            this.handle = this.resizeZone(coords);
+        };
+
+        this.getHandle = function () {
+            return this.handle;
+        };
+
+        this.drawActive = function (context) {
+            context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.9) - 1, [2, 2]);
+        };
+
+        this.hitTest = function (coords) {
+            return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(this.width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height) * 0.75);
+        }
+    }
 };
 
 if (!com)
@@ -628,25 +748,25 @@ com.logicpartners.designerTools.labelNumber = function () {
     this.button = $("<div></div>").addClass("designerToolbarLabelNumber designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
         this.name = 'Label';
-        this.type = 'LabelNumber';
-        this.text = '0001';
+        this.previewText = '0001';
         this.x = x;
         this.y = y;
         this.fontSize = 20;
         this.fontType = "Arial";
         this.width = 100;
         this.height = 0;
+        this.type = 'LabelNumber';
 
         if (fromObject) {
             this.name = fromObject.name;
-            this.type = fromObject.type;
-            this.text = fromObject.text;
+            this.previewText = fromObject.previewText;
             this.x = fromObject.x;
             this.y = fromObject.y;
             this.fontSize = fromObject.fontSize;
             this.fontType = fromObject.fontType;
             this.width = fromObject.width;
             this.height = fromObject.height;
+            this.type = fromObject.type;
         }
 
         this.readonly = ["width", "height", "type", 'fontType', 'name'];
@@ -671,7 +791,7 @@ com.logicpartners.designerTools.labelNumber = function () {
         this.getZPLMetaData = function () {
             return {
                 name: this.name,
-                text: this.text,
+                text: this.previewText,
                 type: this.type,
                 x: this.x,
                 y: this.y,
@@ -684,7 +804,7 @@ com.logicpartners.designerTools.labelNumber = function () {
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
             // '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS'
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FDLabel #: #labelNr' + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + ' #: #labelNr' + "^FS";
         };
 
         this.draw = function (context) {
@@ -692,10 +812,10 @@ com.logicpartners.designerTools.labelNumber = function () {
             var oColor = context.fillStyle;
             context.fillStyle = "white";
             this.height = this.getFontHeight();
-            var measuredText = context.measureText(this.text);
+            var measuredText = context.measureText(this.previewText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
-            context.fillText(this.text, this.x, this.y + (this.height * 0.75));
+            context.fillText(this.previewText, this.x, this.y + (this.height * 0.75));
             context.globalCompositeOperation = "source-over";
             context.fillStyle = oColor;
             //context.fillRect(this.x, this.y, this.width, this.height);
@@ -748,26 +868,26 @@ com.logicpartners.designerTools.rectangle = function () {
     this.button = $("<div></div>").addClass("designerToolbarRectangle designerToolbarButton").attr("title", "Rectangle").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
         this.name = "Rectangle " + self.counter++;
-        this.type = 'Rectangle';
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.type = 'Rectangle';
 
         if (fromObject) {
             this.name = fromObject.name;
-            this.type = fromObject.type;
             this.x = fromObject.x;
             this.y = fromObject.y;
             this.width = fromObject.width;
             this.height = fromObject.height;
+            this.type = fromObject.type;
         }
 
         this.readonly = ["type"];
 
         this.getZPLData = function () {
             return "";
-        }
+        };
 
         this.getZPLMetaData = function () {
             return {
@@ -778,7 +898,7 @@ com.logicpartners.designerTools.rectangle = function () {
                 width: this.width,
                 height: this.height
             };
-        }
+        };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
             if (this.width > this.height) {
@@ -786,45 +906,45 @@ com.logicpartners.designerTools.rectangle = function () {
             }
 
             return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^GB" + "0," + this.height + "," + this.width + "^FS";
-        }
+        };
 
         this.draw = function (context) {
             context.fillRect(this.x, this.y, this.width, this.height);
-        }
+        };
 
         this.setWidth = function (width) {
             this.width = parseInt(width);
-        }
+        };
 
         this.getWidth = function () {
             return this.width;
-        }
+        };
 
         this.setHeight = function (height) {
             this.height = height;
-        }
+        };
 
         this.getHeight = function () {
             return this.height;
-        }
+        };
 
         this.setHandle = function (coords) {
             this.handle = this.resizeZone(coords);
-        }
+        };
 
         this.getHandle = function () {
             return this.handle;
-        }
+        };
 
         this.drawActive = function (context) {
             context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height) - 1, [2, 2]);
-        }
+        };
 
         this.hitTest = function (coords) {
             return (coords.x >= parseInt(this.x) && coords.x <= parseInt(this.x) + parseInt(this.width) && coords.y >= parseInt(this.y) && coords.y <= parseInt(this.y) + parseInt(this.height));
         }
     }
-}
+};
 
 if (!com)
     var com = {};
@@ -839,7 +959,6 @@ com.logicpartners.designerTools.text = function () {
     this.button = $("<div></div>").addClass("designerToolbarText designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
         this.name = "Textbox " + self.counter++;
-        this.type = 'Textbox';
         this.text = this.name;
         this.x = x;
         this.y = y;
@@ -847,10 +966,10 @@ com.logicpartners.designerTools.text = function () {
         this.fontType = "Arial";
         this.width = 100;
         this.height = 0;
+        this.type = 'Textbox';
 
         if (fromObject) {
             this.name = fromObject.name;
-            this.type = fromObject.type;
             this.text = fromObject.text;
             this.x = fromObject.x;
             this.y = fromObject.y;
@@ -858,6 +977,7 @@ com.logicpartners.designerTools.text = function () {
             this.fontType = fromObject.fontType;
             this.width = fromObject.width;
             this.height = fromObject.height;
+            this.type = fromObject.type;
         }
 
 
