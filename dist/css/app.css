@@ -144,6 +144,10 @@
     background-image: url(../images/toolbar_image.gif);
 }
 
+.designerToolbarVariable {
+    background-image: url(../images/toolbar_rectangle.gif);
+}
+
 .designerToolbarImage {
     background-image: url(../images/toolbar_image.gif);
 
