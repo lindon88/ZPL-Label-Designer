@@ -37,7 +37,7 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 	}
 	
 	this.addTool = function(controller) {
-		console.log(controller.workspace.html());
+		// console.log(controller.workspace.html());
 		this.buttonView.append(controller.workspace);
 	}
 }

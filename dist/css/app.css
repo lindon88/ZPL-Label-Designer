@@ -136,6 +136,10 @@
     background-image: url(../images/toolbar_text.gif);
 }
 
+.designerToolbarLabelNumber {
+    background-image: url(../images/toolbar_rectangle.gif);
+}
+
 .designerToolbarImage {
     background-image: url(../images/toolbar_image.gif);
 

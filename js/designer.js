@@ -104,7 +104,6 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         this.canvasElement.prop("width", this.labelWidth + 10).prop("height", this.labelHeight + 10);
         this.labelX = this.canvas.width / 2 - this.labelWidth / 2;
         this.labelY = 5;
-        console.log(xchange);
         this.propertyInspector.updatePosition(xchange);
         this.labelInspector.updatePosition(xchange);
         this.updateCanvas();
@@ -171,7 +170,6 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         .on("mousemove", function () {
             if (self.dragging && self.activeElement) {
                 var coords = self.canvas.RelativeMouse(event);
-                //console.log(self.dragAction);
                 switch (self.dragAction) {
                     case 0:
                         self.move(coords.x + self.dragElementOffset.x, coords.y + self.dragElementOffset.y);
@@ -496,7 +494,6 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         }
 
         var json = JSON.stringify(bufferDataArray);
-        console.log(json);
 
         return {"json": json};
     }
@@ -519,11 +516,12 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         data = data.substring(0, data.length - 1);
 
         data += "\r\n";
-        data += "{{ batchNumber && labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS' : ''}}\r\n{{ batchNumber && !labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS' : ''}}\r\n{{ labelNr && !batchNumber ? '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS' : ''}}\r\n";
+        data += "{{ batchNumber && labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS' : ''}}\r\n" +
+            "{{ batchNumber && !labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS' : ''}}\r\n" +
+            "{{ labelNr && !batchNumber ? '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS' : ''}}\r\n";
 
         data += "^XZ\r\n";
 
-        console.log(bufferData + data);
         return {"data": bufferData, "zpl": data};
     }
 

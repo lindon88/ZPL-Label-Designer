@@ -53,7 +53,6 @@ com.logicpartners.designerTools.barcode = function() {
 		}
 
 		this.draw = function(context) {
-			console.log(this.text);
 			canvasHolder.JsBarcode(this.text, { width: 1, height : 1});
 			var cwidth = canvasHolder[0].width;
 			var cheight = canvasHolder[0].height;

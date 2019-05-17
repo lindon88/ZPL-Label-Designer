@@ -95,7 +95,6 @@ com.logicpartners.designerTools.image = function() {
 				"Insert" : function() {
 					// Insert the image onto the screen.
 					Toolbar.labelDesigner.addObject(new self.object(0, 0, self.width, self.height, self.data));
-					console.log("test");
 					$(this).dialog("close");
 				},
 				"Cancel" : function() {
@@ -107,7 +106,6 @@ com.logicpartners.designerTools.image = function() {
 		.on("dialogclose", { toolbar : toolbar }, function(event) {
 			self.button.removeClass("designerToolbarButtonActive");
 			event.data.toolbar.setTool(null);
-			console.log(self.data);
 		});
 	};
 	
