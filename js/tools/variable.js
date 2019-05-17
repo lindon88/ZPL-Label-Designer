@@ -11,8 +11,8 @@ com.logicpartners.designerTools.variable = function () {
     this.button = $("<div></div>").addClass("designerToolbarVariable designerToolbarButton").attr("title", "Text").append($("<div></div>"));
     this.object = function (x, y, width, height, fromObject) {
         this.name = 'Stock Id:';
-        this.value = '#variablePlaceholderValue';
-        this.previewText = this.name  + ' Your text here';
+        this.placeholderKey = '#variablePlaceholderplaceholderKey';
+        this.placeholderPreviewText = 'Your text here';
         this.x = x;
         this.y = y;
         this.fontSize = 20;
@@ -23,8 +23,8 @@ com.logicpartners.designerTools.variable = function () {
 
         if (fromObject) {
             this.name = fromObject.name;
-            this.value = fromObject.value;
-            this.previewText = fromObject.previewText;
+            this.placeholderKey = fromObject.placeholderKey;
+            this.placeholderPreviewText = fromObject.placeholderPreviewText;
             this.x = fromObject.x;
             this.y = fromObject.y;
             this.fontSize = fromObject.fontSize;
@@ -56,20 +56,20 @@ com.logicpartners.designerTools.variable = function () {
         this.getZPLMetaData = function () {
             return {
                 name: this.name,
-                text: this.previewText,
-                type: this.type,
+                placeholderKey: this.placeholderKey,
+                placeholderPreviewText: this.placeholderPreviewText,
                 x: this.x,
                 y: this.y,
                 fontSize: this.fontSize,
                 fontType: this.fontType,
                 width: this.width,
-                height: this.height
+                height: this.height,
+                type: this.type,
             };
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            // '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS'
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + ' ' + this.value + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + ' ' + this.placeholderKey + "^FS";
         };
 
         this.draw = function (context) {
@@ -77,10 +77,12 @@ com.logicpartners.designerTools.variable = function () {
             var oColor = context.fillStyle;
             context.fillStyle = "white";
             this.height = this.getFontHeight();
-            var measuredText = context.measureText(this.previewText);
+
+            var displayText = this.name + ' ' + this.placeholderPreviewText;
+            var measuredText = context.measureText(displayText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
-            context.fillText(this.previewText, this.x, this.y + (this.height * 0.75));
+            context.fillText(displayText, this.x, this.y + (this.height * 0.75));
             context.globalCompositeOperation = "source-over";
             context.fillStyle = oColor;
             //context.fillRect(this.x, this.y, this.width, this.height);
