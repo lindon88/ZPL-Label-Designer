@@ -1,3 +1,10 @@
+.designerUtilityLabelInspector {
+    order: 3;
+    margin-left: auto;
+    /*display: none;*/
+    /*TODO*/
+}
+
 .designerUtilityWindow {
     order: 2;
     width: 24rem;
@@ -12,15 +19,6 @@
     align-self: flex-start;
 }
 
-.designerUtilityLabelInspector {
-    height: 40px;
-    line-height: 36px;
-
-
-    display: none;
-    /*TODO*/
-}
-
 .designerPropertyContainer {
 }
 
@@ -28,7 +26,6 @@
 }
 
 .designerToolbarContent {
-    /*height: 300px;*/
     background: #FFFFFF;
 }
 
@@ -38,48 +35,34 @@
 
 .designerLabelControl {
     padding: 2px;
-    position: absolute !important;
-    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-    top: -4rem;
-    display: flex;
 }
 
 .designerLabelControlCustom {
-    display: flex;
     padding: 0 4px 2px 4px;
     margin: 0 1px 0 4px;
-    font-size: 12px;
     border-radius: 5px;
     background: #EEEEEE;
     border: 1px solid #DDDDDD;
-    top: -4rem;
-    left: 49rem;
-    position: absolute;
 }
 
 .designerLabelControlElement {
     width: 60px;
 }
 
+.designerLabelControlCustom div {
+}
+
+.designerLabelControlCustom button {
+    padding: 0 1rem;
+}
+
 .designerLabelControlContainer {
-    display: flex;
-    float: left;
-    padding: 0 4px 2px 4px;
+    padding: 1rem;
     margin: 0 1px 0 4px;
     font-size: 12px;
     border-radius: 5px;
     background: #EEEEEE;
     border: 1px solid #DDDDDD;
-    height: 33px;
-}
-
-.designerLabelControlCustom div {
-    display: flex;
-}
-
-.designerLabelControlCustom button {
-    padding: 0 1rem;
 }
 
 .designerPropertyTitle {
@@ -125,7 +108,7 @@
     fill: currentColor;
 }
 
-#btn__warning {
+.label-designer-btn__warning {
     z-index: 1;
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
     display: inline-block;

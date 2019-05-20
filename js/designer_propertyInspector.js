@@ -98,7 +98,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                 var indexToDelete = this.labelDesigner.elements.indexOf(activeElement);
                 var elements = this.labelDesigner.elements;
 
-                var deleteElement = $('<button id="btn__warning">Delete element</button>')
+                var deleteElement = $('<button class="label-designer-btn__warning">Delete element</button>')
                     .on('click', null, function () {
                         elements.splice(indexToDelete, 1);
 

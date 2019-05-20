@@ -13,7 +13,7 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 	// Create the property window.
 	this.inspectorWindow = $('<div></div>')
 			.addClass("designerUtilityToolbar designerUtilityLabelInspector")
-			.insertAfter(this.canvasElement);
+			.insertAfter($(this.canvasElement).parent());
 
 	this.toolsViewContainer = $('<div></div>')
 			.addClass("designerLabelContent")
