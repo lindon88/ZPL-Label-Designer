@@ -1,20 +1,26 @@
 .designerUtilityWindow {
-    position: absolute !important;
+    /*position: absolute !important;*/
+    /*width: 24rem;*/
+    /*box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);*/
+    /*left: 20rem;*/
+    /*margin-left: auto;*/
+    /*top: 3rem;*/
+    /*right: 21.2rem;*/
+
+    order: 2;
     width: 24rem;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
     left: 20rem;
-    margin-left: auto;
-    top: 3rem;
-    right: 21.2rem;
 }
 
 .designerUtilityToolbar {
-    position: absolute !important;
+
+    /* position: absolute !important; */
     width: 24rem;
     box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
     border-radius: 4px;
-    top: 3rem;
-    left: -6rem;
+    /* top: 3rem; */
+    /* left: -6rem; */
 }
 
 .designerUtilityLabelInspector {
@@ -239,7 +245,13 @@
 }
 
 .label-wrapper {
-    margin-left: 7.4rem;
     position: relative;
     height: 32rem;
+    display: flex;
+}
+
+.canvas-styles {
+    order: 1;
+    cursor: default;
+    align-self: flex-start;
 }
