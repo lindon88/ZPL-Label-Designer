@@ -458,10 +458,11 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         this.update();
 
         this.drawingContext.fillStyle = "#FFFFFF";
+        this.drawingContext.setLineDash([4]);
         this.drawingContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Draw the boundary.
-        this.drawingContext.strokeStyle = "#FF0000";
+        this.drawingContext.strokeStyle = "#000";
         this.drawingContext.lineWidth = 2;
         this.drawingContext.strokeRect(this.labelX, this.labelY, this.labelWidth, this.labelHeight);
 

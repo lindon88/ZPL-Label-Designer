@@ -15,7 +15,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
     // Create the property window.
     this.propertyInspector = $('<div></div>')
         .addClass("designerUtilityWindow")
-        .insertAfter(this.canvasElement);
+        .insertAfter($(this.canvasElement).parent());
 
 
     this.propertyViewContainer = $('<div></div>')

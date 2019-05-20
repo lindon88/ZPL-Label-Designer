@@ -13,21 +13,11 @@ com.logicpartners.toolsWindow = function (designer, canvas) {
     // Create the property window.
     this.toolsWindow = $('<div></div>')
         .addClass("designerUtilityToolbar")
-        .css({
-            // "left": 0,
-            // "top": this.canvas.getBoundingClientRect().top
-        })
-        //.draggable({handle: "div.designerPropertyTitle"})
-        .insertAfter(this.canvasElement);
+        .insertAfter($(this.canvasElement).parent());
 
 
     this.toolsViewContainer = $('<div></div>')
         .addClass("designerToolbarContent")
-        // .resizable({
-        //     resize: function (event, ui) {
-        //         ui.size.width = ui.originalSize.width;
-        //     }
-        // })
         .appendTo(this.toolsWindow);
 
     this.titleBar = $('<div>Tools</div>')

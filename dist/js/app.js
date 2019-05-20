@@ -1797,10 +1797,11 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         this.update();
 
         this.drawingContext.fillStyle = "#FFFFFF";
+        this.drawingContext.setLineDash([4]);
         this.drawingContext.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         // Draw the boundary.
-        this.drawingContext.strokeStyle = "#FF0000";
+        this.drawingContext.strokeStyle = "#000";
         this.drawingContext.lineWidth = 2;
         this.drawingContext.strokeRect(this.labelX, this.labelY, this.labelWidth, this.labelHeight);
 
@@ -1929,7 +1930,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
     // Create the property window.
     this.propertyInspector = $('<div></div>')
         .addClass("designerUtilityWindow")
-        .insertAfter(this.canvasElement);
+        .insertAfter($(this.canvasElement).parent());
 
 
     this.propertyViewContainer = $('<div></div>')
@@ -2021,10 +2022,6 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                     });
 
                 var deleteElementContainer = $('<div></div>')
-                    .css({
-                        "clear": "both",
-                        "padding-top": "2px"
-                    })
                     .append(deleteElement);
 
 
@@ -2049,21 +2046,11 @@ com.logicpartners.toolsWindow = function (designer, canvas) {
     // Create the property window.
     this.toolsWindow = $('<div></div>')
         .addClass("designerUtilityToolbar")
-        .css({
-            // "left": 0,
-            // "top": this.canvas.getBoundingClientRect().top
-        })
-        //.draggable({handle: "div.designerPropertyTitle"})
-        .insertAfter(this.canvasElement);
+        .insertAfter($(this.canvasElement).parent());
 
 
     this.toolsViewContainer = $('<div></div>')
         .addClass("designerToolbarContent")
-        // .resizable({
-        //     resize: function (event, ui) {
-        //         ui.size.width = ui.originalSize.width;
-        //     }
-        // })
         .appendTo(this.toolsWindow);
 
     this.titleBar = $('<div>Tools</div>')

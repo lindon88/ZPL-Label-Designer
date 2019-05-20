@@ -87,7 +87,7 @@
     color: #fff;
     font-size: 12px;
     font-weight: bold;
-    padding: 5px;
+    padding: 5px 5px 5px 10px;
     line-height: 20px;
 }
 
@@ -178,20 +178,29 @@
     flex-basis: 70%;
 }
 
-.label-wrapper {
-    position: relative;
-    display: flex;
-    font-family: sans-serif;
+.canvas-styles {
+    cursor: default;
+    margin: .5rem;
+    outline: none;
 }
 
-.canvas-styles {
+.label-wrapper-content {
     order: 1;
     cursor: default;
     align-self: flex-start;
-    margin: 1rem;
+    margin: 0 1rem;
+    outline: none;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
 .label-designer-form-group {
     display: flex;
-    padding: 5px;
+    padding: 2px 5px;
+}
+
+.label-wrapper {
+    position: relative;
+    display: flex;
+    font-family: sans-serif;
+    margin-left: 24px;
 }
