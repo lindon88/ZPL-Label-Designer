@@ -104,8 +104,6 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         this.canvasElement.prop("width", this.labelWidth + 10).prop("height", this.labelHeight + 10);
         this.labelX = this.canvas.width / 2 - this.labelWidth / 2;
         this.labelY = 5;
-        this.propertyInspector.updatePosition(xchange);
-        this.labelInspector.updatePosition(xchange);
         this.updateCanvas();
     };
 

@@ -1443,8 +1443,6 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         this.canvasElement.prop("width", this.labelWidth + 10).prop("height", this.labelHeight + 10);
         this.labelX = this.canvas.width / 2 - this.labelWidth / 2;
         this.labelY = 5;
-        this.propertyInspector.updatePosition(xchange);
-        this.labelInspector.updatePosition(xchange);
         this.updateCanvas();
     };
 
@@ -1896,20 +1894,9 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 	var self = this;
 	this.boundingBox = null;
 	
-	this.updatePosition = function(xchange) {
-		// this.inspectorWindow.css("width", parseInt(this.inspectorWindow.css("width")) + xchange);
-		this.boundingBox = this.inspectorWindow[0].getBoundingClientRect();
-	};
-	
 	// Create the property window.
 	this.inspectorWindow = $('<div></div>')
 			.addClass("designerUtilityToolbar designerUtilityLabelInspector")
-			.css({
-				// "left": 0,
-				// // "top": this.canvas.getBoundingClientRect().top - 50,
-				// "top": this.canvas.getBoundingClientRect().top - 100,
-				// "width" : this.labelDesigner.propertyInspector.boundingBox.right - this.labelDesigner.toolbar.boundingBox.left
-			})
 			.insertAfter(this.canvasElement);
 
 	this.toolsViewContainer = $('<div></div>')
@@ -1918,9 +1905,6 @@ com.logicpartners.labelInspector = function(designer, canvas) {
 
 	this.buttonView = $('<div></div>')
 			.appendTo(this.toolsViewContainer);
-	
-	this.update = function(activeElement) {
-	};
 	
 	this.addTool = function(controller) {
 		// console.log(controller.workspace.html());
@@ -1945,26 +1929,11 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
     // Create the property window.
     this.propertyInspector = $('<div></div>')
         .addClass("designerUtilityWindow")
-        .css({
-            // "left": this.canvas.getBoundingClientRect().right + 5 - 200,
-            // "top": this.canvas.getBoundingClientRect().top
-        })
-        //.draggable({handle: "div.designerPropertyTitle"})
         .insertAfter(this.canvasElement);
-
-    this.updatePosition = function (xchange) {
-        // this.propertyInspector.css("left", parseInt(this.propertyInspector.css("left")) + xchange);
-        this.boundingBox = this.propertyInspector[0].getBoundingClientRect();
-    };
 
 
     this.propertyViewContainer = $('<div></div>')
         .addClass("designerPropertyContainer")
-        // .resizable({
-        //     resize: function (event, ui) {
-        //         ui.size.width = ui.originalSize.width;
-        //     }
-        // })
         .appendTo(this.propertyInspector);
 
     this.titleBar = $('<div>Properties</div>')
@@ -2063,8 +2032,6 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
             }
         }
     };
-
-    this.updatePosition(0);
 };
 
 if (!com)
@@ -2133,12 +2100,6 @@ com.logicpartners.toolsWindow = function (designer, canvas) {
         this.buttonView.append(controller.button);
     };
 
-    this.updatePosition = function (xchange) {
-        this.boundingBox = this.toolsWindow[0].getBoundingClientRect();
-    };
-
     this.update = function (activeElement) {
     };
-
-    this.updatePosition(0);
 };

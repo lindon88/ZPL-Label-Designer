@@ -15,26 +15,11 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
     // Create the property window.
     this.propertyInspector = $('<div></div>')
         .addClass("designerUtilityWindow")
-        .css({
-            // "left": this.canvas.getBoundingClientRect().right + 5 - 200,
-            // "top": this.canvas.getBoundingClientRect().top
-        })
-        //.draggable({handle: "div.designerPropertyTitle"})
         .insertAfter(this.canvasElement);
-
-    this.updatePosition = function (xchange) {
-        // this.propertyInspector.css("left", parseInt(this.propertyInspector.css("left")) + xchange);
-        this.boundingBox = this.propertyInspector[0].getBoundingClientRect();
-    };
 
 
     this.propertyViewContainer = $('<div></div>')
         .addClass("designerPropertyContainer")
-        // .resizable({
-        //     resize: function (event, ui) {
-        //         ui.size.width = ui.originalSize.width;
-        //     }
-        // })
         .appendTo(this.propertyInspector);
 
     this.titleBar = $('<div>Properties</div>')
@@ -122,10 +107,6 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                     });
 
                 var deleteElementContainer = $('<div></div>')
-                    .css({
-                        "clear": "both",
-                        "padding-top": "2px"
-                    })
                     .append(deleteElement);
 
 
@@ -133,6 +114,4 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
             }
         }
     };
-
-    this.updatePosition(0);
 };
