@@ -13,10 +13,6 @@ com.logicpartners.labelControl.size = function(designer) {
 	this.widthContainer = $("<div>Width: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
 	this.widthController = $("<input type=\"text\" />")
 		.addClass("designerLabelControlElement")
-		.css({
-			// width : "50px"
-			
-		})
 		.val(this.designer.labelWidth / this.designer.dpi)
 		.appendTo(this.widthContainer)
 		.on("blur", function() {
@@ -32,10 +28,6 @@ com.logicpartners.labelControl.size = function(designer) {
 	this.heightContainer = $("<div>Height: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
 	this.heightController = $("<input type=\"text\" />")
 		.addClass("designerLabelControlElement")
-		.css({
-			// width : "50px"
-			
-		})
 		.val(this.designer.labelHeight / this.designer.dpi)
 		.appendTo(this.heightContainer)
 		.on("blur", function() {
@@ -121,10 +113,10 @@ com.logicpartners.labelControl.size = function(designer) {
 		this.designer.updateLabelSize(width, height);
 		this.widthController.val(width);
 		this.heightController.val(height);
-	}
+	};
 		
 	this.update = function() {
 		this.widthController.val(this.designer.labelWidth / this.designer.dpi);
 		this.heightController.val(this.designer.labelHeight / this.designer.dpi);
 	}
-}
+};

@@ -497,6 +497,56 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         return {"json": json};
     };
 
+    this.importFromMetaData = function (jsonInput) {
+        if (jsonInput != null) {
+            var bufferDataArray = JSON.parse(jsonInput);
+
+            bufferDataArray.forEach(function (element) {
+
+                var canvasRef = document.getElementById('labelDesignerUniqueId');
+
+                if (document.createEvent) {
+
+                    var controlObject = null;
+                    if (element.type === 'Text') {
+
+                        var tools = com.logicpartners.designerTools;
+                        tools.text();
+
+                        controlObject = {control: tools.text, object: tools.object};
+                    }
+
+                    if (element.type === 'Rectangle') {
+
+                        var tools = com.logicpartners.designerTools;
+                        tools.rectangle();
+
+                        controlObject = {control: tools.text, object: tools.object};
+                    }
+
+                    if (element.type === 'Barcode') {
+
+                        var tools = com.logicpartners.designerTools;
+                        tools.barcode();
+
+                        controlObject = {control: tools.text, object: tools.object};
+                    }
+
+                    var event = new CustomEvent('importElement', {
+                        'detail': {
+                            element: element,
+                            control: controlObject
+                        }
+                    });
+
+                    canvasRef.dispatchEvent(event);
+                }
+
+                canvasRef.click();
+            })
+        }
+    };
+
     this.generateZPL = function () {
         var data = "^XA\r\n" +
             "^LS0\r\n" +

@@ -28,60 +28,14 @@ com.logicpartners.labelControl.generatezpl = function (designer) {
         .on("click", function () {
 
             var jsonInput = prompt("Your meta data input");
-            if (jsonInput != null) {
-                var bufferDataArray = JSON.parse(jsonInput);
-
-                bufferDataArray.forEach(function (element) {
-
-                    var canvasRef = document.getElementById('labelDesignerUniqueId');
-
-                    if (document.createEvent) {
-
-                        var controlObject = null;
-                        if (element.type === 'Text') {
-
-                            var tools = com.logicpartners.designerTools;
-                            tools.text();
-
-                            controlObject = {control: tools.text, object: tools.object};
-                        }
-
-                        if (element.type === 'Rectangle') {
-
-                            var tools = com.logicpartners.designerTools;
-                            tools.rectangle();
-
-                            controlObject = {control: tools.text, object: tools.object};
-                        }
-
-                        if (element.type === 'Barcode') {
-
-                            var tools = com.logicpartners.designerTools;
-                            tools.barcode();
-
-                            controlObject = {control: tools.text, object: tools.object};
-                        }
-
-                        var event = new CustomEvent('importElement', {
-                            'detail': {
-                                element: element,
-                                control: controlObject
-                            }
-                        });
-
-                        canvasRef.dispatchEvent(event);
-                    }
-
-                    canvasRef.click();
-                })
-            }
+            self.designer.importFromMetaData(jsonInput);
         });
 
     this.update = function () {
         this.widthController.val(this.designer.labelWidth / this.designer.dpi);
         this.heightController.val(this.designer.labelHeight / this.designer.dpi);
     }
-}
+};
 
 if (!com)
 	var com = {};
@@ -98,10 +52,6 @@ com.logicpartners.labelControl.size = function(designer) {
 	this.widthContainer = $("<div>Width: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
 	this.widthController = $("<input type=\"text\" />")
 		.addClass("designerLabelControlElement")
-		.css({
-			// width : "50px"
-			
-		})
 		.val(this.designer.labelWidth / this.designer.dpi)
 		.appendTo(this.widthContainer)
 		.on("blur", function() {
@@ -117,10 +67,6 @@ com.logicpartners.labelControl.size = function(designer) {
 	this.heightContainer = $("<div>Height: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
 	this.heightController = $("<input type=\"text\" />")
 		.addClass("designerLabelControlElement")
-		.css({
-			// width : "50px"
-			
-		})
 		.val(this.designer.labelHeight / this.designer.dpi)
 		.appendTo(this.heightContainer)
 		.on("blur", function() {
@@ -206,13 +152,13 @@ com.logicpartners.labelControl.size = function(designer) {
 		this.designer.updateLabelSize(width, height);
 		this.widthController.val(width);
 		this.heightController.val(height);
-	}
+	};
 		
 	this.update = function() {
 		this.widthController.val(this.designer.labelWidth / this.designer.dpi);
 		this.heightController.val(this.designer.labelHeight / this.designer.dpi);
 	}
-}
+};
 function CODE128(c,p){function m(){return-1==c.search(r)?!1:!0}function a(q,g,e,a){var k;k=""+b(e);k+=g(q);k+=b(a(q,e));return k+"1100011101011"}function l(q){for(var g="",e=0;e<q.length;e++){var a;a:{for(a=0;a<h.length;a++)if(h[a][0]==q[e]){a=h[a][1];break a}a=""}g+=a}return g}function d(a){for(var g="",e=0;e<a.length;e+=2)g+=b(parseInt(a.substr(e,2)));return g}function f(a,g){for(var e=0,k=0;k<a.length;k++){var b;a:{for(b=0;b<h.length;b++)if(h[b][0]==a[k]){b=h[b][2];break a}b=0}e+=b*(k+1)}return(e+
 g)%103}function n(a,g){for(var e=0,k=1,b=0;b<a.length;b+=2)e+=parseInt(a.substr(b,2))*k,k++;return(e+g)%103}function b(a){for(var b=0;b<h.length;b++)if(h[b][2]==a)return h[b][1];return""}p=p||"B";this.string128=c+"";this.valid=m;this.encoded=function(){return m(c)?k["code128"+p](c):""};var h=[[" ","11011001100",0],["!","11001101100",1],['"',"11001100110",2],["#","10010011000",3],["$","10010001100",4],["%","10001001100",5],["&","10011001000",6],["'","10011000100",7],["(","10001100100",8],[")","11001001000",
 9],["*","11001000100",10],["+","11000100100",11],[",","10110011100",12],["-","10011011100",13],[".","10011001110",14],["/","10111001100",15],["0","10011101100",16],["1","10011100110",17],["2","11001110010",18],["3","11001011100",19],["4","11001001110",20],["5","11011100100",21],["6","11001110100",22],["7","11101101110",23],["8","11101001100",24],["9","11100101100",25],[":","11100100110",26],[";","11101100100",27],["<","11100110100",28],["=","11100110010",29],[">","11011011000",30],["?","11011000110",
@@ -1805,6 +1751,56 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
         var json = JSON.stringify(bufferDataArray);
 
         return {"json": json};
+    };
+
+    this.importFromMetaData = function (jsonInput) {
+        if (jsonInput != null) {
+            var bufferDataArray = JSON.parse(jsonInput);
+
+            bufferDataArray.forEach(function (element) {
+
+                var canvasRef = document.getElementById('labelDesignerUniqueId');
+
+                if (document.createEvent) {
+
+                    var controlObject = null;
+                    if (element.type === 'Text') {
+
+                        var tools = com.logicpartners.designerTools;
+                        tools.text();
+
+                        controlObject = {control: tools.text, object: tools.object};
+                    }
+
+                    if (element.type === 'Rectangle') {
+
+                        var tools = com.logicpartners.designerTools;
+                        tools.rectangle();
+
+                        controlObject = {control: tools.text, object: tools.object};
+                    }
+
+                    if (element.type === 'Barcode') {
+
+                        var tools = com.logicpartners.designerTools;
+                        tools.barcode();
+
+                        controlObject = {control: tools.text, object: tools.object};
+                    }
+
+                    var event = new CustomEvent('importElement', {
+                        'detail': {
+                            element: element,
+                            control: controlObject
+                        }
+                    });
+
+                    canvasRef.dispatchEvent(event);
+                }
+
+                canvasRef.click();
+            })
+        }
     };
 
     this.generateZPL = function () {

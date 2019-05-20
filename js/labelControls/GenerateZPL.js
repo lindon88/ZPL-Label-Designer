@@ -28,57 +28,11 @@ com.logicpartners.labelControl.generatezpl = function (designer) {
         .on("click", function () {
 
             var jsonInput = prompt("Your meta data input");
-            if (jsonInput != null) {
-                var bufferDataArray = JSON.parse(jsonInput);
-
-                bufferDataArray.forEach(function (element) {
-
-                    var canvasRef = document.getElementById('labelDesignerUniqueId');
-
-                    if (document.createEvent) {
-
-                        var controlObject = null;
-                        if (element.type === 'Text') {
-
-                            var tools = com.logicpartners.designerTools;
-                            tools.text();
-
-                            controlObject = {control: tools.text, object: tools.object};
-                        }
-
-                        if (element.type === 'Rectangle') {
-
-                            var tools = com.logicpartners.designerTools;
-                            tools.rectangle();
-
-                            controlObject = {control: tools.text, object: tools.object};
-                        }
-
-                        if (element.type === 'Barcode') {
-
-                            var tools = com.logicpartners.designerTools;
-                            tools.barcode();
-
-                            controlObject = {control: tools.text, object: tools.object};
-                        }
-
-                        var event = new CustomEvent('importElement', {
-                            'detail': {
-                                element: element,
-                                control: controlObject
-                            }
-                        });
-
-                        canvasRef.dispatchEvent(event);
-                    }
-
-                    canvasRef.click();
-                })
-            }
+            self.designer.importFromMetaData(jsonInput);
         });
 
     this.update = function () {
         this.widthController.val(this.designer.labelWidth / this.designer.dpi);
         this.heightController.val(this.designer.labelHeight / this.designer.dpi);
     }
-}
+};
