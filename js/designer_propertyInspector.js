@@ -97,7 +97,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
 
                         this.propertyNodes[key] = elementValue;
 
-                        var elementContainer = $('<div class="form-group"></div>')
+                        var elementContainer = $('<div class="label-designer-form-group"></div>')
                             .css({
                                 // "clear": "both",
                                 // "padding-top": "2px"
