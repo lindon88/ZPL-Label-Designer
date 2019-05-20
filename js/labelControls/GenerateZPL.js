@@ -38,7 +38,7 @@ com.logicpartners.labelControl.generatezpl = function (designer) {
                     if (document.createEvent) {
 
                         var controlObject = null;
-                        if (element.type === 'Textbox') {
+                        if (element.type === 'Text') {
 
                             var tools = com.logicpartners.designerTools;
                             tools.text();

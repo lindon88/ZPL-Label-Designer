@@ -34,7 +34,11 @@
 }
 
 .designerLabelControl {
-    padding: 2px;
+    padding: 0 4px 2px 4px;
+    margin: 0 1px 0 4px;
+    border-radius: 5px;
+    background: #EEEEEE;
+    border: 1px solid #DDDDDD;
 }
 
 .designerLabelControlCustom {
@@ -58,11 +62,9 @@
 
 .designerLabelControlContainer {
     padding: 1rem;
-    margin: 0 1px 0 4px;
     font-size: 12px;
-    border-radius: 5px;
-    background: #EEEEEE;
-    border: 1px solid #DDDDDD;
+    background: #ccc;
+    margin: 5px;
 }
 
 .designerPropertyTitle {
