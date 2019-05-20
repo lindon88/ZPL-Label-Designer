@@ -1,13 +1,15 @@
 .designerUtilityWindow {
     order: 2;
     width: 24rem;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
 .designerUtilityToolbar {
-    width: 24rem;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+    height: 400px;
+    width: 20rem;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
     border-radius: 4px;
+    align-self: flex-start;
 }
 
 .designerUtilityLabelInspector {
@@ -26,9 +28,7 @@
 }
 
 .designerToolbarContent {
-    height: 300px;
-    overflow-y: hidden;
-    overflow-x: hidden;
+    /*height: 300px;*/
     background: #FFFFFF;
 }
 
@@ -39,7 +39,7 @@
 .designerLabelControl {
     padding: 2px;
     position: absolute !important;
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     top: -4rem;
     display: flex;
@@ -47,8 +47,8 @@
 
 .designerLabelControlCustom {
     display: flex;
-    padding: 0px 4px 2px 4px;
-    margin: 0px 1px 0px 4px;
+    padding: 0 4px 2px 4px;
+    margin: 0 1px 0 4px;
     font-size: 12px;
     border-radius: 5px;
     background: #EEEEEE;
@@ -65,8 +65,8 @@
 .designerLabelControlContainer {
     display: flex;
     float: left;
-    padding: 0px 4px 2px 4px;
-    margin: 0px 1px 0px 4px;
+    padding: 0 4px 2px 4px;
+    margin: 0 1px 0 4px;
     font-size: 12px;
     border-radius: 5px;
     background: #EEEEEE;
@@ -95,6 +95,7 @@
     display: flex;
     justify-content: space-evenly;
     flex-wrap: wrap;
+    padding: 1rem;
 }
 
 .tool-wrapper {
@@ -106,7 +107,7 @@
     font-size: 5rem;
     color: #03A9F4;
     padding: .5rem;
-    flex-basis: 33%;
+    flex-basis: 26%;
 }
 
 .designerToolbarButtonActive {
@@ -187,6 +188,7 @@
     order: 1;
     cursor: default;
     align-self: flex-start;
+    margin: 1rem;
 }
 
 .label-designer-form-group {
