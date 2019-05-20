@@ -3,9 +3,7 @@
         
 		<link rel="stylesheet" href="css/designer.css">
         <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
-		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/smoothness/jquery-ui.css">
-		
+
         <script language="javascript" type="text/javascript" src="js/designer.js"></script>
         <script language="javascript" type="text/javascript" src="js/designer_propertyInspector.js"></script>
         <script language="javascript" type="text/javascript" src="js/designer_toolbar.js"></script>
@@ -20,7 +18,7 @@
         <script>
 			var canvasDesigner = null;
             $(document).ready(function() {
-                canvasDesigner = new com.logicpartners.labelDesigner('labelDesigner', 1.75, 0.75);
+                canvasDesigner = new com.logicpartners.labelDesigner('labelDesignerUniqueId', 1.75, 0.75);
 				canvasDesigner.labelInspector.addTool(new com.logicpartners.labelControl.size(canvasDesigner));
 				canvasDesigner.labelInspector.addTool(new com.logicpartners.labelControl.generatezpl(canvasDesigner));
 				canvasDesigner.toolbar.addTool(new com.logicpartners.designerTools.text());
@@ -33,7 +31,11 @@
         </script>
     </head>
     <body>
-        <canvas id="labelDesigner" tabindex="1" width="800" height="800" style="margin-left: 100px; margin-top: 50px; border: 1px solid #000000;">
-        </canvas>
+<!--        <canvas id="labelDesigner" tabindex="1" width="800" height="800" style="margin-left: 100px; margin-top: 50px; border: 1px solid #000000;">-->
+<!--        </canvas>-->
+        <div class="label-wrapper">
+            <canvas id="labelDesignerUniqueId" tabindex="1" width="800" height="800" class="canvas-styles">
+            </canvas>
+        </div>
     </body>
 </html>
