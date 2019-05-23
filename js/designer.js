@@ -516,10 +516,26 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
                         controlObject = {control: tools.text, object: tools.object};
                     }
 
-                    if (element.type === 'Rectangle') {
+                    if (element.type === 'Variable') {
 
                         var tools = com.logicpartners.designerTools;
-                        tools.rectangle();
+                        tools.variable();
+
+                        controlObject = {control: tools.text, object: tools.object};
+                    }
+
+                    if (element.type === 'BatchNumber') {
+
+                        var tools = com.logicpartners.designerTools;
+                        tools.batchNumber();
+
+                        controlObject = {control: tools.text, object: tools.object};
+                    }
+
+                    if (element.type === 'LabelNumber') {
+
+                        var tools = com.logicpartners.designerTools;
+                        tools.labelNumber();
 
                         controlObject = {control: tools.text, object: tools.object};
                     }
@@ -532,6 +548,17 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
                         controlObject = {control: tools.text, object: tools.object};
                     }
 
+                    if (element.type === 'TextBlock') {
+
+                        var tools = com.logicpartners.designerTools;
+                        tools.textBlock();
+
+                        controlObject = {control: tools.text, object: tools.object};
+                    }
+
+                    /**
+                     * Event
+                     */
                     var event = new CustomEvent('importElement', {
                         'detail': {
                             element: element,

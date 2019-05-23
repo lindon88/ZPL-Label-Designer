@@ -10,7 +10,7 @@ com.logicpartners.labelControl.size = function(designer) {
 	this.designer = designer;
 	this.workspace = $("<div></div>").addClass("designerLabelControl").attr("title", "Label Size");
 	
-	this.widthContainer = $("<div>Width: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
+	this.widthContainer = $("<div>Width (inches): </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
 	this.widthController = $("<input type=\"text\" />")
 		.addClass("designerLabelControlElement")
 		.val(this.designer.labelWidth / this.designer.dpi)
@@ -25,7 +25,7 @@ com.logicpartners.labelControl.size = function(designer) {
 			}
 		});
 		
-	this.heightContainer = $("<div>Height: </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
+	this.heightContainer = $("<div>Height (inches): </div>").addClass("designerLabelControlContainer").appendTo(this.workspace);
 	this.heightController = $("<input type=\"text\" />")
 		.addClass("designerLabelControlElement")
 		.val(this.designer.labelHeight / this.designer.dpi)
