@@ -482,6 +482,23 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
             this.activeElement.drawActive(this.drawingContext);
     };
 
+    /**
+     * Enable or disable tools based on indicators.
+     */
+    this.setIndicators = function (indicators) {
+
+        var isBatchEnabled = indicators.isBatchEnabled;
+
+        if (!isBatchEnabled) {
+
+            var batchNumberDomElementToDisable = $('.toolbar-wrapper').find("#batchNumberIdentifier");
+            batchNumberDomElementToDisable.addClass('disabled-tool');
+        } else {
+            var batchNumberDomElementToEnable = $('.toolbar-wrapper').find("#batchNumberIdentifier");
+            batchNumberDomElementToEnable.removeClass('disabled-tool');
+        }
+    };
+
     this.exportMetaData = function () {
         var bufferDataArray = [];
 

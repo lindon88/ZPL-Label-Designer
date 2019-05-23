@@ -189,3 +189,14 @@
     font-family: sans-serif;
     margin-left: 24px;
 }
+
+.disabled-tool {
+    cursor: not-allowed;
+    color: #ddd;
+
+    /**
+        // TODO: Refactor
+        Quick fix: https://css-tricks.com/almanac/properties/p/pointer-events/
+     */
+    pointer-events: none;
+}
