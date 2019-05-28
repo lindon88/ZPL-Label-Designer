@@ -60,7 +60,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                         var elementValue = null;
 
                         if (key === 'textArea') {
-                            elementValue = $('<textarea class="propertiesFieldTextInput" rows="4" cols="50" name="' + key + '" value="' + activeElement[key] + '"></textarea>');
+                            elementValue = $('<textarea class="propertiesFieldTextInput" id="labelDesignerTextAreaBlock" rows="4" cols="50" name="' + key + '" value="' + activeElement[key] + '"></textarea>');
                         } else {
                             elementValue = $('<input class="propertiesFieldTextInput" type="text" name="' + key + '" value="' + activeElement[key] + '">')
                         }

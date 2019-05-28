@@ -961,14 +961,32 @@ com.logicpartners.designerTools.textBlock = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
+            var lines = this.textArea.split(/\n/);
 
-            var measuredText = context.measureText(this.textArea);
+            var maxStringLength = 0;
+            var maxStringLengthIndex = 0;
+            for (var j = 0; j < lines.length; j++) {
+                if (lines[j].length > maxStringLength) {
+                    maxStringLength = lines[j].length;
+                    maxStringLengthIndex = j;
+                }
+            }
+
+            var measuredText = context.measureText(lines[maxStringLengthIndex]);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
-            context.fillText(this.textArea, this.x, this.y + (this.height * 0.75));
+
+            this.height = this.height * 0.85;
+            for (var i = 0; i < lines.length; i++) {
+
+                var calculatedHeight = this.height * (i + 1);
+                context.fillText(lines[i], this.x, this.y + (calculatedHeight));
+
+            }
+            this.height = this.height * lines.length;
+
             context.globalCompositeOperation = "source-over";
             context.fillStyle = oColor;
-            //context.fillRect(this.x, this.y, this.width, this.height);
         };
 
         this.setWidth = function (width) {
@@ -996,7 +1014,7 @@ com.logicpartners.designerTools.textBlock = function () {
         };
 
         this.drawActive = function (context) {
-            context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.9) - 1, [2, 2]);
+            context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.99) + 8, [2, 2]);
         };
 
         this.hitTest = function (coords) {
@@ -1987,7 +2005,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                         var elementValue = null;
 
                         if (key === 'textArea') {
-                            elementValue = $('<textarea class="propertiesFieldTextInput" rows="4" cols="50" name="' + key + '" value="' + activeElement[key] + '"></textarea>');
+                            elementValue = $('<textarea class="propertiesFieldTextInput" id="labelDesignerTextAreaBlock" rows="4" cols="50" name="' + key + '" value="' + activeElement[key] + '"></textarea>');
                         } else {
                             elementValue = $('<input class="propertiesFieldTextInput" type="text" name="' + key + '" value="' + activeElement[key] + '">')
                         }
