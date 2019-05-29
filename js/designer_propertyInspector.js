@@ -80,6 +80,15 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             });
                         }
 
+                        this.propertyNodes[key] = elementValue;
+
+                        /**
+                         * Hide variableName field
+                         */
+                        if (key === 'variableName') {
+                            continue;
+                        }
+
                         /**
                          * Hide type field
                          */
@@ -93,8 +102,6 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                         if (key === 'placeholderKey') {
                             continue;
                         }
-
-                        this.propertyNodes[key] = elementValue;
 
                         var elementContainer = $('<div class="label-designer-form-group"></div>')
                             .css({
