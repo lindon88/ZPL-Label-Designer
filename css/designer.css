@@ -214,4 +214,5 @@ select {
     box-sizing: border-box;
     /*-webkit-appearance: none;*/
     -webkit-border-radius: 0px;
+    cursor: pointer;
 }
