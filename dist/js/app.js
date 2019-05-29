@@ -1166,7 +1166,8 @@ com.logicpartners.designerTools.variable = function () {
         this.variable = '#variable';
         // this.variablePreviewText = 'Your variable text here';
         this.variablePreviewText = '';
-        this.variableText = 'Product Name'; // Default text drop-down
+        this.variableText = 'Select variable'; // Default text drop-down
+        // this.variableText = 'Product Name'; // Default text drop-down
         this.variableType = 'Text'; // Default type drop-down
         this.x = x;
         this.y = y;
@@ -2016,7 +2017,12 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                     keys[key] = true;
 
                     if (key != "readonly" && getType.toString.call(activeElement[key]) != '[object Function]') {
-                        var elementKey = $('<div class="propertiesFieldKey">' + key + '</div>');
+
+                        // Convert camelCase to capital case
+                        var result = key.replace( /([A-Z])/g, " $1" );
+                        var finalResult = result.charAt(0).toUpperCase() + result.slice(1); // capitalize the first letter - as an example.
+
+                        var elementKey = $('<div class="propertiesFieldKey">' + finalResult + '</div>');
 
                         var elementValue = null;
 
@@ -2046,6 +2052,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
 
                         } else if (key === 'variableText') {
                             elementValue = $('<select class="propertiesFieldTextInput" id="labelDesignerVariableText" name="labelDesignerVariableText">' +
+                                '<option selected="selected" value="Select variable">Select variable</option>' +
                                 '<option value="Product Name">Product Name</option>' +
                                 '<option value="Product Price">Product Price</option>' +
                                 '</select>');
