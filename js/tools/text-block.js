@@ -86,29 +86,29 @@ com.logicpartners.designerTools.textBlock = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            // var lines = this.textArea.split(/\n/);
+            var linesSplits = this.textArea.split(/\n/);
+            console.log('linesSplits', linesSplits);
 
             var offset = 10;
             var textBlockWidth = (context.canvas.width - offset) - this.x;
-            console.log('textBlockWidth',textBlockWidth);
             var newLines = getLines(context, this.textArea, textBlockWidth);
             lines = newLines;
             console.log('+++++++++++');
             console.log('WIDTH',textBlockWidth);
             console.log(newLines);
 
-            // var maxStringLength = 0;
-            //
-            // var maxStringLengthIndex = 0;
-            // for (var j = 0; j < lines.length; j++) {
-            //     if (lines[j].length > maxStringLength) {
-            //         maxStringLength = lines[j].length;
-            //         maxStringLengthIndex = j;
-            //     }
-            // }
-            //
-            // var measuredText = context.measureText(lines[maxStringLengthIndex]);
-            // this.width = measuredText.width;
+            var maxStringLength = 0;
+
+            var maxStringLengthIndex = 0;
+            for (var j = 0; j < lines.length; j++) {
+                if (lines[j].length > maxStringLength) {
+                    maxStringLength = lines[j].length;
+                    maxStringLengthIndex = j;
+                }
+            }
+
+            var measuredText = context.measureText(lines[maxStringLengthIndex]);
+            this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
 
             this.height = this.height * 0.85;
