@@ -80,8 +80,18 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             });
                         }
 
+                        /**
+                         * Hide type field
+                         */
                         if (key === 'type') {
-                            break;
+                            continue;
+                        }
+
+                        /**
+                         * Hide placeholderKey field
+                         */
+                        if (key === 'placeholderKey') {
+                            continue;
                         }
 
                         this.propertyNodes[key] = elementValue;

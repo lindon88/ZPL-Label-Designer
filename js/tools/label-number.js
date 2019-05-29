@@ -37,7 +37,7 @@ com.logicpartners.designerTools.labelNumber = function () {
             this.type = fromObject.type;
         }
 
-        this.readonly = ["width", "height", "type", 'fontType', 'name', 'placeholderKey'];
+        this.readonly = ["width", "height", "type", 'fontType', 'placeholderKey'];
 
 
         this.getFontHeight = function () {
