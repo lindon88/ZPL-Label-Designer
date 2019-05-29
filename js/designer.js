@@ -606,17 +606,10 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
 
         for (var i = 0; i < this.currentLayer; i++) {
             if (this.elements[i]) {
-                debugger;
                 bufferData += this.elements[i].getZPLData();
                 data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth, designerProperties) + '\r\n';
             }
         }
-        // data = data.substring(0, data.length - 1);
-
-        // data += "\r\n";
-        // data += "{{ batchNumber && labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS' : ''}}\r\n" +
-        //     "{{ batchNumber && !labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS' : ''}}\r\n" +
-        //     "{{ labelNr && !batchNumber ? '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS' : ''}}\r\n";
 
         data += "^XZ\r\n";
 

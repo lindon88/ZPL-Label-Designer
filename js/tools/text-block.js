@@ -68,8 +68,16 @@ com.logicpartners.designerTools.textBlock = function () {
             };
         };
 
-        this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + "^FD" + this.textArea + "^FS";
+        this.toZPL = function (labelx, labely, labelHeight, labelWidth) {
+            /** Field Block code TEMPLATE
+             ^FB400,100,5,J,0
+             ^A0,22,22
+             ^FH
+             ^FD
+             */
+
+            var textBlockWidth = labelWidth - this.x ;
+            return "^FB" + (textBlockWidth) + ",100,5,J,0," + "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
         };
 
         this.draw = function (context) {
@@ -78,19 +86,29 @@ com.logicpartners.designerTools.textBlock = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var lines = this.textArea.split(/\n/);
+            // var lines = this.textArea.split(/\n/);
 
-            var maxStringLength = 0;
-            var maxStringLengthIndex = 0;
-            for (var j = 0; j < lines.length; j++) {
-                if (lines[j].length > maxStringLength) {
-                    maxStringLength = lines[j].length;
-                    maxStringLengthIndex = j;
-                }
-            }
+            var offset = 10;
+            var textBlockWidth = (context.canvas.width - offset) - this.x;
+            console.log('textBlockWidth',textBlockWidth);
+            var newLines = getLines(context, this.textArea, textBlockWidth);
+            lines = newLines;
+            console.log('+++++++++++');
+            console.log('WIDTH',textBlockWidth);
+            console.log(newLines);
 
-            var measuredText = context.measureText(lines[maxStringLengthIndex]);
-            this.width = measuredText.width;
+            // var maxStringLength = 0;
+            //
+            // var maxStringLengthIndex = 0;
+            // for (var j = 0; j < lines.length; j++) {
+            //     if (lines[j].length > maxStringLength) {
+            //         maxStringLength = lines[j].length;
+            //         maxStringLengthIndex = j;
+            //     }
+            // }
+            //
+            // var measuredText = context.measureText(lines[maxStringLengthIndex]);
+            // this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
 
             this.height = this.height * 0.85;
@@ -104,6 +122,41 @@ com.logicpartners.designerTools.textBlock = function () {
 
             context.globalCompositeOperation = "source-over";
             context.fillStyle = oColor;
+
+            /**
+             * Reference: https://stackoverflow.com/questions/2936112/text-wrap-in-a-canvas-element
+             * Divide an entire phrase in an array of phrases, all with the max pixel length given.
+             * The words are initially separated by the space char.
+             * @param phrase
+             * @param length
+             * @return
+             */
+            function getLines(ctx,phrase,maxPxLength) {
+                var wa=phrase.split(" "),
+                    phraseArray=[],
+                    lastPhrase=wa[0],
+                    measure=0,
+                    splitChar=" ";
+                if (wa.length <= 1) {
+                    return wa
+                }
+                // ctx.font = textStyle;
+                for (var i=1;i<wa.length;i++) {
+                    var w=wa[i];
+                    measure=ctx.measureText(lastPhrase+splitChar+w).width;
+                    if (measure<maxPxLength) {
+                        lastPhrase+=(splitChar+w);
+                    } else {
+                        phraseArray.push(lastPhrase);
+                        lastPhrase=w;
+                    }
+                    if (i===wa.length-1) {
+                        phraseArray.push(lastPhrase);
+                        break;
+                    }
+                }
+                return phraseArray;
+            }
         };
 
         this.setWidth = function (width) {
