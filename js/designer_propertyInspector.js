@@ -78,7 +78,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             setTimeout(function () {
                                 $("#labelDesignerVariableType").val(selectedValue);
 
-                                $('#labelDesignerVariableType').on('change', function() {
+                                $('#labelDesignerVariableType').on('change', function () {
                                     thatActiveElement.variableType = this.value;
                                 });
                             }, 0);
@@ -103,7 +103,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             setTimeout(function () {
                                 $("#labelDesignerVariableText").val(selectedValueVariableText);
 
-                                $('#labelDesignerVariableText').on('change', function() {
+                                $('#labelDesignerVariableText').on('change', function () {
                                     thatActiveElement.variableText = this.value;
                                     thatActiveElement.variablePreviewText = this.value;
                                     self.labelDesigner.updateCanvas();
@@ -131,44 +131,51 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                         this.propertyNodes[key] = elementValue;
 
                         /**
-                         * Hide variableName field
+                         * Hide field
                          */
                         if (key === 'variableName') {
                             continue;
                         }
 
                         /**
-                         * Hide type field
+                         * Hide field
                          */
                         if (key === 'type') {
                             continue;
                         }
 
                         /**
-                         * Hide placeholderKey field
+                         * Hide field
                          */
                         if (key === 'placeholderKey') {
                             continue;
                         }
 
                         /**
-                         * Hide placeholderKey field
+                         * Hide field
                          */
                         if (key === 'textName') {
                             continue;
                         }
 
                         /**
-                         * Hide placeholderKey field
+                         * Hide field
                          */
                         if (key === 'barcodeName') {
                             continue;
                         }
 
                         /**
-                         * Hide placeholderKey field
+                         * Hide field
                          */
                         if (key === 'variablePreviewText') {
+                            continue;
+                        }
+
+                        /**
+                         * Hide field
+                         */
+                        if (key === 'textBlockName') {
                             continue;
                         }
 

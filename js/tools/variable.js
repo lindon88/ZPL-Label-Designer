@@ -80,8 +80,15 @@ com.logicpartners.designerTools.variable = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            // TODO: Return based on selected type (TextBlock or TextInputField)
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+            if (this.variableType === "Text") {
+                debugger;
+                return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+            }
+
+            if (this.variableType === "TextBlock") {
+                debugger;
+                return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+            }
         };
 
         this.draw = function (context) {

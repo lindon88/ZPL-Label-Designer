@@ -896,8 +896,8 @@ com.logicpartners.designerTools.textBlock = function () {
         .attr("title", "Text block")
         .append($("<svg class='icon' xmlns=\"http://www.w3.org/2000/svg\" width=\"256\" height=\"256\" viewBox=\"0 0 67.733332 67.733334\"><path d=\"M33.86666624.79374999A33.07291625 33.07291625 0 0 0 .79374999 33.86666624a33.07291625 33.07291625 0 0 0 33.07291625 33.07291625 33.07291625 33.07291625 0 0 0 33.07291625-33.07291625A33.07291625 33.07291625 0 0 0 33.86666624.79374999zm-15.9695677 19.56004604H49.8362334c.33270031 0 .62038706.12170913.86351268.3648358.24312033.24312669.3648366.53133651.3648366.86402994v2.4566975c0 .33270004-.12171627.62039314-.3648366.8635132-.24312562.24312668-.53081237.36483555-.86351268.36483555H17.89709854c-.33269317 0-.62038653-.12170887-.8635132-.36483555-.24312669-.24312006-.36483555-.53081316-.36483555-.8635132v-2.4566975c0-.33269343.12170886-.62090325.36483554-.86402993.24312668-.24312668.53082004-.3648358.8635132-.3648358zm0 7.37061054H49.8362334c.33270031 0 .62038706.12170833.86351268.36483395.24312033.24312033.3648366.53081502.3648366.86351268v2.45721449c0 .33269501-.12171627.62038705-.3648366.86351532-.24312562.24312562-.53081237.36483395-.86351268.36483395H17.89709854c-.33269317 0-.62038653-.12170833-.8635132-.36483395-.24312669-.24312827-.36483555-.5308203-.36483555-.86351532v-2.4572145c0-.33269765.12170886-.62039234.36483554-.86351267.24312668-.24312562.53082004-.36483395.8635132-.36483395zm0 7.37060895H49.8362334c.33270031 0 .62038706.12170833.86351268.36483395.24312033.24312827.3648366.53081501.3648366.86351532v2.4572145c0 .33269765-.12171627.6203844-.3648366.86351267-.24312562.24312033-.53081237.36483395-.86351268.36483395H17.89709854c-.33269317 0-.62038653-.12171362-.8635132-.36483395-.24312669-.24312827-.36483555-.53081502-.36483555-.86351268V36.3233648c0-.3327003.12170886-.62038705.36483554-.86351532.24312668-.24312562.53082004-.36483395.8635132-.36483395zm0 7.37060895H49.8362334c.33270031 0 .62038706.12170833.86351268.3648366.24312033.24312562.3648366.53081765.3648366.86351267v2.4566959c0 .33269502-.12171627.62090565-.3648366.86403127-.24312562.24312562-.53081237.3648366-.86351268.3648366H17.89709854c-.33269317 0-.62038653-.12171098-.8635132-.3648366-.24312669-.24312562-.36483555-.53133625-.36483555-.86403126v-2.4566959c0-.33269503.12170886-.62038706.36483554-.86351269.24312668-.24312826.53082004-.3648366.8635132-.3648366z\"/></svg>"));
     this.object = function (x, y, width, height, fromObject) {
-        this.name = "TextBlock " + self.counter++;
-        this.textArea = this.name;
+        this.textBlockName = "TextBlock " + self.counter++;
+        this.textArea = this.textBlockName;
         this.x = x;
         this.y = y;
         this.fontSize = 36;
@@ -907,7 +907,7 @@ com.logicpartners.designerTools.textBlock = function () {
         this.type = 'TextBlock';
 
         if (fromObject) {
-            this.name = fromObject.name;
+            this.textBlockName = fromObject.textBlockName;
             this.textArea = fromObject.textArea;
             this.x = fromObject.x;
             this.y = fromObject.y;
@@ -939,7 +939,7 @@ com.logicpartners.designerTools.textBlock = function () {
 
         this.getZPLMetaData = function () {
             return {
-                name: this.name,
+                textBlockName: this.textBlockName,
                 textArea: this.textArea,
                 type: this.type,
                 x: this.x,
@@ -1228,8 +1228,15 @@ com.logicpartners.designerTools.variable = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            // TODO: Return based on selected type (TextBlock or TextInputField)
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+            if (this.variableType === "Text") {
+                debugger;
+                return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+            }
+
+            if (this.variableType === "TextBlock") {
+                debugger;
+                return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+            }
         };
 
         this.draw = function (context) {
@@ -2032,7 +2039,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             setTimeout(function () {
                                 $("#labelDesignerVariableType").val(selectedValue);
 
-                                $('#labelDesignerVariableType').on('change', function() {
+                                $('#labelDesignerVariableType').on('change', function () {
                                     thatActiveElement.variableType = this.value;
                                 });
                             }, 0);
@@ -2057,7 +2064,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             setTimeout(function () {
                                 $("#labelDesignerVariableText").val(selectedValueVariableText);
 
-                                $('#labelDesignerVariableText').on('change', function() {
+                                $('#labelDesignerVariableText').on('change', function () {
                                     thatActiveElement.variableText = this.value;
                                     thatActiveElement.variablePreviewText = this.value;
                                     self.labelDesigner.updateCanvas();
@@ -2085,44 +2092,51 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                         this.propertyNodes[key] = elementValue;
 
                         /**
-                         * Hide variableName field
+                         * Hide field
                          */
                         if (key === 'variableName') {
                             continue;
                         }
 
                         /**
-                         * Hide type field
+                         * Hide field
                          */
                         if (key === 'type') {
                             continue;
                         }
 
                         /**
-                         * Hide placeholderKey field
+                         * Hide field
                          */
                         if (key === 'placeholderKey') {
                             continue;
                         }
 
                         /**
-                         * Hide placeholderKey field
+                         * Hide field
                          */
                         if (key === 'textName') {
                             continue;
                         }
 
                         /**
-                         * Hide placeholderKey field
+                         * Hide field
                          */
                         if (key === 'barcodeName') {
                             continue;
                         }
 
                         /**
-                         * Hide placeholderKey field
+                         * Hide field
                          */
                         if (key === 'variablePreviewText') {
+                            continue;
+                        }
+
+                        /**
+                         * Hide field
+                         */
+                        if (key === 'textBlockName') {
                             continue;
                         }
 
