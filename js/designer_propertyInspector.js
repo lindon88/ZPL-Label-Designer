@@ -57,7 +57,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                     if (key != "readonly" && getType.toString.call(activeElement[key]) != '[object Function]') {
 
                         // Convert camelCase to capital case
-                        var result = key.replace( /([A-Z])/g, " $1" );
+                        var result = key.replace(/([A-Z])/g, " $1");
                         var finalResult = result.charAt(0).toUpperCase() + result.slice(1); // capitalize the first letter - as an example.
 
                         if (key.length === 1) {
@@ -195,6 +195,13 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                          * Hide field
                          */
                         if (key === 'textBlockName') {
+                            continue;
+                        }
+
+                        /**
+                         * Hide field
+                         */
+                        if (key === 'variable') {
                             continue;
                         }
 
