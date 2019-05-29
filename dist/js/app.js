@@ -2025,6 +2025,10 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             });
                         }
 
+                        if (key === 'type') {
+                            break;
+                        }
+
                         this.propertyNodes[key] = elementValue;
 
                         var elementContainer = $('<div class="label-designer-form-group"></div>')
