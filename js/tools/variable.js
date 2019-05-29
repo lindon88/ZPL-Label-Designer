@@ -93,7 +93,7 @@ com.logicpartners.designerTools.variable = function () {
                  ^FH
                  ^FD
                  */
-                return "^FB400,100,5,J,0," + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+                return "^FB400,100,5,J,0," + "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
             }
         };
 
