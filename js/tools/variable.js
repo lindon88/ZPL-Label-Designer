@@ -87,8 +87,13 @@ com.logicpartners.designerTools.variable = function () {
             }
 
             if (this.variableType === "TextBlock") {
-                debugger;
-                return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+                /** Field Block code TEMPLATE
+                 ^FB400,100,5,J,0
+                 ^A0,22,22
+                 ^FH
+                 ^FD
+                 */
+                return "^FB400,100,5,J,0," + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
             }
         };
 
