@@ -205,6 +205,13 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             continue;
                         }
 
+                        /**
+                         * Hide field
+                         */
+                        if (key === 'fontType') {
+                            continue;
+                        }
+
                         var elementContainer = $('<div class="label-designer-form-group"></div>')
                             .css({
                                 // "clear": "both",

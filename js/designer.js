@@ -600,10 +600,15 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
             "^MD30\r\n";
         var bufferData = "";
 
+        var designerProperties = {
+            labelWidth: this.labelWidth
+        };
+
         for (var i = 0; i < this.currentLayer; i++) {
             if (this.elements[i]) {
+                debugger;
                 bufferData += this.elements[i].getZPLData();
-                data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth) + '\r\n';
+                data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth, designerProperties) + '\r\n';
             }
         }
         // data = data.substring(0, data.length - 1);

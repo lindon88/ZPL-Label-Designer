@@ -1228,9 +1228,8 @@ com.logicpartners.designerTools.variable = function () {
             };
         };
 
-        this.toZPL = function (labelx, labely, labelwidth, labelheight) {
+        this.toZPL = function (labelx, labely, labelHeight, labelWidth) {
             if (this.variableType === "Text") {
-                debugger;
                 return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
             }
 
@@ -1241,7 +1240,9 @@ com.logicpartners.designerTools.variable = function () {
                  ^FH
                  ^FD
                  */
-                return "^FB400,100,5,J,0," + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+
+                var textBlockWidth = labelWidth - this.x ;
+                return "^FB" + (textBlockWidth) + ",100,5,J,0," + "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
             }
         };
 
@@ -1897,10 +1898,15 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
             "^MD30\r\n";
         var bufferData = "";
 
+        var designerProperties = {
+            labelWidth: this.labelWidth
+        };
+
         for (var i = 0; i < this.currentLayer; i++) {
             if (this.elements[i]) {
+                debugger;
                 bufferData += this.elements[i].getZPLData();
-                data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth) + '\r\n';
+                data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth, designerProperties) + '\r\n';
             }
         }
         // data = data.substring(0, data.length - 1);
@@ -2169,6 +2175,13 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                          * Hide field
                          */
                         if (key === 'variable') {
+                            continue;
+                        }
+
+                        /**
+                         * Hide field
+                         */
+                        if (key === 'fontType') {
                             continue;
                         }
 
