@@ -61,10 +61,31 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
 
                         if (key === 'textArea') {
                             elementValue = $('<textarea class="propertiesFieldTextInput" id="labelDesignerTextAreaBlock" rows="4" cols="50" name="' + key + '" value="' + activeElement[key] + '"></textarea>');
+                        } else if (key === 'variableType') {
+                            elementValue = $('<select class="propertiesFieldTextInput" id="labelDesignerVariableType" name="labelDesignerVariableType">' +
+                                '<option value="Text">Text</option>' +
+                                '<option value="TextBlock">TextBlock</option>' +
+                                '</select>');
+
+                            var selectedValue = activeElement[key];
+
+                            if (!selectedValue) {
+                                selectedValue = 'Text';
+                                this.activeElement.variableType = selectedValue;
+                            }
+
+                            var thatActiveElement = this.activeElement;
+                            setTimeout(function () {
+                                $("#labelDesignerVariableType").val(selectedValue);
+
+                                $('#labelDesignerVariableType').on('change', function() {
+                                    thatActiveElement.variableType = this.value;
+                                });
+                            }, 0);
+
                         } else {
                             elementValue = $('<input class="propertiesFieldTextInput" type="text" name="' + key + '" value="' + activeElement[key] + '">')
                         }
-
 
                         if (!activeElement.readonly || $.inArray(key, activeElement.readonly) == -1) {
                             elementValue.on("keyup", {"objectProperty": key}, function (event) {

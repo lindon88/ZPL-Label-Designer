@@ -17,6 +17,7 @@ com.logicpartners.designerTools.variable = function () {
         this.variableName = '';
         this.variablePlaceholderKey = '#variable';
         this.placeholderPreviewText = 'Your text here';
+        this.variableType = 'Text'; // Default
         this.x = x;
         this.y = y;
         this.fontSize = 20;
@@ -29,6 +30,7 @@ com.logicpartners.designerTools.variable = function () {
             this.variableName = fromObject.variableName;
             this.variablePlaceholderKey = fromObject.variablePlaceholderKey;
             this.placeholderPreviewText = fromObject.placeholderPreviewText;
+            this.variableType = fromObject.variableType;
             this.x = fromObject.x;
             this.y = fromObject.y;
             this.fontSize = fromObject.fontSize;
@@ -62,6 +64,7 @@ com.logicpartners.designerTools.variable = function () {
                 variableName: this.variableName,
                 variablePlaceholderKey: this.variablePlaceholderKey,
                 placeholderPreviewText: this.placeholderPreviewText,
+                variableType: this.variableType,
                 x: this.x,
                 y: this.y,
                 fontSize: this.fontSize,
@@ -73,6 +76,7 @@ com.logicpartners.designerTools.variable = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
+            // TODO: Return based on selected type (TextBlock or TextInputField)
             return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variablePlaceholderKey + "^FS";
         };
 

@@ -200,3 +200,18 @@
      */
     pointer-events: none;
 }
+
+select {
+    padding-left: 5px;
+    flex-basis: 70%;
+    background-color: white;
+    cursor: text;
+    border-style: inset;
+    border-color: initial;
+    border-image: initial;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    box-sizing: border-box;
+    /*-webkit-appearance: none;*/
+    -webkit-border-radius: 0px;
+}
