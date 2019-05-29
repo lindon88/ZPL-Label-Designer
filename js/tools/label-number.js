@@ -15,7 +15,7 @@ com.logicpartners.designerTools.labelNumber = function () {
     this.object = function (x, y, width, height, fromObject) {
         this.name = 'Label #: ';
         this.placeholderKey = '#labelNr';
-        this.placeholderPreviewText = 'Generated text here';
+        this.previewText = 'Generated text here';
         this.x = x;
         this.y = y;
         this.fontSize = 20;
@@ -27,7 +27,7 @@ com.logicpartners.designerTools.labelNumber = function () {
         if (fromObject) {
             this.name = fromObject.name;
             this.placeholderKey = fromObject.placeholderKey;
-            this.placeholderPreviewText = fromObject.placeholderPreviewText;
+            this.previewText = fromObject.previewText;
             this.x = fromObject.x;
             this.y = fromObject.y;
             this.fontSize = fromObject.fontSize;
@@ -60,7 +60,7 @@ com.logicpartners.designerTools.labelNumber = function () {
             return {
                 name: this.name,
                 placeholderKey: this.placeholderKey,
-                placeholderPreviewText: this.placeholderPreviewText,
+                previewText: this.previewText,
                 x: this.x,
                 y: this.y,
                 fontSize: this.fontSize,
@@ -81,7 +81,7 @@ com.logicpartners.designerTools.labelNumber = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var displayText = this.name + this.placeholderPreviewText;
+            var displayText = this.name + this.previewText;
             var measuredText = context.measureText(displayText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";

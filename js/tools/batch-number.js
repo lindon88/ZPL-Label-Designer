@@ -16,7 +16,7 @@ com.logicpartners.designerTools.batchNumber = function () {
     this.object = function (x, y, width, height, fromObject) {
         this.name = 'Batch #: ';
         this.placeholderKey = '#batchNr';
-        this.placeholderPreviewText = 'Generated text here';
+        this.previewText = 'Generated text here';
         this.x = x;
         this.y = y;
         this.fontSize = 20;
@@ -28,7 +28,7 @@ com.logicpartners.designerTools.batchNumber = function () {
         if (fromObject) {
             this.name = fromObject.name;
             this.placeholderKey = fromObject.placeholderKey;
-            this.placeholderPreviewText = fromObject.placeholderPreviewText;
+            this.previewText = fromObject.previewText;
             this.x = fromObject.x;
             this.y = fromObject.y;
             this.fontSize = fromObject.fontSize;
@@ -61,7 +61,7 @@ com.logicpartners.designerTools.batchNumber = function () {
             return {
                 name: this.name,
                 placeholderKey: this.placeholderKey,
-                placeholderPreviewText: this.placeholderPreviewText,
+                previewText: this.previewText,
                 x: this.x,
                 y: this.y,
                 fontSize: this.fontSize,
@@ -82,7 +82,7 @@ com.logicpartners.designerTools.batchNumber = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var displayText = this.name  + this.placeholderPreviewText;
+            var displayText = this.name  + this.previewText;
             var measuredText = context.measureText(displayText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";

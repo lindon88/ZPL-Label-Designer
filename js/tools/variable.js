@@ -16,7 +16,7 @@ com.logicpartners.designerTools.variable = function () {
         // this.variableName = 'Stock Id: ';
         this.variableName = '';
         this.variable = '#variable';
-        this.placeholderPreviewText = 'Your text here';
+        this.previewText = 'Your text here';
         this.variableType = 'Text'; // Default
         this.x = x;
         this.y = y;
@@ -29,7 +29,7 @@ com.logicpartners.designerTools.variable = function () {
         if (fromObject) {
             this.variableName = fromObject.variableName;
             this.variable = fromObject.variable;
-            this.placeholderPreviewText = fromObject.placeholderPreviewText;
+            this.previewText = fromObject.previewText;
             this.variableType = fromObject.variableType;
             this.x = fromObject.x;
             this.y = fromObject.y;
@@ -63,7 +63,7 @@ com.logicpartners.designerTools.variable = function () {
             return {
                 variableName: this.variableName,
                 variable: this.variable,
-                placeholderPreviewText: this.placeholderPreviewText,
+                previewText: this.previewText,
                 variableType: this.variableType,
                 x: this.x,
                 y: this.y,
@@ -86,7 +86,7 @@ com.logicpartners.designerTools.variable = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var displayText = this.variableName + this.placeholderPreviewText;
+            var displayText = this.variableName + this.previewText;
             var measuredText = context.measureText(displayText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
