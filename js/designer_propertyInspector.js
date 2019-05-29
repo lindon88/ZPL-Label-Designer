@@ -60,6 +60,10 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                         var result = key.replace( /([A-Z])/g, " $1" );
                         var finalResult = result.charAt(0).toUpperCase() + result.slice(1); // capitalize the first letter - as an example.
 
+                        if (key.length === 1) {
+                            finalResult = key;
+                        }
+
                         var elementKey = $('<div class="propertiesFieldKey">' + finalResult + '</div>');
 
                         var elementValue = null;
@@ -91,8 +95,17 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                         } else if (key === 'variableText') {
                             elementValue = $('<select class="propertiesFieldTextInput" id="labelDesignerVariableText" name="labelDesignerVariableText">' +
                                 '<option selected="selected" value="Select variable">Select variable</option>' +
-                                '<option value="Product Name">Product Name</option>' +
-                                '<option value="Product Price">Product Price</option>' +
+                                '<option value="#createDate">Create Date</option>' +
+                                '<option value="#createDateTime">Create Date Time</option>' +
+                                '<option value="#expiresDate">Expires Date</option>' +
+                                '<option value="#expiresDateTime">Expires Date Time</option>' +
+                                '<option value="#expiresDayName">Expires Day Name</option>' +
+                                '<option value="#managerName">Manager Name</option>' +
+                                '<option value="#productCategory">Product Category</option>' +
+                                '<option value="#productCode">Product Code</option>' +
+                                '<option value="#productDescription">Product Description</option>' +
+                                '<option value="#shelfLife">Shelf Life</option>' +
+                                '<option value="#userName">Username</option>' +
                                 '</select>');
 
                             var selectedValueVariableText = activeElement[key];
