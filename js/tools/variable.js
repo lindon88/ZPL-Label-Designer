@@ -16,10 +16,10 @@ com.logicpartners.designerTools.variable = function () {
         // this.variableName = 'Stock Id: ';
         this.variableName = '';
         this.variable = '#variable';
-        // this.previewText = 'Your variable text here';
-        this.previewText = '';
+        // this.variablePreviewText = 'Your variable text here';
+        this.variablePreviewText = '';
         this.variableText = 'Product Name'; // Default text drop-down
-        this.variableType = 'Text'; // Default
+        this.variableType = 'Text'; // Default type drop-down
         this.x = x;
         this.y = y;
         this.fontSize = 20;
@@ -31,7 +31,7 @@ com.logicpartners.designerTools.variable = function () {
         if (fromObject) {
             this.variableName = fromObject.variableName;
             this.variable = fromObject.variable;
-            this.previewText = fromObject.previewText;
+            this.variablePreviewText = fromObject.variablePreviewText;
             this.variableType = fromObject.variableType;
             this.variableText = fromObject.variableText;
             this.x = fromObject.x;
@@ -66,7 +66,7 @@ com.logicpartners.designerTools.variable = function () {
             return {
                 variableName: this.variableName,
                 variable: this.variable,
-                previewText: this.previewText,
+                variablePreviewText: this.variablePreviewText,
                 variableType: this.variableType,
                 variableText: this.variableText,
                 x: this.x,
@@ -90,7 +90,7 @@ com.logicpartners.designerTools.variable = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var displayText = this.variableName + this.previewText;
+            var displayText = this.variableName + this.variablePreviewText;
             var measuredText = context.measureText(displayText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";

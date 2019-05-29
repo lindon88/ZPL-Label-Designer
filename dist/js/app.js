@@ -1164,10 +1164,10 @@ com.logicpartners.designerTools.variable = function () {
         // this.variableName = 'Stock Id: ';
         this.variableName = '';
         this.variable = '#variable';
-        // this.previewText = 'Your variable text here';
-        this.previewText = '';
+        // this.variablePreviewText = 'Your variable text here';
+        this.variablePreviewText = '';
         this.variableText = 'Product Name'; // Default text drop-down
-        this.variableType = 'Text'; // Default
+        this.variableType = 'Text'; // Default type drop-down
         this.x = x;
         this.y = y;
         this.fontSize = 20;
@@ -1179,7 +1179,7 @@ com.logicpartners.designerTools.variable = function () {
         if (fromObject) {
             this.variableName = fromObject.variableName;
             this.variable = fromObject.variable;
-            this.previewText = fromObject.previewText;
+            this.variablePreviewText = fromObject.variablePreviewText;
             this.variableType = fromObject.variableType;
             this.variableText = fromObject.variableText;
             this.x = fromObject.x;
@@ -1214,7 +1214,7 @@ com.logicpartners.designerTools.variable = function () {
             return {
                 variableName: this.variableName,
                 variable: this.variable,
-                previewText: this.previewText,
+                variablePreviewText: this.variablePreviewText,
                 variableType: this.variableType,
                 variableText: this.variableText,
                 x: this.x,
@@ -1238,7 +1238,7 @@ com.logicpartners.designerTools.variable = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var displayText = this.variableName + this.previewText;
+            var displayText = this.variableName + this.variablePreviewText;
             var measuredText = context.measureText(displayText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
@@ -2048,9 +2048,9 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             if (!selectedValueVariableText) {
                                 selectedValueVariableText = 'Product Name';
                                 this.activeElement.variableText = selectedValueVariableText;
-                                this.activeElement.previewText = 'Product Name';
+                                this.activeElement.variablePreviewText = 'Product Name';
                             } else {
-                                this.activeElement.previewText = this.activeElement.variableText
+                                this.activeElement.variablePreviewText = this.activeElement.variableText
                             }
 
                             var thatActiveElement = this.activeElement;
@@ -2059,7 +2059,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
 
                                 $('#labelDesignerVariableText').on('change', function() {
                                     thatActiveElement.variableText = this.value;
-                                    thatActiveElement.previewText = this.value;
+                                    thatActiveElement.variablePreviewText = this.value;
                                     self.labelDesigner.updateCanvas();
                                 });
                             }, 0);
@@ -2116,6 +2116,13 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                          * Hide placeholderKey field
                          */
                         if (key === 'barcodeName') {
+                            continue;
+                        }
+
+                        /**
+                         * Hide placeholderKey field
+                         */
+                        if (key === 'variablePreviewText') {
                             continue;
                         }
 

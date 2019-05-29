@@ -94,9 +94,9 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             if (!selectedValueVariableText) {
                                 selectedValueVariableText = 'Product Name';
                                 this.activeElement.variableText = selectedValueVariableText;
-                                this.activeElement.previewText = 'Product Name';
+                                this.activeElement.variablePreviewText = 'Product Name';
                             } else {
-                                this.activeElement.previewText = this.activeElement.variableText
+                                this.activeElement.variablePreviewText = this.activeElement.variableText
                             }
 
                             var thatActiveElement = this.activeElement;
@@ -105,7 +105,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
 
                                 $('#labelDesignerVariableText').on('change', function() {
                                     thatActiveElement.variableText = this.value;
-                                    thatActiveElement.previewText = this.value;
+                                    thatActiveElement.variablePreviewText = this.value;
                                     self.labelDesigner.updateCanvas();
                                 });
                             }, 0);
@@ -162,6 +162,13 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                          * Hide placeholderKey field
                          */
                         if (key === 'barcodeName') {
+                            continue;
+                        }
+
+                        /**
+                         * Hide placeholderKey field
+                         */
+                        if (key === 'variablePreviewText') {
                             continue;
                         }
 
