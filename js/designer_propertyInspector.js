@@ -124,6 +124,20 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             continue;
                         }
 
+                        /**
+                         * Hide placeholderKey field
+                         */
+                        if (key === 'textName') {
+                            continue;
+                        }
+
+                        /**
+                         * Hide placeholderKey field
+                         */
+                        if (key === 'barcodeName') {
+                            continue;
+                        }
+
                         var elementContainer = $('<div class="label-designer-form-group"></div>')
                             .css({
                                 // "clear": "both",

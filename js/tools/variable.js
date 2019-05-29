@@ -15,7 +15,7 @@ com.logicpartners.designerTools.variable = function () {
     this.object = function (x, y, width, height, fromObject) {
         // this.variableName = 'Stock Id: ';
         this.variableName = '';
-        this.variablePlaceholderKey = '#variable';
+        this.variable = '#variable';
         this.placeholderPreviewText = 'Your text here';
         this.variableType = 'Text'; // Default
         this.x = x;
@@ -28,7 +28,7 @@ com.logicpartners.designerTools.variable = function () {
 
         if (fromObject) {
             this.variableName = fromObject.variableName;
-            this.variablePlaceholderKey = fromObject.variablePlaceholderKey;
+            this.variable = fromObject.variable;
             this.placeholderPreviewText = fromObject.placeholderPreviewText;
             this.variableType = fromObject.variableType;
             this.x = fromObject.x;
@@ -62,7 +62,7 @@ com.logicpartners.designerTools.variable = function () {
         this.getZPLMetaData = function () {
             return {
                 variableName: this.variableName,
-                variablePlaceholderKey: this.variablePlaceholderKey,
+                variable: this.variable,
                 placeholderPreviewText: this.placeholderPreviewText,
                 variableType: this.variableType,
                 x: this.x,
@@ -77,7 +77,7 @@ com.logicpartners.designerTools.variable = function () {
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
             // TODO: Return based on selected type (TextBlock or TextInputField)
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variablePlaceholderKey + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
         };
 
         this.draw = function (context) {

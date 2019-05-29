@@ -15,7 +15,7 @@ com.logicpartners.designerTools.barcode = function () {
     this.object = function (x, y, width, height, fromObject) {
         var width = 100;
         var canvasHolder = $("<canvas></canvas>").prop("width", "100").prop("height", "1");
-        this.name = "Barcode " + self.counter++;
+        this.barcodeName = "Barcode " + self.counter++;
         this.text = "BARCODE";
         this.x = x;
         this.y = y;
@@ -24,7 +24,7 @@ com.logicpartners.designerTools.barcode = function () {
         this.type = 'Barcode';
 
         if (fromObject) {
-            this.name = fromObject.name;
+            this.barcodeName = fromObject.barcodeName;
             this.text = fromObject.text;
             this.x = fromObject.x;
             this.y = fromObject.y;
@@ -41,7 +41,7 @@ com.logicpartners.designerTools.barcode = function () {
 
         this.getZPLMetaData = function () {
             return {
-                name: this.name,
+                barcodeName: this.barcodeName,
                 text: this.text,
                 type: this.type,
                 x: this.x,
