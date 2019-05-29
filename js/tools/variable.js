@@ -16,7 +16,9 @@ com.logicpartners.designerTools.variable = function () {
         // this.variableName = 'Stock Id: ';
         this.variableName = '';
         this.variable = '#variable';
-        this.previewText = 'Your variable text here';
+        // this.previewText = 'Your variable text here';
+        this.previewText = '';
+        this.variableText = 'Product Name'; // Default text drop-down
         this.variableType = 'Text'; // Default
         this.x = x;
         this.y = y;
@@ -31,6 +33,7 @@ com.logicpartners.designerTools.variable = function () {
             this.variable = fromObject.variable;
             this.previewText = fromObject.previewText;
             this.variableType = fromObject.variableType;
+            this.variableText = fromObject.variableText;
             this.x = fromObject.x;
             this.y = fromObject.y;
             this.fontSize = fromObject.fontSize;
@@ -65,6 +68,7 @@ com.logicpartners.designerTools.variable = function () {
                 variable: this.variable,
                 previewText: this.previewText,
                 variableType: this.variableType,
+                variableText: this.variableText,
                 x: this.x,
                 y: this.y,
                 fontSize: this.fontSize,

@@ -83,6 +83,33 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                                 });
                             }, 0);
 
+                        } else if (key === 'variableText') {
+                            elementValue = $('<select class="propertiesFieldTextInput" id="labelDesignerVariableText" name="labelDesignerVariableText">' +
+                                '<option value="Product Name">Product Name</option>' +
+                                '<option value="Product Price">Product Price</option>' +
+                                '</select>');
+
+                            var selectedValueVariableText = activeElement[key];
+
+                            if (!selectedValueVariableText) {
+                                selectedValueVariableText = 'Product Name';
+                                this.activeElement.variableText = selectedValueVariableText;
+                                this.activeElement.previewText = 'Product Name';
+                            } else {
+                                this.activeElement.previewText = this.activeElement.variableText
+                            }
+
+                            var thatActiveElement = this.activeElement;
+                            setTimeout(function () {
+                                $("#labelDesignerVariableText").val(selectedValueVariableText);
+
+                                $('#labelDesignerVariableText').on('change', function() {
+                                    thatActiveElement.variableText = this.value;
+                                    thatActiveElement.previewText = this.value;
+                                    self.labelDesigner.updateCanvas();
+                                });
+                            }, 0);
+
                         } else {
                             elementValue = $('<input class="propertiesFieldTextInput" type="text" name="' + key + '" value="' + activeElement[key] + '">')
                         }
