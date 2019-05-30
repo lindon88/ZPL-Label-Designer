@@ -52,7 +52,7 @@ com.logicpartners.designerTools.barcode = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^BY1^B3N,N," + this.height + "N,N^FD" + this.text + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^BY1\n^B3N,N," + this.height + "N,N\n^FD" + this.text + "\n^FS";
         };
 
         this.draw = function (context) {

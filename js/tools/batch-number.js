@@ -73,7 +73,7 @@ com.logicpartners.designerTools.batchNumber = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + this.placeholderKey + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + this.name + this.placeholderKey + "\n^FS";
         };
 
         this.draw = function (context) {

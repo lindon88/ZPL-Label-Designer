@@ -95,17 +95,17 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                         } else if (key === 'variableText') {
                             elementValue = $('<select class="propertiesFieldTextInput" id="labelDesignerVariableText" name="labelDesignerVariableText">' +
                                 '<option selected="selected" value="Select variable">Select variable</option>' +
-                                '<option value="#createDate">Create Date</option>' +
-                                '<option value="#createDateTime">Create Date Time</option>' +
-                                '<option value="#expiresDate">Expires Date</option>' +
-                                '<option value="#expiresDateTime">Expires Date Time</option>' +
-                                '<option value="#expiresDayName">Expires Day Name</option>' +
-                                '<option value="#managerName">Manager Name</option>' +
-                                '<option value="#productCategory">Product Category</option>' +
-                                '<option value="#productCode">Product Code</option>' +
-                                '<option value="#productDescription">Product Description</option>' +
-                                '<option value="#shelfLife">Shelf Life</option>' +
-                                '<option value="#userName">Username</option>' +
+                                '<option value="{{createDate}}">Create Date</option>' +
+                                '<option value="{{createDateTime}}">Create Date Time</option>' +
+                                '<option value="{{expiresDate}}">Expires Date</option>' +
+                                '<option value="{{expiresDateTime}}">Expires Date Time</option>' +
+                                '<option value="{{expiresDayName}}">Expires Day Name</option>' +
+                                '<option value="{{managerName}}">Manager Name</option>' +
+                                '<option value="{{productCategory}}">Product Category</option>' +
+                                '<option value="{{productCode}}">Product Code</option>' +
+                                '<option value="{{productDescription}}">Product Description</option>' +
+                                '<option value="{{shelfLife}}">Shelf Life</option>' +
+                                '<option value="{{userName}}">Username</option>' +
                                 '</select>');
 
                             var selectedValueVariableText = activeElement[key];

@@ -228,7 +228,7 @@ com.logicpartners.designerTools.barcode = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^BY1^B3N,N," + this.height + "N,N^FD" + this.text + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^BY1\n^B3N,N," + this.height + "N,N\n^FD" + this.text + "\n^FS";
         };
 
         this.draw = function (context) {
@@ -357,7 +357,7 @@ com.logicpartners.designerTools.batchNumber = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + this.placeholderKey + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + this.name + this.placeholderKey + "\n^FS";
         };
 
         this.draw = function (context) {
@@ -737,7 +737,7 @@ com.logicpartners.designerTools.labelNumber = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.name + this.placeholderKey + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + this.name + this.placeholderKey + "\n^FS";
         };
 
         this.draw = function (context) {
@@ -1198,7 +1198,7 @@ com.logicpartners.designerTools.text = function () {
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
             // return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^FD" + this.text + "^FS";
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + "^FD" + this.text + "^FS";
+            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + "\n^FD" + this.text + "\n^FS";
         };
 
         this.draw = function (context) {
@@ -1345,7 +1345,7 @@ com.logicpartners.designerTools.variable = function () {
                  */
 
                 var textBlockWidth = labelWidth - this.x ;
-                return "^FB" + (textBlockWidth) + ",100,5,J,0," + "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+                return "^FB" + (textBlockWidth) + ",100,5,J,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + this.variableName + this.variable + "\n^FS";
             }
         };
 
@@ -2164,17 +2164,17 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                         } else if (key === 'variableText') {
                             elementValue = $('<select class="propertiesFieldTextInput" id="labelDesignerVariableText" name="labelDesignerVariableText">' +
                                 '<option selected="selected" value="Select variable">Select variable</option>' +
-                                '<option value="#createDate">Create Date</option>' +
-                                '<option value="#createDateTime">Create Date Time</option>' +
-                                '<option value="#expiresDate">Expires Date</option>' +
-                                '<option value="#expiresDateTime">Expires Date Time</option>' +
-                                '<option value="#expiresDayName">Expires Day Name</option>' +
-                                '<option value="#managerName">Manager Name</option>' +
-                                '<option value="#productCategory">Product Category</option>' +
-                                '<option value="#productCode">Product Code</option>' +
-                                '<option value="#productDescription">Product Description</option>' +
-                                '<option value="#shelfLife">Shelf Life</option>' +
-                                '<option value="#userName">Username</option>' +
+                                '<option value="{{createDate}}">Create Date</option>' +
+                                '<option value="{{createDateTime}}">Create Date Time</option>' +
+                                '<option value="{{expiresDate}}">Expires Date</option>' +
+                                '<option value="{{expiresDateTime}}">Expires Date Time</option>' +
+                                '<option value="{{expiresDayName}}">Expires Day Name</option>' +
+                                '<option value="{{managerName}}">Manager Name</option>' +
+                                '<option value="{{productCategory}}">Product Category</option>' +
+                                '<option value="{{productCode}}">Product Code</option>' +
+                                '<option value="{{productDescription}}">Product Description</option>' +
+                                '<option value="{{shelfLife}}">Shelf Life</option>' +
+                                '<option value="{{userName}}">Username</option>' +
                                 '</select>');
 
                             var selectedValueVariableText = activeElement[key];
