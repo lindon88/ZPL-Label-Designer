@@ -94,7 +94,7 @@ com.logicpartners.designerTools.variable = function () {
                  ^FD
                  */
 
-                var textBlockWidth = labelWidth - this.x ;
+                var textBlockWidth = labelWidth - this.x;
                 // return "^FB" + (textBlockWidth) + ",100,5,J,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + this.variableName + this.variable + "\n^FS";
                 return "^FB" + (textBlockWidth) + ",100,5,J,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + this.variableText + "\n^FS";
             }
