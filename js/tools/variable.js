@@ -82,7 +82,8 @@ com.logicpartners.designerTools.variable = function () {
 
         this.toZPL = function (labelx, labely, labelHeight, labelWidth) {
             if (this.variableType === "Text") {
-                return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+                // return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+                return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableText + "^FS";
             }
 
             if (this.variableType === "TextBlock") {
@@ -94,7 +95,8 @@ com.logicpartners.designerTools.variable = function () {
                  */
 
                 var textBlockWidth = labelWidth - this.x ;
-                return "^FB" + (textBlockWidth) + ",100,5,J,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + this.variableName + this.variable + "\n^FS";
+                // return "^FB" + (textBlockWidth) + ",100,5,J,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + this.variableName + this.variable + "\n^FS";
+                return "^FB" + (textBlockWidth) + ",100,5,J,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + this.variableText + "\n^FS";
             }
         };
 

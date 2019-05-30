@@ -122,9 +122,10 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             setTimeout(function () {
                                 $("#labelDesignerVariableText").val(selectedValueVariableText);
 
-                                $('#labelDesignerVariableText').on('change', function () {
+                                $('#labelDesignerVariableText').on('change', function (elem) {
                                     thatActiveElement.variableText = this.value;
-                                    thatActiveElement.variablePreviewText = this.value;
+                                    var selectedDisplayText = $("#labelDesignerVariableText option:selected").text();
+                                    thatActiveElement.variablePreviewText = selectedDisplayText;
                                     self.labelDesigner.updateCanvas();
                                 });
                             }, 0);
