@@ -191,7 +191,7 @@ com.logicpartners.designerTools.barcode = function () {
     this.object = function (x, y, width, height, fromObject) {
         var width = 100;
         var canvasHolder = $("<canvas></canvas>").prop("width", "100").prop("height", "1");
-        this.barcodeName = "Barcode " + self.counter++;
+        this.name = "Barcode " + self.counter++;
         this.text = "BARCODE";
         this.x = x;
         this.y = y;
@@ -200,7 +200,7 @@ com.logicpartners.designerTools.barcode = function () {
         this.type = 'Barcode';
 
         if (fromObject) {
-            this.barcodeName = fromObject.barcodeName;
+            this.name = fromObject.name;
             this.text = fromObject.text;
             this.x = fromObject.x;
             this.y = fromObject.y;
@@ -217,7 +217,7 @@ com.logicpartners.designerTools.barcode = function () {
 
         this.getZPLMetaData = function () {
             return {
-                barcodeName: this.barcodeName,
+                name: this.name,
                 text: this.text,
                 type: this.type,
                 x: this.x,
@@ -900,7 +900,7 @@ com.logicpartners.designerTools.textBlock = function () {
         this.textArea = this.textBlockName;
         this.x = x;
         this.y = y;
-        this.fontSize = 36;
+        this.fontSize = 26;
         this.fontType = "Arial";
         this.width = 100;
         this.height = 0;
@@ -951,8 +951,19 @@ com.logicpartners.designerTools.textBlock = function () {
             };
         };
 
-        this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + "^FD" + this.textArea + "^FS";
+        this.toZPL = function (labelx, labely, labelHeight, labelWidth) {
+            /** Field Block code TEMPLATE
+             ^FB400,100,5,J,0
+             ^A0,22,22
+             ^FH
+             ^FD
+             */
+
+            var textWithCarriageReturnForZpl = this.textArea.replace(/(\r\n|\n|\r)/gm, '\\&');
+
+            var textBlockWidth = labelWidth - this.x;
+            // return "^FB" + (textBlockWidth) + ",100,5,J,0," + "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+            return "^FB" + (textBlockWidth) + ",100,5,J,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + textWithCarriageReturnForZpl+ "\n^FS";
         };
 
         this.draw = function (context) {
@@ -961,9 +972,17 @@ com.logicpartners.designerTools.textBlock = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var lines = this.textArea.split(/\n/);
+            // var offset = 3;
+            // var textBlockWidth = (context.canvas.width - offset) - this.x;
+            var textBlockWidth = (context.canvas.width) - (this.x + 10);
+
+            var wrapped = wrapCanvasText(this.textArea, context, textBlockWidth);
+
+            var lines = wrapped.split(/(\r\n|\n|\r)/gm);
+
 
             var maxStringLength = 0;
+
             var maxStringLengthIndex = 0;
             for (var j = 0; j < lines.length; j++) {
                 if (lines[j].length > maxStringLength) {
@@ -976,10 +995,11 @@ com.logicpartners.designerTools.textBlock = function () {
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
 
-            this.height = this.height * 0.85;
+            this.height = this.height * 0.5;
             for (var i = 0; i < lines.length; i++) {
 
                 var calculatedHeight = this.height * (i + 1);
+
                 context.fillText(lines[i], this.x, this.y + (calculatedHeight));
 
             }
@@ -987,6 +1007,88 @@ com.logicpartners.designerTools.textBlock = function () {
 
             context.globalCompositeOperation = "source-over";
             context.fillStyle = oColor;
+
+
+            /**
+             * Ref: http://jsfiddle.net/illumine/Avvxn/
+             * @param t
+             * @param canvas
+             * @param maxW
+             * @param maxH
+             * @returns {string}
+             */
+            function wrapCanvasText(t, canvas, maxW, maxH) {
+
+                if (typeof maxH === "undefined") {
+                    maxH = 0;
+                }
+
+                // var words = t.text.split(" ");
+                var words = t.split(" ");
+                var formatted = '';
+
+                var lineHeight = 70;
+
+                // adjust for vertical offset
+                var maxHAdjusted = maxH > 0 ? maxH - lineHeight : 0;
+                // var context = canvas.getContext("2d");
+                var context = canvas;
+
+
+                context.font = '32' + "px ";
+                var currentLine = "";
+                var breakLineCount = 0;
+
+                for (var n = 0; n < words.length; n++) {
+
+                    var isNewLine = currentLine == "";
+                    var testOverlap = currentLine + ' ' + words[n];
+
+                    // are we over width?
+                    var w = context.measureText(testOverlap).width;
+
+                    if (w < maxW) { // if not, keep adding words
+                        currentLine += words[n] + ' ';
+                        formatted += words[n] += ' ';
+                    } else {
+
+                        // if this hits, we got a word that need to be hypenated
+                        if (isNewLine) {
+                            var wordOverlap = "";
+
+                            // test word length until its over maxW
+                            for (var i = 0; i < words[n].length; ++i) {
+
+                                wordOverlap += words[n].charAt(i);
+                                var withHypeh = wordOverlap + "-";
+
+                                if (context.measureText(withHypeh).width >= maxW) {
+                                    // add hyphen when splitting a word
+                                    withHypeh = wordOverlap.substr(0, wordOverlap.length - 2) + "-";
+                                    // update current word with remainder
+                                    words[n] = words[n].substr(wordOverlap.length - 1, words[n].length);
+                                    formatted += withHypeh; // add hypenated word
+                                    break;
+                                }
+                            }
+                        }
+                        n--; // restart cycle
+                        formatted += '\n';
+                        breakLineCount++;
+                        currentLine = "";
+                    }
+                    if (maxHAdjusted > 0 && (breakLineCount * lineHeight) > maxHAdjusted) {
+                        // add ... at the end indicating text was cutoff
+                        formatted = formatted.substr(0, formatted.length - 3) + "...\n";
+                        break;
+                    }
+                }
+                // get rid of empy newline at the end
+                formatted = formatted.substr(0, formatted.length - 1);
+
+                return formatted;
+            }
+
         };
 
         this.setWidth = function (width) {
@@ -1002,7 +1104,8 @@ com.logicpartners.designerTools.textBlock = function () {
         };
 
         this.getHeight = function () {
-            return this.height * 0.75;
+            // return this.height * 0.75;
+            return this.height * 2;
         };
 
         this.setHandle = function (coords) {
@@ -1014,7 +1117,7 @@ com.logicpartners.designerTools.textBlock = function () {
         };
 
         this.drawActive = function (context) {
-            context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.99) + 8, [2, 2]);
+            context.dashedStroke(parseInt(this.x + 1), parseInt(this.y - 4), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.99) + 8, [2, 2]);
         };
 
         this.hitTest = function (coords) {
@@ -1904,17 +2007,10 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
 
         for (var i = 0; i < this.currentLayer; i++) {
             if (this.elements[i]) {
-                debugger;
                 bufferData += this.elements[i].getZPLData();
                 data += this.elements[i].toZPL(this.labelX, this.labelY, this.labelHeight, this.labelWidth, designerProperties) + '\r\n';
             }
         }
-        // data = data.substring(0, data.length - 1);
-
-        // data += "\r\n";
-        // data += "{{ batchNumber && labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr -  #labelNr ^FS' : ''}}\r\n" +
-        //     "{{ batchNumber && !labelNr ? '^FO0,95 ^A0,18,18 ^FDBatch #: #batchNr ^FS' : ''}}\r\n" +
-        //     "{{ labelNr && !batchNumber ? '^FO0,95 ^A0,18,18 ^FDLabel #: #labelNr ^FS' : ''}}\r\n";
 
         data += "^XZ\r\n";
 
@@ -2114,10 +2210,20 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             });
                         } else {
                             // Draw readonly textbox.
-                            elementValue.prop("readonly", true).css({
+                            // elementValue.prop("readonly", true).css({
+                            //     "background-color": "#DDDDDD",
+                            //     border: "1px solid #AAAAAA",
+                            // }).parent().css({
+                            //     'display': 'none !important'
+                            // })
+
+                            var parent = elementValue.prop("readonly", true).css({
                                 "background-color": "#DDDDDD",
-                                border: "1px solid #AAAAAA"
+                                border: "1px solid #AAAAAA",
+                            }).parent().closest('label-designer-form-group').css({
+                                display: 'none'
                             });
+                            // debugger;
                         }
 
                         this.propertyNodes[key] = elementValue;

@@ -17,7 +17,7 @@ com.logicpartners.designerTools.textBlock = function () {
         this.textArea = this.textBlockName;
         this.x = x;
         this.y = y;
-        this.fontSize = 36;
+        this.fontSize = 26;
         this.fontType = "Arial";
         this.width = 100;
         this.height = 0;
@@ -76,8 +76,11 @@ com.logicpartners.designerTools.textBlock = function () {
              ^FD
              */
 
-            var textBlockWidth = labelWidth - this.x ;
-            return "^FB" + (textBlockWidth) + ",100,5,J,0," + "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+            var textWithCarriageReturnForZpl = this.textArea.replace(/(\r\n|\n|\r)/gm, '\\&');
+
+            var textBlockWidth = labelWidth - this.x;
+            // return "^FB" + (textBlockWidth) + ",100,5,J,0," + "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
+            return "^FB" + (textBlockWidth) + ",100,5,J,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + textWithCarriageReturnForZpl+ "\n^FS";
         };
 
         this.draw = function (context) {
@@ -86,16 +89,14 @@ com.logicpartners.designerTools.textBlock = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var linesSplits = this.textArea.split(/\n/);
-            console.log('linesSplits', linesSplits);
+            // var offset = 3;
+            // var textBlockWidth = (context.canvas.width - offset) - this.x;
+            var textBlockWidth = (context.canvas.width) - (this.x + 10);
 
-            var offset = 10;
-            var textBlockWidth = (context.canvas.width - offset) - this.x;
-            var newLines = getLines(context, this.textArea, textBlockWidth);
-            lines = newLines;
-            console.log('+++++++++++');
-            console.log('WIDTH',textBlockWidth);
-            console.log(newLines);
+            var wrapped = wrapCanvasText(this.textArea, context, textBlockWidth);
+
+            var lines = wrapped.split(/(\r\n|\n|\r)/gm);
+
 
             var maxStringLength = 0;
 
@@ -111,10 +112,11 @@ com.logicpartners.designerTools.textBlock = function () {
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
 
-            this.height = this.height * 0.85;
+            this.height = this.height * 0.5;
             for (var i = 0; i < lines.length; i++) {
 
                 var calculatedHeight = this.height * (i + 1);
+
                 context.fillText(lines[i], this.x, this.y + (calculatedHeight));
 
             }
@@ -123,40 +125,87 @@ com.logicpartners.designerTools.textBlock = function () {
             context.globalCompositeOperation = "source-over";
             context.fillStyle = oColor;
 
+
             /**
-             * Reference: https://stackoverflow.com/questions/2936112/text-wrap-in-a-canvas-element
-             * Divide an entire phrase in an array of phrases, all with the max pixel length given.
-             * The words are initially separated by the space char.
-             * @param phrase
-             * @param length
-             * @return
+             * Ref: http://jsfiddle.net/illumine/Avvxn/
+             * @param t
+             * @param canvas
+             * @param maxW
+             * @param maxH
+             * @returns {string}
              */
-            function getLines(ctx,phrase,maxPxLength) {
-                var wa=phrase.split(" "),
-                    phraseArray=[],
-                    lastPhrase=wa[0],
-                    measure=0,
-                    splitChar=" ";
-                if (wa.length <= 1) {
-                    return wa
+            function wrapCanvasText(t, canvas, maxW, maxH) {
+
+                if (typeof maxH === "undefined") {
+                    maxH = 0;
                 }
-                // ctx.font = textStyle;
-                for (var i=1;i<wa.length;i++) {
-                    var w=wa[i];
-                    measure=ctx.measureText(lastPhrase+splitChar+w).width;
-                    if (measure<maxPxLength) {
-                        lastPhrase+=(splitChar+w);
+
+                // var words = t.text.split(" ");
+                var words = t.split(" ");
+                var formatted = '';
+
+                var lineHeight = 70;
+
+                // adjust for vertical offset
+                var maxHAdjusted = maxH > 0 ? maxH - lineHeight : 0;
+                // var context = canvas.getContext("2d");
+                var context = canvas;
+
+
+                context.font = '32' + "px ";
+                var currentLine = "";
+                var breakLineCount = 0;
+
+                for (var n = 0; n < words.length; n++) {
+
+                    var isNewLine = currentLine == "";
+                    var testOverlap = currentLine + ' ' + words[n];
+
+                    // are we over width?
+                    var w = context.measureText(testOverlap).width;
+
+                    if (w < maxW) { // if not, keep adding words
+                        currentLine += words[n] + ' ';
+                        formatted += words[n] += ' ';
                     } else {
-                        phraseArray.push(lastPhrase);
-                        lastPhrase=w;
+
+                        // if this hits, we got a word that need to be hypenated
+                        if (isNewLine) {
+                            var wordOverlap = "";
+
+                            // test word length until its over maxW
+                            for (var i = 0; i < words[n].length; ++i) {
+
+                                wordOverlap += words[n].charAt(i);
+                                var withHypeh = wordOverlap + "-";
+
+                                if (context.measureText(withHypeh).width >= maxW) {
+                                    // add hyphen when splitting a word
+                                    withHypeh = wordOverlap.substr(0, wordOverlap.length - 2) + "-";
+                                    // update current word with remainder
+                                    words[n] = words[n].substr(wordOverlap.length - 1, words[n].length);
+                                    formatted += withHypeh; // add hypenated word
+                                    break;
+                                }
+                            }
+                        }
+                        n--; // restart cycle
+                        formatted += '\n';
+                        breakLineCount++;
+                        currentLine = "";
                     }
-                    if (i===wa.length-1) {
-                        phraseArray.push(lastPhrase);
+                    if (maxHAdjusted > 0 && (breakLineCount * lineHeight) > maxHAdjusted) {
+                        // add ... at the end indicating text was cutoff
+                        formatted = formatted.substr(0, formatted.length - 3) + "...\n";
                         break;
                     }
                 }
-                return phraseArray;
+                // get rid of empy newline at the end
+                formatted = formatted.substr(0, formatted.length - 1);
+
+                return formatted;
             }
+
         };
 
         this.setWidth = function (width) {
@@ -172,7 +221,8 @@ com.logicpartners.designerTools.textBlock = function () {
         };
 
         this.getHeight = function () {
-            return this.height * 0.75;
+            // return this.height * 0.75;
+            return this.height * 2;
         };
 
         this.setHandle = function (coords) {
@@ -184,7 +234,7 @@ com.logicpartners.designerTools.textBlock = function () {
         };
 
         this.drawActive = function (context) {
-            context.dashedStroke(parseInt(this.x + 1), parseInt(this.y + 1), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.99) + 8, [2, 2]);
+            context.dashedStroke(parseInt(this.x + 1), parseInt(this.y - 4), parseInt(this.x) + parseInt(this.width) - 1, parseInt(this.y) + parseInt(this.height * 0.99) + 8, [2, 2]);
         };
 
         this.hitTest = function (coords) {

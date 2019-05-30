@@ -141,10 +141,20 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             });
                         } else {
                             // Draw readonly textbox.
-                            elementValue.prop("readonly", true).css({
+                            // elementValue.prop("readonly", true).css({
+                            //     "background-color": "#DDDDDD",
+                            //     border: "1px solid #AAAAAA",
+                            // }).parent().css({
+                            //     'display': 'none !important'
+                            // })
+
+                            var parent = elementValue.prop("readonly", true).css({
                                 "background-color": "#DDDDDD",
-                                border: "1px solid #AAAAAA"
+                                border: "1px solid #AAAAAA",
+                            }).parent().closest('label-designer-form-group').css({
+                                display: 'none'
                             });
+                            // debugger;
                         }
 
                         this.propertyNodes[key] = elementValue;
