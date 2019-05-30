@@ -974,7 +974,7 @@ com.logicpartners.designerTools.textBlock = function () {
 
             // var offset = 3;
             // var textBlockWidth = (context.canvas.width - offset) - this.x;
-            var textBlockWidth = (context.canvas.width) - (this.x + 10);
+            var textBlockWidth = (context.canvas.width + 5) - (this.x);
 
             var wrapped = wrapCanvasText(this.textArea, context, textBlockWidth);
 
