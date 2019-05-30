@@ -2291,6 +2291,20 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             continue;
                         }
 
+                        /**
+                         * Hide field
+                         */
+                        if (key === 'height' && this.activeElement.type !== 'Barcode') {
+                            continue;
+                        }
+
+                        /**
+                         * Hide field
+                         */
+                        if (key === 'width') {
+                            continue;
+                        }
+
                         var elementContainer = $('<div class="label-designer-form-group"></div>')
                             .css({
                                 // "clear": "both",
