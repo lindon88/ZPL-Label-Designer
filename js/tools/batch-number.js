@@ -16,10 +16,10 @@ com.logicpartners.designerTools.batchNumber = function () {
     this.object = function (x, y, width, height, fromObject) {
         this.name = 'Batch #: ';
         this.placeholderKey = '#batchNr';
-        this.previewText = 'Generated text here';
+        this.previewText = '#';
         this.x = x;
         this.y = y;
-        this.fontSize = 20;
+        this.fontSize = 18;
         this.fontType = "Arial";
         this.width = 100;
         this.height = 0;
@@ -73,7 +73,8 @@ com.logicpartners.designerTools.batchNumber = function () {
         };
 
         this.toZPL = function (labelx, labely, labelwidth, labelheight) {
-            return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + this.name + this.placeholderKey + "\n^FS";
+            // return "^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + this.name + this.placeholderKey + "\n^FS";
+            return "{{ batchNumber ? '" + "^FO" + (this.x - labelx) + "," + (this.y - labely) + " ^A0," + (this.fontSize) + "," + (this.fontSize) + ' ^FD' + this.name + this.placeholderKey + " ^FS" + "' : ''}}";
         };
 
         this.draw = function (context) {
