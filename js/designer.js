@@ -65,7 +65,7 @@ if (CP && CP.lineTo) {
     }
 }
 
-com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
+com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight, dpiInput) {
     this.canvas = document.getElementById(canvasid);
     this.canvasElement = $(this.canvas);
 
@@ -74,7 +74,13 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight) {
     this.propertyInspector = new com.logicpartners.propertyInspector(this, this.canvas);
     this.toolbar = new com.logicpartners.toolsWindow(this, this.canvas);
     this.labelInspector = new com.logicpartners.labelInspector(this, this.canvas);
-    this.dpi = 200;
+
+    if (dpiInput) {
+        this.dpi = dpiInput;
+    } else {
+        this.dpi = 200;
+    }
+
     this.batchNumber = false;
     this.labelNumber = false;
 
