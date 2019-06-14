@@ -1488,11 +1488,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight, d
     this.batchNumber = false;
     this.labelNumber = false;
 
-    try {
-        this.drawingContext = this.canvas.getContext("2d");
-    } catch (e) {
-        return;
-    }
+    this.drawingContext = this.canvas.getContext("2d");
     this.elements = [];
     this.currentLayer = 0;
     this.activeElement = null;
@@ -2176,7 +2172,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
 
                         } else if (key === 'variableText') {
                             elementValue = $('<select class="propertiesFieldTextInput" id="labelDesignerVariableText" name="labelDesignerVariableText">' +
-                                '<option selected="selected" value="Select variable">Select variable</option>' +
+                                '<option selected="selected" value="#variable">Select variable</option>' +
                                 '<option value="{{createDate}}">Create Date</option>' +
                                 '<option value="{{createDateTime}}">Create Date Time</option>' +
                                 '<option value="{{expiresDate}}">Expires Date</option>' +
@@ -2192,13 +2188,13 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
 
                             var selectedValueVariableText = activeElement[key];
 
-                            if (!selectedValueVariableText) {
-                                selectedValueVariableText = 'Product Name';
-                                this.activeElement.variableText = selectedValueVariableText;
-                                this.activeElement.variablePreviewText = 'Product Name';
-                            } else {
-                                this.activeElement.variablePreviewText = this.activeElement.variablePreviewText
-                            }
+                            // if (!selectedValueVariableText) {
+                            //     selectedValueVariableText = 'Product Name';
+                            //     this.activeElement.variableText = selectedValueVariableText;
+                            //     this.activeElement.variablePreviewText = 'Product Name';
+                            // } else {
+                            //     // this.activeElement.variablePreviewText = this.activeElement.variablePreviewText;
+                            // }
 
                             var thatActiveElement = this.activeElement;
                             setTimeout(function () {

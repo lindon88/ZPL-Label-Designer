@@ -84,11 +84,7 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight, d
     this.batchNumber = false;
     this.labelNumber = false;
 
-    try {
-        this.drawingContext = this.canvas.getContext("2d");
-    } catch (e) {
-        return;
-    }
+    this.drawingContext = this.canvas.getContext("2d");
     this.elements = [];
     this.currentLayer = 0;
     this.activeElement = null;
