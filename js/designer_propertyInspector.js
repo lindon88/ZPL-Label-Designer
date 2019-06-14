@@ -115,7 +115,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                                 this.activeElement.variableText = selectedValueVariableText;
                                 this.activeElement.variablePreviewText = 'Product Name';
                             } else {
-                                this.activeElement.variablePreviewText = this.activeElement.variableText
+                                this.activeElement.variablePreviewText = this.activeElement.variablePreviewText
                             }
 
                             var thatActiveElement = this.activeElement;
@@ -155,7 +155,6 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             }).parent().closest('label-designer-form-group').css({
                                 display: 'none'
                             });
-                            // debugger;
                         }
 
                         this.propertyNodes[key] = elementValue;

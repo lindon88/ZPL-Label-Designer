@@ -1269,8 +1269,8 @@ com.logicpartners.designerTools.variable = function () {
         this.variableName = '';
         this.variable = '#variable';
         // this.variablePreviewText = 'Your variable text here';
-        this.variablePreviewText = '';
-        this.variableText = 'Select variable'; // Default text drop-down
+        this.variablePreviewText = 'Select variable';
+        this.variableText = this.variable; // Default text drop-down
         // this.variableText = 'Product Name'; // Default text drop-down
         this.variableType = 'Text'; // Default type drop-down
         this.x = x;
@@ -1358,7 +1358,7 @@ com.logicpartners.designerTools.variable = function () {
             context.fillStyle = "white";
             this.height = this.getFontHeight();
 
-            var displayText = this.variableName + this.variablePreviewText;
+            var displayText =  this.variablePreviewText;
             var measuredText = context.measureText(displayText);
             this.width = measuredText.width;
             context.globalCompositeOperation = "difference";
@@ -1488,7 +1488,11 @@ com.logicpartners.labelDesigner = function (canvasid, labelWidth, labelHeight, d
     this.batchNumber = false;
     this.labelNumber = false;
 
-    this.drawingContext = this.canvas.getContext("2d");
+    try {
+        this.drawingContext = this.canvas.getContext("2d");
+    } catch (e) {
+        return;
+    }
     this.elements = [];
     this.currentLayer = 0;
     this.activeElement = null;
@@ -2193,7 +2197,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                                 this.activeElement.variableText = selectedValueVariableText;
                                 this.activeElement.variablePreviewText = 'Product Name';
                             } else {
-                                this.activeElement.variablePreviewText = this.activeElement.variableText
+                                this.activeElement.variablePreviewText = this.activeElement.variablePreviewText
                             }
 
                             var thatActiveElement = this.activeElement;
@@ -2233,7 +2237,6 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                             }).parent().closest('label-designer-form-group').css({
                                 display: 'none'
                             });
-                            // debugger;
                         }
 
                         this.propertyNodes[key] = elementValue;
