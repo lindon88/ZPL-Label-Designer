@@ -80,7 +80,7 @@ com.logicpartners.designerTools.textBlock = function () {
 
             var textBlockWidth = labelWidth - this.x;
             // return "^FB" + (textBlockWidth) + ",100,5,J,0," + "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
-            return "^FB" + (textBlockWidth) + ",100,5,J,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + textWithCarriageReturnForZpl+ "\n^FS";
+            return "^FB" + (textBlockWidth) + ",100,5,L,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + textWithCarriageReturnForZpl+ "\n^FS";
         };
 
         this.draw = function (context) {
