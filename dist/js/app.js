@@ -962,9 +962,9 @@ com.logicpartners.designerTools.textBlock = function () {
 
             var textWithCarriageReturnForZpl = this.textArea.replace(/(\r\n|\n|\r)/gm, '\\&');
 
-            var textBlockWidth = labelWidth - this.x;
+            var textBlockWidth = labelWidth - this.x + 20;
             // return "^FB" + (textBlockWidth) + ",100,5,J,0," + "^FO" + (this.x - labelx) + "," + (this.y - labely) + "^A0," + (this.fontSize) + "," + (this.fontSize) + '^FD' + this.variableName + this.variable + "^FS";
-            return "^FB" + (textBlockWidth) + ",100,5,J,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + textWithCarriageReturnForZpl+ "\n^FS";
+            return "^FB" + (textBlockWidth) + ",100,5,L,0," + "\n^FO" + (this.x - labelx) + "," + (this.y - labely) + "\n^A0," + (this.fontSize) + "," + (this.fontSize) + '\n^FD' + textWithCarriageReturnForZpl+ "\n^FS";
         };
 
         this.draw = function (context) {
@@ -2178,7 +2178,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                                 '<option value="{{expiresDate}}">Expires Date</option>' +
                                 '<option value="{{expiresDateTime}}">Expires Date Time</option>' +
                                 '<option value="{{expiresDayName}}">Expires Day Name</option>' +
-                                '<option value="{{managerName}}">Manager Name</option>' +
+                                '<option value="{{managerName}}">Employee Name</option>' +
                                 '<option value="{{productCategory}}">Product Category</option>' +
                                 '<option value="{{productCode}}">Product Code</option>' +
                                 '<option value="{{productDescription}}">Product Description</option>' +
