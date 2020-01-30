@@ -104,6 +104,7 @@ com.logicpartners.propertyInspector = function (designer, canvas) {
                                 '<option value="{{productCategory}}">Product Category</option>' +
                                 '<option value="{{productCode}}">Product Code</option>' +
                                 '<option value="{{productDescription}}">Product Description</option>' +
+                                '<option value="{{productDescription_CAPITALIZED}}">Product Description (Capitalized)</option>' +
                                 '<option value="{{shelfLife}}">Shelf Life</option>' +
                                 '<option value="{{userName}}">Username</option>' +
                                 '</select>');
